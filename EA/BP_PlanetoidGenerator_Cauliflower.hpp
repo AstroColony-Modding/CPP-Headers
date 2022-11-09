@@ -1,0 +1,8 @@
+#ifndef UE4SS_SDK_BP_PlanetoidGenerator_Cauliflower_HPP
+#define UE4SS_SDK_BP_PlanetoidGenerator_Cauliflower_HPP
+
+class UBP_PlanetoidGenerator_Cauliflower_C : public UPlanetoidGenerator_Cauliflower
+{
+};
+
+#endif

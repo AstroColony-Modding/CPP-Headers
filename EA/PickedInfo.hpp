@@ -1,0 +1,13 @@
+#ifndef UE4SS_SDK_PickedInfo_HPP
+#define UE4SS_SDK_PickedInfo_HPP
+
+struct FPickedInfo
+{
+    bool IsItem_7_7768441448A1806534EFAD984111E25E;
+    FEHItemInstance ItemInstance_8_27E4251145651BCBE50E8D882E578B18;
+    FEHGlobalPointInstance GlobalPoint_9_84A096E240EC80AEA92175A03485B9D2;
+    bool IsCrafted_11_F71304E6408F1391213018B2ABE09774;
+
+};
+
+#endif

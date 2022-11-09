@@ -1,0 +1,13 @@
+#ifndef UE4SS_SDK_NebulaEffect_HPP
+#define UE4SS_SDK_NebulaEffect_HPP
+
+struct FNebulaEffect
+{
+    FLinearColor LightColor1_26_115B874140D5F57D3B7EFB983C9BE177;
+    FLinearColor LightColor2_27_355F83F8410B464959DA3BA679EDE99F;
+    FLinearColor NebulaColor1_28_E1A57D28400CF2FA29FFB4BB052FEE78;
+    FLinearColor NebulaColor2_29_887B09A34227E8B37CBA4F9E3A3CD317;
+
+};
+
+#endif
