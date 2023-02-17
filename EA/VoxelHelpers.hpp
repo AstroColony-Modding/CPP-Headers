@@ -1,6 +1,13 @@
 #ifndef UE4SS_SDK_VoxelHelpers_HPP
 #define UE4SS_SDK_VoxelHelpers_HPP
 
+struct FMaterialPackInput
+{
+    FName InputName;
+    FExpressionInput Input;
+
+};
+
 class UMaterialExpressionBlendMaterialAttributesBarycentric : public UMaterialExpression
 {
     FMaterialAttributesInput A;
@@ -8,13 +15,6 @@ class UMaterialExpressionBlendMaterialAttributesBarycentric : public UMaterialEx
     FMaterialAttributesInput C;
     FExpressionInput AlphaA;
     FExpressionInput AlphaB;
-
-};
-
-struct FMaterialPackInput
-{
-    FName InputName;
-    FExpressionInput Input;
 
 };
 

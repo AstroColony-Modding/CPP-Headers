@@ -17,13 +17,13 @@ class ABP_BlackHole_C : public AEHBlackHole
     int32 SelectAction;
     bool IsForwardPortal;
 
+    void UpdateOpacity(const float Opacity);
     void UpdateIndicatorVisibility();
     void UpdatePortalState();
     void UpdateBlackHoleVisuals();
     void PortalTravel();
     void DebugPortal();
     void DebugMovement();
-    void UpdateOpacityOld(float Opacity);
     TMap<class EPlayerActionType, class FText> GetActionNames();
     int32 GetAvailableActionsBits();
     class UTexture2D* GetActionIcon();
@@ -44,19 +44,18 @@ class ABP_BlackHole_C : public AEHBlackHole
     FEHIndicationConfigData GetIndicationConfigData();
     FVector GetIndicationPosition();
     void ReceiveEndPlay(TEnumAsByte<EEndPlayReason::Type> EndPlayReason);
+    void ReceiveBeginPlay();
     void OnConstructionFinished();
     void OnNextPartConstructionStarted();
     void OnPartConstructionCompleted();
     void OnConstructionCanceled();
     void SavegameObjectSerializeDataLoaded();
     void OnPowerActivated();
-    void ReceiveBeginPlay();
     void OnEnergyProvided(float Energy, class UEHEnergyTransmitterObject* EnergyTransmitter);
     void OnWorldActorInteract();
     void ReceiveTick(float DeltaSeconds);
     void OnCreated();
     void OnUniverseChanged(uint8 PreviousIndex, uint8 NewIndex);
-    void UpdateOpacity(const float Opacity);
     void ExecuteUbergraph_BP_BlackHole(int32 EntryPoint);
 };
 

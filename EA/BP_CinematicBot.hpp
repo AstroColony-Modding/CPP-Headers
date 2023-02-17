@@ -18,15 +18,15 @@ class ABP_CinematicBot_C : public AActor
     void InpActEvt_Enter_K2Node_InputKeyEvent_2(FKey Key);
     void InpActEvt_B_K2Node_InputKeyEvent_1(FKey Key);
     void InpActEvt_N_K2Node_InputKeyEvent_0(FKey Key);
+    void StartIntro();
+    void ReceiveEndPlay(TEnumAsByte<EEndPlayReason::Type> EndPlayReason);
+    void OnMediaOpened(FString OpenedUrl);
     void OnEndReached();
     void ShowNextSentence();
     void EndCinematic();
     void StopBot();
-    void OnMediaOpened(FString OpenedUrl);
     void ReceiveBeginPlay();
     void PressEnterToSkip();
-    void ReceiveEndPlay(TEnumAsByte<EEndPlayReason::Type> EndPlayReason);
-    void StartIntro();
     void PreStartIntro();
     void ExecuteUbergraph_BP_CinematicBot(int32 EntryPoint);
 };

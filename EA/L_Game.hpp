@@ -7,6 +7,8 @@ class AL_Game_C : public ALevelScriptActor
     float TimeDilation;
     class UMediaPlayer* MediaPlayer;
 
+    void DestroyBlocks(FString Name);
+    void DestroyInteractablesFar();
     void HDScreenshot();
     void KillNonHumans();
     void KillNonFarmers();
@@ -15,7 +17,6 @@ class AL_Game_C : public ALevelScriptActor
     void SaveResourcesOrder();
     void ChangeTimeDilation(float TimeDilationChange);
     void InpActEvt_PageDown_K2Node_InputKeyEvent_0(FKey Key);
-    void ReceiveEndPlay(TEnumAsByte<EEndPlayReason::Type> EndPlayReason);
     void ReceiveBeginPlay();
     void ExecuteUbergraph_L_Game(int32 EntryPoint);
 };

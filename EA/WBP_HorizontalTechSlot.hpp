@@ -7,8 +7,8 @@ class UWBP_HorizontalTechSlot_C : public UTechNodeWidget
     class UWidgetAnimation* PingAnimation;
     class UImage* HEX;
     class UImage* LongHex;
+    class UOverlay* MainOverlay;
     class UTGConfigurableTextBlock* NotAssignedName;
-    class UImage* Padlock;
     class UUniformGridPanel* ScienceCostGrid;
     class UBorder* TechCostBorder;
     class UImage* TechIcon;
@@ -20,6 +20,7 @@ class UWBP_HorizontalTechSlot_C : public UTechNodeWidget
     bool SlotHovered;
     bool IsPreviewSlot;
 
+    void AddDemoPadlock();
     void ColorTest();
     class UWidget* Get_UnlockTechnologyTooltip();
     void SetPreviewAsset(class UEHTechnologyAsset* EHTechnologyAsset);

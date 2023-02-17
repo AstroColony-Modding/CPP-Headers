@@ -15,11 +15,11 @@ class UWBP_HUDCommands_C : public UUserWidget
     class UTGConfigurableTextBlock* DividerName;
     class UOverlay* DockingOverlay;
     class UOverlay* ExpandOverlay;
+    class UWBP_IcoButton_C* GravityBootsButton;
     class UWBP_IcoButton_C* GuidesButton;
     class UImage* Image_4;
     class UImage* Image_137;
     class UWBP_IcoButton_C* InventoryButton;
-    class UWBP_IcoButton_C* JetpackButton;
     class UWBP_IcoButton_C* MapButton;
     class UWBP_IcoButton_C* PauseButton;
     class UWBP_IcoButton_C* PhotomodeButton;

@@ -36,6 +36,10 @@ class UChaosPhysicalMaterial : public UObject
 
 };
 
+class UDEPRECATED_PhysicalMaterialPropertyBase : public UObject
+{
+};
+
 class UPhysicalMaterial : public UObject
 {
     float Friction;
@@ -54,10 +58,6 @@ class UPhysicalMaterial : public UObject
     class UDEPRECATED_PhysicalMaterialPropertyBase* PhysicalMaterialProperty;
     TEnumAsByte<EPhysicalSurface> SurfaceType;
 
-};
-
-class UDEPRECATED_PhysicalMaterialPropertyBase : public UObject
-{
 };
 
 class UPhysicsSettingsCore : public UDeveloperSettings

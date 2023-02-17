@@ -1,6 +1,35 @@
 #ifndef UE4SS_SDK_SimpleUGC_HPP
 #define UE4SS_SDK_SimpleUGC_HPP
 
+struct FModTab
+{
+    FString TabName;
+    TSubclassOf<class UUserWidget> TabWidget;
+
+};
+
+struct FUGCPackage
+{
+    FString PackagePath;
+    FString Version;
+    FString Author;
+    FString Description;
+
+};
+
+class IGCInterface : public IInterface
+{
+};
+
+class UACModConfig : public UObject
+{
+    TArray<class UObject*> GameObjectsToOverride;
+    bool GenerateTabForMaps;
+    TArray<FModTab> TabWidgets;
+    TArray<class UTexture2D*> ModIcon;
+
+};
+
 class UMakeReplaceableActorComponent : public UActorComponent
 {
     TSubclassOf<class AActor> CompatibleReplacement;
@@ -23,19 +52,6 @@ class UUGCBlueprintLibrary : public UBlueprintFunctionLibrary
 {
 
     class UUGCRegistry* GetUGCRegistry(class UObject* WorldContextObject);
-};
-
-class IGCInterface : public IInterface
-{
-};
-
-struct FUGCPackage
-{
-    FString PackagePath;
-    FString Version;
-    FString Author;
-    FString Description;
-
 };
 
 class UUGCRegistry : public UObject

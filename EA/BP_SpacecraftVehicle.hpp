@@ -89,9 +89,8 @@ class ABP_SpacecraftVehicle_C : public ABP_WorldInteractiveVehicle_C
     void InpActEvt_Turbo_K2Node_InputActionEvent_0(FKey Key);
     void ReceivePossessed(class AController* NewController);
     void ReceiveUnpossessed(class AController* OldController);
-    void ReceiveHit(class UPrimitiveComponent* MyComp, class AActor* Other, class UPrimitiveComponent* OtherComp, bool bSelfMoved, FVector HitLocation, FVector HitNormal, FVector NormalImpulse, const FHitResult& Hit);
-    void ReceiveBeginPlay();
     void ReceiveTick(float DeltaSeconds);
+    void ReceiveBeginPlay();
     void OnWorldActorInteract();
     void OnWorldActorSpawned(bool ShouldMoveToDestination, FVector DestinationOffset);
     void DisableMovement();
@@ -107,6 +106,8 @@ class ABP_SpacecraftVehicle_C : public ABP_WorldInteractiveVehicle_C
     void Server_MoveRight(float Value);
     void Server_Turn(float Value);
     void Server_Booster(bool IsBoosterOn);
+    void Client_UpdateSpringRotat(FRotator NewRotation);
+    void ReceiveHit(class UPrimitiveComponent* MyComp, class AActor* Other, class UPrimitiveComponent* OtherComp, bool bSelfMoved, FVector HitLocation, FVector HitNormal, FVector NormalImpulse, const FHitResult& Hit);
     void ExecuteUbergraph_BP_SpacecraftVehicle(int32 EntryPoint);
 };
 

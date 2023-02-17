@@ -10,6 +10,28 @@ struct FXRDeviceId
 
 };
 
+struct FXRGestureConfig
+{
+    bool bTap;
+    bool bHold;
+    ESpatialInputGestureAxis AxisGesture;
+    bool bNavigationAxisX;
+    bool bNavigationAxisY;
+    bool bNavigationAxisZ;
+
+};
+
+struct FXRHMDData
+{
+    bool bValid;
+    FName DeviceName;
+    FGuid ApplicationInstanceID;
+    ETrackingStatus TrackingStatus;
+    FVector position;
+    FQuat Rotation;
+
+};
+
 struct FXRMotionControllerData
 {
     bool bValid;
@@ -29,26 +51,22 @@ struct FXRMotionControllerData
 
 };
 
-struct FXRHMDData
+class UAsyncTask_LoadXRDeviceVisComponent : public UBlueprintAsyncActionBase
 {
-    bool bValid;
-    FName DeviceName;
-    FGuid ApplicationInstanceID;
-    ETrackingStatus TrackingStatus;
-    FVector position;
-    FQuat Rotation;
+    FAsyncTask_LoadXRDeviceVisComponentOnModelLoaded OnModelLoaded;
+    void DeviceModelLoadedDelegate(const class UPrimitiveComponent* LoadedComponent);
+    FAsyncTask_LoadXRDeviceVisComponentOnLoadFailure OnLoadFailure;
+    void DeviceModelLoadedDelegate(const class UPrimitiveComponent* LoadedComponent);
+    class UPrimitiveComponent* SpawnedComponent;
 
+    class UAsyncTask_LoadXRDeviceVisComponent* AddNamedDeviceVisualizationComponentAsync(class AActor* Target, const FName SystemName, const FName DeviceName, bool bManualAttachment, const FTransform& RelativeTransform, FXRDeviceId& XRDeviceId, class UPrimitiveComponent*& NewComponent);
+    class UAsyncTask_LoadXRDeviceVisComponent* AddDeviceVisualizationComponentAsync(class AActor* Target, const FXRDeviceId& XRDeviceId, bool bManualAttachment, const FTransform& RelativeTransform, class UPrimitiveComponent*& NewComponent);
 };
 
-struct FXRGestureConfig
+class UHandKeypointConversion : public UBlueprintFunctionLibrary
 {
-    bool bTap;
-    bool bHold;
-    ESpatialInputGestureAxis AxisGesture;
-    bool bNavigationAxisX;
-    bool bNavigationAxisY;
-    bool bNavigationAxisZ;
 
+    int32 Conv_HandKeypointToInt32(EHandKeypoint Input);
 };
 
 class UHeadMountedDisplayFunctionLibrary : public UBlueprintFunctionLibrary
@@ -101,12 +119,6 @@ class UHeadMountedDisplayFunctionLibrary : public UBlueprintFunctionLibrary
     void BreakKey(FKey InKey, FString& InteractionProfile, EControllerHand& Hand, FName& MotionSource, FString& Indentifier, FString& Component);
 };
 
-class UHandKeypointConversion : public UBlueprintFunctionLibrary
-{
-
-    int32 Conv_HandKeypointToInt32(EHandKeypoint Input);
-};
-
 class UMotionControllerComponent : public UPrimitiveComponent
 {
     int32 PlayerIndex;
@@ -136,7 +148,7 @@ class UMotionControllerComponent : public UPrimitiveComponent
 class UMotionTrackedDeviceFunctionLibrary : public UBlueprintFunctionLibrary
 {
 
-    void SetIsControllerMotionTrackingEnabledByDefault(bool Enable);
+    void SetIsControllerMotionTrackingEnabledByDefault(bool enable);
     bool IsMotionTrackingEnabledForSource(int32 PlayerIndex, FName SourceName);
     bool IsMotionTrackingEnabledForDevice(int32 PlayerIndex, EControllerHand Hand);
     bool IsMotionTrackingEnabledForComponent(const class UMotionControllerComponent* MotionControllerComponent);
@@ -184,18 +196,6 @@ class UXRAssetFunctionLibrary : public UBlueprintFunctionLibrary
 
     class UPrimitiveComponent* AddNamedDeviceVisualizationComponentBlocking(class AActor* Target, const FName SystemName, const FName DeviceName, bool bManualAttachment, const FTransform& RelativeTransform, FXRDeviceId& XRDeviceId);
     class UPrimitiveComponent* AddDeviceVisualizationComponentBlocking(class AActor* Target, const FXRDeviceId& XRDeviceId, bool bManualAttachment, const FTransform& RelativeTransform);
-};
-
-class UAsyncTask_LoadXRDeviceVisComponent : public UBlueprintAsyncActionBase
-{
-    FAsyncTask_LoadXRDeviceVisComponentOnModelLoaded OnModelLoaded;
-    void DeviceModelLoadedDelegate(const class UPrimitiveComponent* LoadedComponent);
-    FAsyncTask_LoadXRDeviceVisComponentOnLoadFailure OnLoadFailure;
-    void DeviceModelLoadedDelegate(const class UPrimitiveComponent* LoadedComponent);
-    class UPrimitiveComponent* SpawnedComponent;
-
-    class UAsyncTask_LoadXRDeviceVisComponent* AddNamedDeviceVisualizationComponentAsync(class AActor* Target, const FName SystemName, const FName DeviceName, bool bManualAttachment, const FTransform& RelativeTransform, FXRDeviceId& XRDeviceId, class UPrimitiveComponent*& NewComponent);
-    class UAsyncTask_LoadXRDeviceVisComponent* AddDeviceVisualizationComponentAsync(class AActor* Target, const FXRDeviceId& XRDeviceId, bool bManualAttachment, const FTransform& RelativeTransform, class UPrimitiveComponent*& NewComponent);
 };
 
 class UXRLoadingScreenFunctionLibrary : public UBlueprintFunctionLibrary

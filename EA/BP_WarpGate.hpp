@@ -21,6 +21,7 @@ class ABP_WarpGate_C : public AActor
     int32 Effect Index;
     class AEHBlackHole* BlackHole;
 
+    void KillBotTemp();
     void UpdateOpacity(float Opacity);
     void UpdateWarpGateVisuals(int32 EffectIndex);
     void UserConstructionScript();
@@ -28,12 +29,12 @@ class ABP_WarpGate_C : public AActor
     void IntepolateCameraToStartPos__UpdateFunc();
     void InterpolateCameraOut__FinishedFunc();
     void InterpolateCameraOut__UpdateFunc();
+    void Activate();
+    void Deactivate();
     void ReceiveBeginPlay();
     void OnUniverseChanged(uint8 PreviousIndex, uint8 NewIndex);
     void TravelEnd();
     void TravelBegin(class AEHBlackHole* BlackHole, bool IsForward);
-    void Deactivate();
-    void Activate();
     void ExecuteUbergraph_BP_WarpGate(int32 EntryPoint);
 };
 

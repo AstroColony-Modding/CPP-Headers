@@ -6,9 +6,10 @@ class ABP_PlanetoidGrid_C : public AEHPlanetoidGrid
     FPointerToUberGraphFrame UberGraphFrame;
     int32 FloorSize;
     bool UseDebugSpline;
-    class UObject* DebugAISpline;
+    class ABP_DebugAISpline_C* DebugAISpline;
     bool IsDebugPlanetoid;
     TArray<class UDestructibleComponent*> DeactivatedDestructibles;
+    FIntVector Int Vector;
 
     void Debug_GenerateCoord(const FIntVector& InputPin);
     void LineTraceTest();
@@ -22,12 +23,13 @@ class ABP_PlanetoidGrid_C : public AEHPlanetoidGrid
     void TestPlnaetoidSurface();
     void Spawn DestructibleOld(FVector& position, const FVoxelTerrainDigData& DigData);
     void InpActEvt_Y_K2Node_InputKeyEvent_3(FKey Key);
-    void InpActEvt_H_K2Node_InputKeyEvent_2(FKey Key);
-    void InpActEvt_B_K2Node_InputKeyEvent_1(FKey Key);
-    void InpActEvt_N_K2Node_InputKeyEvent_0(FKey Key);
-    void TraceHeightFound(const FVector& ImpactPoint);
+    void InpActEvt_B_K2Node_InputKeyEvent_2(FKey Key);
+    void InpActEvt_N_K2Node_InputKeyEvent_1(FKey Key);
+    void InpActEvt_H_K2Node_InputKeyEvent_0(FKey Key);
     void ReceiveBeginPlay();
     void OnDebugPlanetoidCoordGenerate(const FIntVector& Coord);
+    void TraceHeightFound(const FVector& ImpactPoint);
+    void UpdateLoc(FVector Location);
     void ExecuteUbergraph_BP_PlanetoidGrid(int32 EntryPoint);
 };
 

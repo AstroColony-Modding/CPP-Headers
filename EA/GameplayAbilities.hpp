@@ -3,25 +3,54 @@
 
 #include "GameplayAbilities_enums.hpp"
 
-class UAbilityAsync : public UBlueprintAsyncActionBase
+struct FAbilityEndedData
 {
-
-    void EndAction();
-};
-
-struct FGameplayTargetDataFilterHandle
-{
-};
-
-struct FGameplayTagRequirements
-{
-    FGameplayTagContainer RequireTags;
-    FGameplayTagContainer IgnoreTags;
+    class UGameplayAbility* AbilityThatEnded;
+    FGameplayAbilitySpecHandle AbilitySpecHandle;
+    bool bReplicateEndAbility;
+    bool bWasCancelled;
 
 };
 
-struct FGameplayEffectSpecHandle
+struct FAbilityTaskDebugMessage
 {
+    class UGameplayTask* FromTask;
+    FString Message;
+
+};
+
+struct FAbilityTriggerData
+{
+    FGameplayTag TriggerTag;
+    TEnumAsByte<EGameplayAbilityTriggerSource::Type> TriggerSource;
+
+};
+
+struct FActiveGameplayCue : public FFastArraySerializerItem
+{
+    FGameplayTag GameplayCueTag;
+    FPredictionKey PredictionKey;
+    FGameplayCueParameters Parameters;
+    bool bPredictivelyRemoved;
+
+};
+
+struct FActiveGameplayCueContainer : public FFastArraySerializer
+{
+    TArray<FActiveGameplayCue> GameplayCues;
+    class UAbilitySystemComponent* Owner;
+
+};
+
+struct FActiveGameplayEffect : public FFastArraySerializerItem
+{
+    FGameplayEffectSpec Spec;
+    FPredictionKey PredictionKey;
+    float StartServerWorldTime;
+    float CachedStartServerWorldTime;
+    float StartWorldTime;
+    bool bIsInhibited;
+
 };
 
 struct FActiveGameplayEffectHandle
@@ -31,20 +60,474 @@ struct FActiveGameplayEffectHandle
 
 };
 
-class UAbilityAsync_WaitGameplayEffectApplied : public UAbilityAsync
+struct FActiveGameplayEffectQuery
 {
-    FAbilityAsync_WaitGameplayEffectAppliedOnApplied OnApplied;
-    void OnAppliedDelegate(class AActor* Source, FGameplayEffectSpecHandle SpecHandle, FActiveGameplayEffectHandle ActiveHandle);
+};
 
-    class UAbilityAsync_WaitGameplayEffectApplied* WaitGameplayEffectAppliedToActor(class AActor* TargetActor, const FGameplayTargetDataFilterHandle SourceFilter, FGameplayTagRequirements SourceTagRequirements, FGameplayTagRequirements TargetTagRequirements, bool TriggerOnce, bool ListenForPeriodicEffect);
-    void OnAppliedDelegate__DelegateSignature(class AActor* Source, FGameplayEffectSpecHandle SpecHandle, FActiveGameplayEffectHandle ActiveHandle);
+struct FActiveGameplayEffectsContainer : public FFastArraySerializer
+{
+    TArray<FActiveGameplayEffect> GameplayEffects_Internal;
+    TArray<class UGameplayEffect*> ApplicationImmunityQueryEffects;
+
+};
+
+struct FAttributeBasedFloat
+{
+    FScalableFloat Coefficient;
+    FScalableFloat PreMultiplyAdditiveValue;
+    FScalableFloat PostMultiplyAdditiveValue;
+    FGameplayEffectAttributeCaptureDefinition BackingAttribute;
+    FCurveTableRowHandle AttributeCurve;
+    EAttributeBasedFloatCalculationType AttributeCalculationType;
+    EGameplayModEvaluationChannel FinalChannel;
+    FGameplayTagContainer SourceTagFilter;
+    FGameplayTagContainer TargetTagFilter;
+
+};
+
+struct FAttributeDefaults
+{
+    TSubclassOf<class UAttributeSet> Attributes;
+    class UDataTable* DefaultStartingTable;
+
+};
+
+struct FAttributeMetaData : public FTableRowBase
+{
+    float BaseValue;
+    float MinValue;
+    float MaxValue;
+    FString DerivedAttributeInfo;
+    bool bCanStack;
+
+};
+
+struct FConditionalGameplayEffect
+{
+    TSubclassOf<class UGameplayEffect> EffectClass;
+    FGameplayTagContainer RequiredSourceTags;
+
+};
+
+struct FCustomCalculationBasedFloat
+{
+    TSubclassOf<class UGameplayModMagnitudeCalculation> CalculationClassMagnitude;
+    FScalableFloat Coefficient;
+    FScalableFloat PreMultiplyAdditiveValue;
+    FScalableFloat PostMultiplyAdditiveValue;
+    FCurveTableRowHandle FinalLookupCurve;
+
+};
+
+struct FGameplayAbilityActivationInfo
+{
+    TEnumAsByte<EGameplayAbilityActivationMode::Type> ActivationMode;
+    uint8 bCanBeEndedByOtherInstance;
+    FPredictionKey PredictionKeyWhenActivated;
+
+};
+
+struct FGameplayAbilityActorInfo
+{
+    TWeakObjectPtr<class AActor> OwnerActor;
+    TWeakObjectPtr<class AActor> AvatarActor;
+    TWeakObjectPtr<class APlayerController> PlayerController;
+    TWeakObjectPtr<class UAbilitySystemComponent> AbilitySystemComponent;
+    TWeakObjectPtr<class USkeletalMeshComponent> SkeletalMeshComponent;
+    TWeakObjectPtr<class UAnimInstance> AnimInstance;
+    TWeakObjectPtr<class UMovementComponent> MovementComponent;
+    FName AffectedAnimInstanceTag;
+
+};
+
+struct FGameplayAbilityBindInfo
+{
+    TEnumAsByte<EGameplayAbilityInputBinds::Type> Command;
+    TSubclassOf<class UGameplayAbility> GameplayAbilityClass;
+
+};
+
+struct FGameplayAbilityLocalAnimMontage
+{
+    class UAnimMontage* AnimMontage;
+    bool PlayBit;
+    FPredictionKey PredictionKey;
+    class UGameplayAbility* AnimatingAbility;
+
+};
+
+struct FGameplayAbilityRepAnimMontage
+{
+    class UAnimMontage* AnimMontage;
+    float PlayRate;
+    float position;
+    float BlendTime;
+    uint8 NextSectionID;
+    uint8 bRepPosition;
+    uint8 IsStopped;
+    uint8 ForcePlayBit;
+    uint8 SkipPositionCorrection;
+    uint8 bSkipPlayRate;
+    FPredictionKey PredictionKey;
+    uint8 SectionIdToPlay;
+
+};
+
+struct FGameplayAbilitySpec : public FFastArraySerializerItem
+{
+    FGameplayAbilitySpecHandle Handle;
+    class UGameplayAbility* Ability;
+    int32 Level;
+    int32 InputID;
+    class UObject* SourceObject;
+    uint8 ActiveCount;
+    uint8 InputPressed;
+    uint8 RemoveAfterActivation;
+    uint8 PendingRemove;
+    uint8 bActivateOnce;
+    FGameplayAbilityActivationInfo ActivationInfo;
+    FGameplayTagContainer DynamicAbilityTags;
+    TArray<class UGameplayAbility*> NonReplicatedInstances;
+    TArray<class UGameplayAbility*> ReplicatedInstances;
+    FActiveGameplayEffectHandle GameplayEffectHandle;
+
+};
+
+struct FGameplayAbilitySpecContainer : public FFastArraySerializer
+{
+    TArray<FGameplayAbilitySpec> Items;
+    class UAbilitySystemComponent* Owner;
+
+};
+
+struct FGameplayAbilitySpecDef
+{
+    TSubclassOf<class UGameplayAbility> Ability;
+    FScalableFloat LevelScalableFloat;
+    int32 InputID;
+    EGameplayEffectGrantedAbilityRemovePolicy RemovalPolicy;
+    class UObject* SourceObject;
+    FGameplayAbilitySpecHandle AssignedHandle;
+
+};
+
+struct FGameplayAbilitySpecHandle
+{
+    int32 Handle;
+
+};
+
+struct FGameplayAbilitySpecHandleAndPredictionKey
+{
+    FGameplayAbilitySpecHandle AbilityHandle;
+    int32 PredictionKeyAtCreation;
+
+};
+
+struct FGameplayAbilityTargetData
+{
+};
+
+struct FGameplayAbilityTargetDataHandle
+{
+};
+
+struct FGameplayAbilityTargetData_ActorArray : public FGameplayAbilityTargetData
+{
+    FGameplayAbilityTargetingLocationInfo SourceLocation;
+    TArray<TWeakObjectPtr<AActor>> TargetActorArray;
+
+};
+
+struct FGameplayAbilityTargetData_LocationInfo : public FGameplayAbilityTargetData
+{
+    FGameplayAbilityTargetingLocationInfo SourceLocation;
+    FGameplayAbilityTargetingLocationInfo TargetLocation;
+
+};
+
+struct FGameplayAbilityTargetData_SingleTargetHit : public FGameplayAbilityTargetData
+{
+    FHitResult HitResult;
+    bool bHitReplaced;
+
+};
+
+struct FGameplayAbilityTargetingLocationInfo
+{
+    TEnumAsByte<EGameplayAbilityTargetingLocationType::Type> LocationType;
+    FTransform LiteralTransform;
+    class AActor* SourceActor;
+    class UMeshComponent* SourceComponent;
+    class UGameplayAbility* SourceAbility;
+    FName SourceSocketName;
+
+};
+
+struct FGameplayAttribute
+{
+    FString AttributeName;
+    TFieldPath<FProperty> Attribute;
+    class UStruct* AttributeOwner;
+
+};
+
+struct FGameplayAttributeData
+{
+    float BaseValue;
+    float CurrentValue;
+
+};
+
+struct FGameplayCueNotifyData
+{
+    FGameplayTag GameplayCueTag;
+    FSoftObjectPath GameplayCueNotifyObj;
+    UClass* LoadedGameplayCueClass;
+
+};
+
+struct FGameplayCueObjectLibrary
+{
+    TArray<FString> Paths;
+    class UObjectLibrary* ActorObjectLibrary;
+    class UObjectLibrary* StaticObjectLibrary;
+    class UGameplayCueSet* CueSet;
+    bool bShouldSyncScan;
+    bool bShouldAsyncLoad;
+    bool bShouldSyncLoad;
+    bool bHasBeenInitialized;
+
+};
+
+struct FGameplayCueParameters
+{
+    float NormalizedMagnitude;
+    float RawMagnitude;
+    FGameplayEffectContextHandle EffectContext;
+    FGameplayTag MatchedTagName;
+    FGameplayTag OriginalTag;
+    FGameplayTagContainer AggregatedSourceTags;
+    FGameplayTagContainer AggregatedTargetTags;
+    FVector_NetQuantize10 Location;
+    FVector_NetQuantizeNormal Normal;
+    TWeakObjectPtr<class AActor> Instigator;
+    TWeakObjectPtr<class AActor> EffectCauser;
+    TWeakObjectPtr<class UObject> SourceObject;
+    TWeakObjectPtr<class UPhysicalMaterial> PhysicalMaterial;
+    int32 GameplayEffectLevel;
+    int32 AbilityLevel;
+    TWeakObjectPtr<class USceneComponent> TargetAttachComponent;
+    bool bReplicateLocationWhenUsingMinimalRepProxy;
+
+};
+
+struct FGameplayCuePendingExecute
+{
+    FPredictionKey PredictionKey;
+    EGameplayCuePayloadType PayloadType;
+    class UAbilitySystemComponent* OwningComponent;
+    FGameplayEffectSpecForRPC FromSpec;
+    FGameplayCueParameters CueParameters;
+
+};
+
+struct FGameplayCueTag
+{
+    FGameplayTag GameplayCueTag;
+
+};
+
+struct FGameplayCueTranslationLink
+{
+    class UGameplayCueTranslator* RulesCDO;
+
+};
+
+struct FGameplayCueTranslationManager
+{
+    TArray<FGameplayCueTranslatorNode> TranslationLUT;
+    TMap<class FName, class FGameplayCueTranslatorNodeIndex> TranslationNameToIndexMap;
+    class UGameplayTagsManager* TagManager;
+
+};
+
+struct FGameplayCueTranslatorNode
+{
+    TArray<FGameplayCueTranslationLink> links;
+    FGameplayCueTranslatorNodeIndex CachedIndex;
+    FGameplayTag CachedGameplayTag;
+    FName CachedGameplayTagName;
+
+};
+
+struct FGameplayCueTranslatorNodeIndex
+{
+    int32 Index;
+
+};
+
+struct FGameplayEffectAttributeCaptureDefinition
+{
+    FGameplayAttribute AttributeToCapture;
+    EGameplayEffectAttributeCaptureSource AttributeSource;
+    bool bSnapshot;
+
+};
+
+struct FGameplayEffectAttributeCaptureSpec
+{
+    FGameplayEffectAttributeCaptureDefinition BackingDefinition;
+
+};
+
+struct FGameplayEffectAttributeCaptureSpecContainer
+{
+    TArray<FGameplayEffectAttributeCaptureSpec> SourceAttributes;
+    TArray<FGameplayEffectAttributeCaptureSpec> TargetAttributes;
+    bool bHasNonSnapshottedAttributes;
+
+};
+
+struct FGameplayEffectContext
+{
+    TWeakObjectPtr<class AActor> Instigator;
+    TWeakObjectPtr<class AActor> EffectCauser;
+    TWeakObjectPtr<class UGameplayAbility> AbilityCDO;
+    TWeakObjectPtr<class UGameplayAbility> AbilityInstanceNotReplicated;
+    int32 AbilityLevel;
+    TWeakObjectPtr<class UObject> SourceObject;
+    TWeakObjectPtr<class UAbilitySystemComponent> InstigatorAbilitySystemComponent;
+    TArray<TWeakObjectPtr<AActor>> Actors;
+    FVector WorldOrigin;
+    uint8 bHasWorldOrigin;
+    uint8 bReplicateSourceObject;
+
 };
 
 struct FGameplayEffectContextHandle
 {
 };
 
-struct FGameplayAbilityTargetDataHandle
+struct FGameplayEffectCue
+{
+    FGameplayAttribute MagnitudeAttribute;
+    float MinLevel;
+    float MaxLevel;
+    FGameplayTagContainer GameplayCueTags;
+
+};
+
+struct FGameplayEffectCustomExecutionOutput
+{
+    TArray<FGameplayModifierEvaluatedData> OutputModifiers;
+    uint8 bTriggerConditionalGameplayEffects;
+    uint8 bHandledStackCountManually;
+    uint8 bHandledGameplayCuesManually;
+
+};
+
+struct FGameplayEffectCustomExecutionParameters
+{
+};
+
+struct FGameplayEffectExecutionDefinition
+{
+    TSubclassOf<class UGameplayEffectExecutionCalculation> CalculationClass;
+    FGameplayTagContainer PassedInTags;
+    TArray<FGameplayEffectExecutionScopedModifierInfo> CalculationModifiers;
+    TArray<class TSubclassOf<UGameplayEffect>> ConditionalGameplayEffectClasses;
+    TArray<FConditionalGameplayEffect> ConditionalGameplayEffects;
+
+};
+
+struct FGameplayEffectExecutionScopedModifierInfo
+{
+    FGameplayEffectAttributeCaptureDefinition CapturedAttribute;
+    FGameplayTag TransientAggregatorIdentifier;
+    EGameplayEffectScopedModifierAggregatorType AggregatorType;
+    TEnumAsByte<EGameplayModOp::Type> ModifierOp;
+    FGameplayEffectModifierMagnitude ModifierMagnitude;
+    FGameplayModEvaluationChannelSettings EvaluationChannelSettings;
+    FGameplayTagRequirements SourceTags;
+    FGameplayTagRequirements TargetTags;
+
+};
+
+struct FGameplayEffectModifiedAttribute
+{
+    FGameplayAttribute Attribute;
+    float TotalMagnitude;
+
+};
+
+struct FGameplayEffectModifierMagnitude
+{
+    EGameplayEffectMagnitudeCalculation MagnitudeCalculationType;
+    FScalableFloat ScalableFloatMagnitude;
+    FAttributeBasedFloat AttributeBasedMagnitude;
+    FCustomCalculationBasedFloat CustomMagnitude;
+    FSetByCallerFloat SetByCallerMagnitude;
+
+};
+
+struct FGameplayEffectQuery
+{
+    FGameplayEffectQueryCustomMatchDelegate_BP CustomMatchDelegate_BP;
+    void ActiveGameplayEffectQueryCustomMatch_Dynamic(FActiveGameplayEffect Effect, bool& bMatches);
+    FGameplayTagQuery OwningTagQuery;
+    FGameplayTagQuery EffectTagQuery;
+    FGameplayTagQuery SourceTagQuery;
+    FGameplayAttribute ModifyingAttribute;
+    class UObject* EffectSource;
+    TSubclassOf<class UGameplayEffect> EffectDefinition;
+
+};
+
+struct FGameplayEffectRemovalInfo
+{
+    bool bPrematureRemoval;
+    int32 StackCount;
+    FGameplayEffectContextHandle EffectContext;
+
+};
+
+struct FGameplayEffectSpec
+{
+    class UGameplayEffect* Def;
+    TArray<FGameplayEffectModifiedAttribute> ModifiedAttributes;
+    FGameplayEffectAttributeCaptureSpecContainer CapturedRelevantAttributes;
+    float Duration;
+    float Period;
+    float ChanceToApplyToTarget;
+    FTagContainerAggregator CapturedSourceTags;
+    FTagContainerAggregator CapturedTargetTags;
+    FGameplayTagContainer DynamicGrantedTags;
+    FGameplayTagContainer DynamicAssetTags;
+    TArray<FModifierSpec> Modifiers;
+    int32 StackCount;
+    uint8 bCompletedSourceAttributeCapture;
+    uint8 bCompletedTargetAttributeCapture;
+    uint8 bDurationLocked;
+    TArray<FGameplayAbilitySpecDef> GrantedAbilitySpecs;
+    FGameplayEffectContextHandle EffectContext;
+    float Level;
+
+};
+
+struct FGameplayEffectSpecForRPC
+{
+    class UGameplayEffect* Def;
+    TArray<FGameplayEffectModifiedAttribute> ModifiedAttributes;
+    FGameplayEffectContextHandle EffectContext;
+    FGameplayTagContainer AggregatedSourceTags;
+    FGameplayTagContainer AggregatedTargetTags;
+    float Level;
+    float AbilityLevel;
+
+};
+
+struct FGameplayEffectSpecHandle
 {
 };
 
@@ -61,6 +544,352 @@ struct FGameplayEventData
     float EventMagnitude;
     FGameplayAbilityTargetDataHandle TargetData;
 
+};
+
+struct FGameplayModEvaluationChannelSettings
+{
+    EGameplayModEvaluationChannel Channel;
+
+};
+
+struct FGameplayModifierEvaluatedData
+{
+    FGameplayAttribute Attribute;
+    TEnumAsByte<EGameplayModOp::Type> ModifierOp;
+    float Magnitude;
+    FActiveGameplayEffectHandle Handle;
+    bool IsValid;
+
+};
+
+struct FGameplayModifierInfo
+{
+    FGameplayAttribute Attribute;
+    TEnumAsByte<EGameplayModOp::Type> ModifierOp;
+    FScalableFloat Magnitude;
+    FGameplayEffectModifierMagnitude ModifierMagnitude;
+    FGameplayModEvaluationChannelSettings EvaluationChannelSettings;
+    FGameplayTagRequirements SourceTags;
+    FGameplayTagRequirements TargetTags;
+
+};
+
+struct FGameplayTagBlueprintPropertyMap
+{
+    TArray<FGameplayTagBlueprintPropertyMapping> PropertyMappings;
+
+};
+
+struct FGameplayTagBlueprintPropertyMapping
+{
+    FGameplayTag TagToMap;
+    TFieldPath<FProperty> PropertyToEdit;
+    FName PropertyName;
+    FGuid PropertyGuid;
+
+};
+
+struct FGameplayTagReponsePair
+{
+    FGameplayTag Tag;
+    TSubclassOf<class UGameplayEffect> ResponseGameplayEffect;
+    TArray<class TSubclassOf<UGameplayEffect>> ResponseGameplayEffects;
+    int32 SoftCountCap;
+
+};
+
+struct FGameplayTagRequirements
+{
+    FGameplayTagContainer RequireTags;
+    FGameplayTagContainer IgnoreTags;
+
+};
+
+struct FGameplayTagResponseTableEntry
+{
+    FGameplayTagReponsePair Positive;
+    FGameplayTagReponsePair Negative;
+
+};
+
+struct FGameplayTargetDataFilter
+{
+    class AActor* SelfActor;
+    TSubclassOf<class AActor> RequiredActorClass;
+    TEnumAsByte<ETargetDataFilterSelf::Type> SelfFilter;
+    bool bReverseFilter;
+
+};
+
+struct FGameplayTargetDataFilterHandle
+{
+};
+
+struct FInheritedTagContainer
+{
+    FGameplayTagContainer CombinedTags;
+    FGameplayTagContainer Added;
+    FGameplayTagContainer Removed;
+
+};
+
+struct FMinimalGameplayCueReplicationProxy
+{
+    class UAbilitySystemComponent* Owner;
+
+};
+
+struct FMinimalReplicationTagCountMap
+{
+    class UAbilitySystemComponent* Owner;
+
+};
+
+struct FModifierSpec
+{
+    float EvaluatedMagnitude;
+
+};
+
+struct FMovieSceneGameplayCueChannel : public FMovieSceneChannel
+{
+    TArray<FFrameNumber> KeyTimes;
+    TArray<FMovieSceneGameplayCueKey> KeyValues;
+
+};
+
+struct FMovieSceneGameplayCueKey
+{
+    FGameplayCueTag Cue;
+    FVector Location;
+    FVector Normal;
+    FName AttachSocketName;
+    float NormalizedMagnitude;
+    FMovieSceneObjectBindingID Instigator;
+    FMovieSceneObjectBindingID EffectCauser;
+    class UPhysicalMaterial* PhysicalMaterial;
+    int32 GameplayEffectLevel;
+    int32 AbilityLevel;
+    bool bAttachToBinding;
+
+};
+
+struct FNetSerializeScriptStructCache
+{
+    TArray<class UScriptStruct*> ScriptStructs;
+
+};
+
+struct FPreallocationInfo
+{
+    TArray<class TSubclassOf<AGameplayCueNotify_Actor>> ClassesNeedingPreallocation;
+
+};
+
+struct FPredictionKey
+{
+    class UPackageMap* PredictiveConnection;
+    int16 Current;
+    int16 Base;
+    bool bIsStale;
+    bool bIsServerInitiated;
+
+};
+
+struct FReplicatedPredictionKeyItem : public FFastArraySerializerItem
+{
+    FPredictionKey PredictionKey;
+
+};
+
+struct FReplicatedPredictionKeyMap : public FFastArraySerializer
+{
+    TArray<FReplicatedPredictionKeyItem> PredictionKeys;
+
+};
+
+struct FScalableFloat
+{
+    float Value;
+    FCurveTableRowHandle Curve;
+    FDataRegistryType RegistryType;
+
+};
+
+struct FServerAbilityRPCBatch
+{
+    FGameplayAbilitySpecHandle AbilitySpecHandle;
+    FPredictionKey PredictionKey;
+    FGameplayAbilityTargetDataHandle TargetData;
+    bool InputPressed;
+    bool Ended;
+    bool Started;
+
+};
+
+struct FSetByCallerFloat
+{
+    FName DataName;
+    FGameplayTag DataTag;
+
+};
+
+struct FTagContainerAggregator
+{
+    FGameplayTagContainer CapturedActorTags;
+    FGameplayTagContainer CapturedSpecTags;
+    FGameplayTagContainer ScopedTags;
+
+};
+
+struct FWorldReticleParameters
+{
+    FVector AOEScale;
+
+};
+
+class AAbilitySystemDebugHUD : public AHUD
+{
+};
+
+class AAbilitySystemTestPawn : public ADefaultPawn
+{
+    class UAbilitySystemComponent* AbilitySystemComponent;
+
+};
+
+class AGameplayAbilityTargetActor : public AActor
+{
+    bool ShouldProduceTargetDataOnServer;
+    FGameplayAbilityTargetingLocationInfo StartLocation;
+    class APlayerController* MasterPC;
+    class UGameplayAbility* OwningAbility;
+    bool bDestroyOnConfirmation;
+    class AActor* SourceActor;
+    FWorldReticleParameters ReticleParams;
+    TSubclassOf<class AGameplayAbilityWorldReticle> ReticleClass;
+    FGameplayTargetDataFilterHandle Filter;
+    bool bDebug;
+    class UAbilitySystemComponent* GenericDelegateBoundASC;
+
+    void ConfirmTargeting();
+    void CancelTargeting();
+};
+
+class AGameplayAbilityTargetActor_ActorPlacement : public AGameplayAbilityTargetActor_GroundTrace
+{
+    UClass* PlacedActorClass;
+    class UMaterialInterface* PlacedActorMaterial;
+
+};
+
+class AGameplayAbilityTargetActor_GroundTrace : public AGameplayAbilityTargetActor_Trace
+{
+    float CollisionRadius;
+    float CollisionHeight;
+
+};
+
+class AGameplayAbilityTargetActor_Radius : public AGameplayAbilityTargetActor
+{
+    float Radius;
+
+};
+
+class AGameplayAbilityTargetActor_SingleLineTrace : public AGameplayAbilityTargetActor_Trace
+{
+};
+
+class AGameplayAbilityTargetActor_Trace : public AGameplayAbilityTargetActor
+{
+    float MaxRange;
+    FCollisionProfileName TraceProfile;
+    bool bTraceAffectsAimPitch;
+
+};
+
+class AGameplayAbilityWorldReticle : public AActor
+{
+    FWorldReticleParameters Parameters;
+    bool bFaceOwnerFlat;
+    bool bSnapToTargetedActor;
+    bool bIsTargetValid;
+    bool bIsTargetAnActor;
+    class APlayerController* MasterPC;
+    class AActor* TargetingActor;
+
+    void SetReticleMaterialParamVector(FName ParamName, FVector Value);
+    void SetReticleMaterialParamFloat(FName ParamName, float Value);
+    void OnValidTargetChanged(bool bNewValue);
+    void OnTargetingAnActor(bool bNewValue);
+    void OnParametersInitialized();
+    void FaceTowardSource(bool bFaceIn2D);
+};
+
+class AGameplayAbilityWorldReticle_ActorVisualization : public AGameplayAbilityWorldReticle
+{
+    class UCapsuleComponent* CollisionComponent;
+    TArray<class UActorComponent*> VisualizationComponents;
+
+};
+
+class AGameplayCueNotify_Actor : public AActor
+{
+    bool bAutoDestroyOnRemove;
+    float AutoDestroyDelay;
+    bool WarnIfTimelineIsStillRunning;
+    bool WarnIfLatentActionIsStillRunning;
+    FGameplayTag GameplayCueTag;
+    FName GameplayCueName;
+    bool bAutoAttachToOwner;
+    bool IsOverride;
+    bool bUniqueInstancePerInstigator;
+    bool bUniqueInstancePerSourceObject;
+    bool bAllowMultipleOnActiveEvents;
+    bool bAllowMultipleWhileActiveEvents;
+    int32 NumPreallocatedInstances;
+
+    bool WhileActive(class AActor* MyTarget, const FGameplayCueParameters& Parameters);
+    bool OnRemove(class AActor* MyTarget, const FGameplayCueParameters& Parameters);
+    void OnOwnerDestroyed(class AActor* DestroyedActor);
+    bool OnExecute(class AActor* MyTarget, const FGameplayCueParameters& Parameters);
+    bool OnActive(class AActor* MyTarget, const FGameplayCueParameters& Parameters);
+    void K2_HandleGameplayCue(class AActor* MyTarget, TEnumAsByte<EGameplayCueEvent::Type> EventType, const FGameplayCueParameters& Parameters);
+    void K2_EndGameplayCue();
+};
+
+class IAbilitySystemInterface : public IInterface
+{
+};
+
+class IAbilitySystemReplicationProxyInterface : public IInterface
+{
+};
+
+class IGameplayCueInterface : public IInterface
+{
+
+    void ForwardGameplayCueToParent();
+    void BlueprintCustomHandler(TEnumAsByte<EGameplayCueEvent::Type> EventType, const FGameplayCueParameters& Parameters);
+};
+
+class ITickableAttributeSetInterface : public IInterface
+{
+};
+
+class UAbilityAsync : public UBlueprintAsyncActionBase
+{
+
+    void EndAction();
+};
+
+class UAbilityAsync_WaitGameplayEffectApplied : public UAbilityAsync
+{
+    FAbilityAsync_WaitGameplayEffectAppliedOnApplied OnApplied;
+    void OnAppliedDelegate(class AActor* Source, FGameplayEffectSpecHandle SpecHandle, FActiveGameplayEffectHandle ActiveHandle);
+
+    class UAbilityAsync_WaitGameplayEffectApplied* WaitGameplayEffectAppliedToActor(class AActor* TargetActor, const FGameplayTargetDataFilterHandle SourceFilter, FGameplayTagRequirements SourceTagRequirements, FGameplayTagRequirements TargetTagRequirements, bool TriggerOnce, bool ListenForPeriodicEffect);
+    void OnAppliedDelegate__DelegateSignature(class AActor* Source, FGameplayEffectSpecHandle SpecHandle, FActiveGameplayEffectHandle ActiveHandle);
 };
 
 class UAbilityAsync_WaitGameplayEvent : public UAbilityAsync
@@ -90,56 +919,6 @@ class UAbilityAsync_WaitGameplayTagRemoved : public UAbilityAsync_WaitGameplayTa
     void AsyncWaitGameplayTagDelegate();
 
     class UAbilityAsync_WaitGameplayTagRemoved* WaitGameplayTagRemoveFromActor(class AActor* TargetActor, FGameplayTag Tag, bool OnlyTriggerOnce);
-};
-
-struct FGameplayAttribute
-{
-    FString AttributeName;
-    TFieldPath<FProperty> Attribute;
-    class UStruct* AttributeOwner;
-
-};
-
-struct FGameplayCueParameters
-{
-    float NormalizedMagnitude;
-    float RawMagnitude;
-    FGameplayEffectContextHandle EffectContext;
-    FGameplayTag MatchedTagName;
-    FGameplayTag OriginalTag;
-    FGameplayTagContainer AggregatedSourceTags;
-    FGameplayTagContainer AggregatedTargetTags;
-    FVector_NetQuantize10 Location;
-    FVector_NetQuantizeNormal Normal;
-    TWeakObjectPtr<class AActor> Instigator;
-    TWeakObjectPtr<class AActor> EffectCauser;
-    TWeakObjectPtr<class UObject> SourceObject;
-    TWeakObjectPtr<class UPhysicalMaterial> PhysicalMaterial;
-    int32 GameplayEffectLevel;
-    int32 AbilityLevel;
-    TWeakObjectPtr<class USceneComponent> TargetAttachComponent;
-    bool bReplicateLocationWhenUsingMinimalRepProxy;
-
-};
-
-struct FGameplayTargetDataFilter
-{
-    class AActor* SelfActor;
-    TSubclassOf<class AActor> RequiredActorClass;
-    TEnumAsByte<ETargetDataFilterSelf::Type> SelfFilter;
-    bool bReverseFilter;
-
-};
-
-struct FGameplayAbilityTargetingLocationInfo
-{
-    TEnumAsByte<EGameplayAbilityTargetingLocationType::Type> LocationType;
-    FTransform LiteralTransform;
-    class AActor* SourceActor;
-    class UMeshComponent* SourceComponent;
-    class UGameplayAbility* SourceAbility;
-    FName SourceSocketName;
-
 };
 
 class UAbilitySystemBlueprintLibrary : public UBlueprintFunctionLibrary
@@ -224,263 +1003,6 @@ class UAbilitySystemBlueprintLibrary : public UBlueprintFunctionLibrary
     FGameplayAbilityTargetDataHandle AbilityTargetDataFromHitResult(const FHitResult& HitResult);
     FGameplayAbilityTargetDataHandle AbilityTargetDataFromActorArray(const TArray<class AActor*>& ActorArray, bool OneTargetPerHandle);
     FGameplayAbilityTargetDataHandle AbilityTargetDataFromActor(class AActor* Actor);
-};
-
-struct FAttributeDefaults
-{
-    TSubclassOf<class UAttributeSet> Attributes;
-    class UDataTable* DefaultStartingTable;
-
-};
-
-struct FGameplayAbilitySpecHandle
-{
-    int32 Handle;
-
-};
-
-struct FPredictionKey
-{
-    class UPackageMap* PredictiveConnection;
-    int16 Current;
-    int16 Base;
-    bool bIsStale;
-    bool bIsServerInitiated;
-
-};
-
-struct FGameplayAbilityActivationInfo
-{
-    TEnumAsByte<EGameplayAbilityActivationMode::Type> ActivationMode;
-    uint8 bCanBeEndedByOtherInstance;
-    FPredictionKey PredictionKeyWhenActivated;
-
-};
-
-struct FGameplayAbilitySpec : public FFastArraySerializerItem
-{
-    FGameplayAbilitySpecHandle Handle;
-    class UGameplayAbility* Ability;
-    int32 Level;
-    int32 InputID;
-    class UObject* SourceObject;
-    uint8 ActiveCount;
-    uint8 InputPressed;
-    uint8 RemoveAfterActivation;
-    uint8 PendingRemove;
-    uint8 bActivateOnce;
-    FGameplayAbilityActivationInfo ActivationInfo;
-    FGameplayTagContainer DynamicAbilityTags;
-    TArray<class UGameplayAbility*> NonReplicatedInstances;
-    TArray<class UGameplayAbility*> ReplicatedInstances;
-    FActiveGameplayEffectHandle GameplayEffectHandle;
-
-};
-
-struct FGameplayAbilitySpecContainer : public FFastArraySerializer
-{
-    TArray<FGameplayAbilitySpec> Items;
-    class UAbilitySystemComponent* Owner;
-
-};
-
-struct FGameplayAbilityRepAnimMontage
-{
-    class UAnimMontage* AnimMontage;
-    float PlayRate;
-    float position;
-    float BlendTime;
-    uint8 NextSectionID;
-    uint8 bRepPosition;
-    uint8 IsStopped;
-    uint8 ForcePlayBit;
-    uint8 SkipPositionCorrection;
-    uint8 bSkipPlayRate;
-    FPredictionKey PredictionKey;
-    uint8 SectionIdToPlay;
-
-};
-
-struct FGameplayAbilityLocalAnimMontage
-{
-    class UAnimMontage* AnimMontage;
-    bool PlayBit;
-    FPredictionKey PredictionKey;
-    class UGameplayAbility* AnimatingAbility;
-
-};
-
-struct FGameplayEffectModifiedAttribute
-{
-    FGameplayAttribute Attribute;
-    float TotalMagnitude;
-
-};
-
-struct FGameplayEffectAttributeCaptureDefinition
-{
-    FGameplayAttribute AttributeToCapture;
-    EGameplayEffectAttributeCaptureSource AttributeSource;
-    bool bSnapshot;
-
-};
-
-struct FGameplayEffectAttributeCaptureSpec
-{
-    FGameplayEffectAttributeCaptureDefinition BackingDefinition;
-
-};
-
-struct FGameplayEffectAttributeCaptureSpecContainer
-{
-    TArray<FGameplayEffectAttributeCaptureSpec> SourceAttributes;
-    TArray<FGameplayEffectAttributeCaptureSpec> TargetAttributes;
-    bool bHasNonSnapshottedAttributes;
-
-};
-
-struct FTagContainerAggregator
-{
-    FGameplayTagContainer CapturedActorTags;
-    FGameplayTagContainer CapturedSpecTags;
-    FGameplayTagContainer ScopedTags;
-
-};
-
-struct FModifierSpec
-{
-    float EvaluatedMagnitude;
-
-};
-
-struct FScalableFloat
-{
-    float Value;
-    FCurveTableRowHandle Curve;
-    FDataRegistryType RegistryType;
-
-};
-
-struct FGameplayAbilitySpecDef
-{
-    TSubclassOf<class UGameplayAbility> Ability;
-    FScalableFloat LevelScalableFloat;
-    int32 InputID;
-    EGameplayEffectGrantedAbilityRemovePolicy RemovalPolicy;
-    class UObject* SourceObject;
-    FGameplayAbilitySpecHandle AssignedHandle;
-
-};
-
-struct FGameplayEffectSpec
-{
-    class UGameplayEffect* Def;
-    TArray<FGameplayEffectModifiedAttribute> ModifiedAttributes;
-    FGameplayEffectAttributeCaptureSpecContainer CapturedRelevantAttributes;
-    float Duration;
-    float Period;
-    float ChanceToApplyToTarget;
-    FTagContainerAggregator CapturedSourceTags;
-    FTagContainerAggregator CapturedTargetTags;
-    FGameplayTagContainer DynamicGrantedTags;
-    FGameplayTagContainer DynamicAssetTags;
-    TArray<FModifierSpec> Modifiers;
-    int32 StackCount;
-    uint8 bCompletedSourceAttributeCapture;
-    uint8 bCompletedTargetAttributeCapture;
-    uint8 bDurationLocked;
-    TArray<FGameplayAbilitySpecDef> GrantedAbilitySpecs;
-    FGameplayEffectContextHandle EffectContext;
-    float Level;
-
-};
-
-struct FActiveGameplayEffect : public FFastArraySerializerItem
-{
-    FGameplayEffectSpec Spec;
-    FPredictionKey PredictionKey;
-    float StartServerWorldTime;
-    float CachedStartServerWorldTime;
-    float StartWorldTime;
-    bool bIsInhibited;
-
-};
-
-struct FActiveGameplayEffectsContainer : public FFastArraySerializer
-{
-    TArray<FActiveGameplayEffect> GameplayEffects_Internal;
-    TArray<class UGameplayEffect*> ApplicationImmunityQueryEffects;
-
-};
-
-struct FActiveGameplayCue : public FFastArraySerializerItem
-{
-    FGameplayTag GameplayCueTag;
-    FPredictionKey PredictionKey;
-    FGameplayCueParameters Parameters;
-    bool bPredictivelyRemoved;
-
-};
-
-struct FActiveGameplayCueContainer : public FFastArraySerializer
-{
-    TArray<FActiveGameplayCue> GameplayCues;
-    class UAbilitySystemComponent* Owner;
-
-};
-
-struct FMinimalReplicationTagCountMap
-{
-    class UAbilitySystemComponent* Owner;
-
-};
-
-struct FReplicatedPredictionKeyItem : public FFastArraySerializerItem
-{
-    FPredictionKey PredictionKey;
-
-};
-
-struct FReplicatedPredictionKeyMap : public FFastArraySerializer
-{
-    TArray<FReplicatedPredictionKeyItem> PredictionKeys;
-
-};
-
-struct FGameplayEffectQuery
-{
-    FGameplayEffectQueryCustomMatchDelegate_BP CustomMatchDelegate_BP;
-    void ActiveGameplayEffectQueryCustomMatch_Dynamic(FActiveGameplayEffect Effect, bool& bMatches);
-    FGameplayTagQuery OwningTagQuery;
-    FGameplayTagQuery EffectTagQuery;
-    FGameplayTagQuery SourceTagQuery;
-    FGameplayAttribute ModifyingAttribute;
-    class UObject* EffectSource;
-    TSubclassOf<class UGameplayEffect> EffectDefinition;
-
-};
-
-struct FServerAbilityRPCBatch
-{
-    FGameplayAbilitySpecHandle AbilitySpecHandle;
-    FPredictionKey PredictionKey;
-    FGameplayAbilityTargetDataHandle TargetData;
-    bool InputPressed;
-    bool Ended;
-    bool Started;
-
-};
-
-struct FGameplayEffectSpecForRPC
-{
-    class UGameplayEffect* Def;
-    TArray<FGameplayEffectModifiedAttribute> ModifiedAttributes;
-    FGameplayEffectContextHandle EffectContext;
-    FGameplayTagContainer AggregatedSourceTags;
-    FGameplayTagContainer AggregatedTargetTags;
-    float Level;
-    float AbilityLevel;
-
 };
 
 class UAbilitySystemComponent : public UGameplayTasksComponent
@@ -581,16 +1103,6 @@ class UAbilitySystemComponent : public UGameplayTasksComponent
     void AbilityAbilityKey__DelegateSignature(int32 InputID);
 };
 
-class AAbilitySystemDebugHUD : public AHUD
-{
-};
-
-struct FNetSerializeScriptStructCache
-{
-    TArray<class UScriptStruct*> ScriptStructs;
-
-};
-
 class UAbilitySystemGlobals : public UObject
 {
     FSoftClassPath AbilitySystemGlobalsClassName;
@@ -634,18 +1146,6 @@ class UAbilitySystemGlobals : public UObject
     void ListPlayerAbilities();
 };
 
-class IAbilitySystemInterface : public IInterface
-{
-};
-
-class IAbilitySystemReplicationProxyInterface : public IInterface
-{
-};
-
-class UAttributeSet : public UObject
-{
-};
-
 class UAbilitySystemTestAttributeSet : public UAttributeSet
 {
     float MaxHealth;
@@ -667,26 +1167,10 @@ class UAbilitySystemTestAttributeSet : public UAttributeSet
 
 };
 
-class AAbilitySystemTestPawn : public ADefaultPawn
-{
-    class UAbilitySystemComponent* AbilitySystemComponent;
-
-};
-
 class UAbilityTask : public UGameplayTask
 {
     class UGameplayAbility* Ability;
     class UAbilitySystemComponent* AbilitySystemComponent;
-
-};
-
-class UAbilityTask_ApplyRootMotion_Base : public UAbilityTask
-{
-    FName ForceName;
-    ERootMotionFinishVelocityMode FinishVelocityMode;
-    FVector FinishSetVelocity;
-    float FinishClampVelocity;
-    class UCharacterMovementComponent* MovementComponent;
 
 };
 
@@ -784,6 +1268,16 @@ class UAbilityTask_ApplyRootMotionRadialForce : public UAbilityTask_ApplyRootMot
     FRotator FixedWorldDirection;
 
     class UAbilityTask_ApplyRootMotionRadialForce* ApplyRootMotionRadialForce(class UGameplayAbility* OwningAbility, FName TaskInstanceName, FVector Location, class AActor* LocationActor, float Strength, float Duration, float Radius, bool bIsPush, bool bIsAdditive, bool bNoZForce, class UCurveFloat* StrengthDistanceFalloff, class UCurveFloat* StrengthOverTime, bool bUseFixedWorldDirection, FRotator FixedWorldDirection, ERootMotionFinishVelocityMode VelocityOnFinishMode, FVector SetVelocityOnFinish, float ClampVelocityOnFinish);
+};
+
+class UAbilityTask_ApplyRootMotion_Base : public UAbilityTask
+{
+    FName ForceName;
+    ERootMotionFinishVelocityMode FinishVelocityMode;
+    FVector FinishSetVelocity;
+    float FinishClampVelocity;
+    class UCharacterMovementComponent* MovementComponent;
+
 };
 
 class UAbilityTask_MoveToLocation : public UAbilityTask
@@ -998,14 +1492,6 @@ class UAbilityTask_WaitGameplayEffectBlockedImmunity : public UAbilityTask
     class UAbilityTask_WaitGameplayEffectBlockedImmunity* WaitGameplayEffectBlockedByImmunity(class UGameplayAbility* OwningAbility, FGameplayTagRequirements SourceTagRequirements, FGameplayTagRequirements TargetTagRequirements, class AActor* OptionalExternalTarget, bool OnlyTriggerOnce);
 };
 
-struct FGameplayEffectRemovalInfo
-{
-    bool bPrematureRemoval;
-    int32 StackCount;
-    FGameplayEffectContextHandle EffectContext;
-
-};
-
 class UAbilityTask_WaitGameplayEffectRemoved : public UAbilityTask
 {
     FAbilityTask_WaitGameplayEffectRemovedOnRemoved OnRemoved;
@@ -1124,24 +1610,8 @@ class UAbilityTask_WaitVelocityChange : public UAbilityTask
     class UAbilityTask_WaitVelocityChange* CreateWaitVelocityChange(class UGameplayAbility* OwningAbility, FVector Direction, float MinimumMagnitude);
 };
 
-struct FAbilityTriggerData
+class UAttributeSet : public UObject
 {
-    FGameplayTag TriggerTag;
-    TEnumAsByte<EGameplayAbilityTriggerSource::Type> TriggerSource;
-
-};
-
-struct FGameplayAbilityActorInfo
-{
-    TWeakObjectPtr<class AActor> OwnerActor;
-    TWeakObjectPtr<class AActor> AvatarActor;
-    TWeakObjectPtr<class APlayerController> PlayerController;
-    TWeakObjectPtr<class UAbilitySystemComponent> AbilitySystemComponent;
-    TWeakObjectPtr<class USkeletalMeshComponent> SkeletalMeshComponent;
-    TWeakObjectPtr<class UAnimInstance> AnimInstance;
-    TWeakObjectPtr<class UMovementComponent> MovementComponent;
-    FName AffectedAnimInstanceTag;
-
 };
 
 class UGameplayAbility : public UObject
@@ -1234,6 +1704,16 @@ class UGameplayAbility : public UObject
     FActiveGameplayEffectHandle BP_ApplyGameplayEffectToOwner(TSubclassOf<class UGameplayEffect> GameplayEffectClass, int32 GameplayEffectLevel, int32 Stacks);
 };
 
+class UGameplayAbilityBlueprint : public UBlueprint
+{
+};
+
+class UGameplayAbilitySet : public UDataAsset
+{
+    TArray<FGameplayAbilityBindInfo> Abilities;
+
+};
+
 class UGameplayAbility_CharacterJump : public UGameplayAbility
 {
 };
@@ -1245,140 +1725,6 @@ class UGameplayAbility_Montage : public UGameplayAbility
     FName SectionName;
     TArray<class TSubclassOf<UGameplayEffect>> GameplayEffectClassesWhileAnimating;
     TArray<class UGameplayEffect*> GameplayEffectsWhileAnimating;
-
-};
-
-class UGameplayAbilityBlueprint : public UBlueprint
-{
-};
-
-struct FGameplayAbilityBindInfo
-{
-    TEnumAsByte<EGameplayAbilityInputBinds::Type> Command;
-    TSubclassOf<class UGameplayAbility> GameplayAbilityClass;
-
-};
-
-class UGameplayAbilitySet : public UDataAsset
-{
-    TArray<FGameplayAbilityBindInfo> Abilities;
-
-};
-
-struct FWorldReticleParameters
-{
-    FVector AOEScale;
-
-};
-
-class AGameplayAbilityTargetActor : public AActor
-{
-    bool ShouldProduceTargetDataOnServer;
-    FGameplayAbilityTargetingLocationInfo StartLocation;
-    class APlayerController* MasterPC;
-    class UGameplayAbility* OwningAbility;
-    bool bDestroyOnConfirmation;
-    class AActor* SourceActor;
-    FWorldReticleParameters ReticleParams;
-    TSubclassOf<class AGameplayAbilityWorldReticle> ReticleClass;
-    FGameplayTargetDataFilterHandle Filter;
-    bool bDebug;
-    class UAbilitySystemComponent* GenericDelegateBoundASC;
-
-    void ConfirmTargeting();
-    void CancelTargeting();
-};
-
-class AGameplayAbilityTargetActor_Trace : public AGameplayAbilityTargetActor
-{
-    float MaxRange;
-    FCollisionProfileName TraceProfile;
-    bool bTraceAffectsAimPitch;
-
-};
-
-class AGameplayAbilityTargetActor_GroundTrace : public AGameplayAbilityTargetActor_Trace
-{
-    float CollisionRadius;
-    float CollisionHeight;
-
-};
-
-class AGameplayAbilityTargetActor_ActorPlacement : public AGameplayAbilityTargetActor_GroundTrace
-{
-    UClass* PlacedActorClass;
-    class UMaterialInterface* PlacedActorMaterial;
-
-};
-
-class AGameplayAbilityTargetActor_Radius : public AGameplayAbilityTargetActor
-{
-    float Radius;
-
-};
-
-class AGameplayAbilityTargetActor_SingleLineTrace : public AGameplayAbilityTargetActor_Trace
-{
-};
-
-class AGameplayAbilityWorldReticle : public AActor
-{
-    FWorldReticleParameters Parameters;
-    bool bFaceOwnerFlat;
-    bool bSnapToTargetedActor;
-    bool bIsTargetValid;
-    bool bIsTargetAnActor;
-    class APlayerController* MasterPC;
-    class AActor* TargetingActor;
-
-    void SetReticleMaterialParamVector(FName ParamName, FVector Value);
-    void SetReticleMaterialParamFloat(FName ParamName, float Value);
-    void OnValidTargetChanged(bool bNewValue);
-    void OnTargetingAnActor(bool bNewValue);
-    void OnParametersInitialized();
-    void FaceTowardSource(bool bFaceIn2D);
-};
-
-class AGameplayAbilityWorldReticle_ActorVisualization : public AGameplayAbilityWorldReticle
-{
-    class UCapsuleComponent* CollisionComponent;
-    TArray<class UActorComponent*> VisualizationComponents;
-
-};
-
-class IGameplayCueInterface : public IInterface
-{
-
-    void ForwardGameplayCueToParent();
-    void BlueprintCustomHandler(TEnumAsByte<EGameplayCueEvent::Type> EventType, const FGameplayCueParameters& Parameters);
-};
-
-struct FGameplayCueObjectLibrary
-{
-    TArray<FString> Paths;
-    class UObjectLibrary* ActorObjectLibrary;
-    class UObjectLibrary* StaticObjectLibrary;
-    class UGameplayCueSet* CueSet;
-    bool bShouldSyncScan;
-    bool bShouldAsyncLoad;
-    bool bShouldSyncLoad;
-    bool bHasBeenInitialized;
-
-};
-
-struct FGameplayCuePendingExecute
-{
-    FPredictionKey PredictionKey;
-    EGameplayCuePayloadType PayloadType;
-    class UAbilitySystemComponent* OwningComponent;
-    FGameplayEffectSpecForRPC FromSpec;
-    FGameplayCueParameters CueParameters;
-
-};
-
-struct FPreallocationInfo
-{
-    TArray<class TSubclassOf<AGameplayCueNotify_Actor>> ClassesNeedingPreallocation;
 
 };
 
@@ -1394,29 +1740,11 @@ class UGameplayCueManager : public UDataAsset
 
 };
 
-class AGameplayCueNotify_Actor : public AActor
+class UGameplayCueNotify_HitImpact : public UGameplayCueNotify_Static
 {
-    bool bAutoDestroyOnRemove;
-    float AutoDestroyDelay;
-    bool WarnIfTimelineIsStillRunning;
-    bool WarnIfLatentActionIsStillRunning;
-    FGameplayTag GameplayCueTag;
-    FName GameplayCueName;
-    bool bAutoAttachToOwner;
-    bool IsOverride;
-    bool bUniqueInstancePerInstigator;
-    bool bUniqueInstancePerSourceObject;
-    bool bAllowMultipleOnActiveEvents;
-    bool bAllowMultipleWhileActiveEvents;
-    int32 NumPreallocatedInstances;
+    class USoundBase* Sound;
+    class UParticleSystem* ParticleSystem;
 
-    bool WhileActive(class AActor* MyTarget, const FGameplayCueParameters& Parameters);
-    bool OnRemove(class AActor* MyTarget, const FGameplayCueParameters& Parameters);
-    void OnOwnerDestroyed(class AActor* DestroyedActor);
-    bool OnExecute(class AActor* MyTarget, const FGameplayCueParameters& Parameters);
-    bool OnActive(class AActor* MyTarget, const FGameplayCueParameters& Parameters);
-    void K2_HandleGameplayCue(class AActor* MyTarget, TEnumAsByte<EGameplayCueEvent::Type> EventType, const FGameplayCueParameters& Parameters);
-    void K2_EndGameplayCue();
 };
 
 class UGameplayCueNotify_Static : public UObject
@@ -1432,21 +1760,6 @@ class UGameplayCueNotify_Static : public UObject
     void K2_HandleGameplayCue(class AActor* MyTarget, TEnumAsByte<EGameplayCueEvent::Type> EventType, const FGameplayCueParameters& Parameters);
 };
 
-class UGameplayCueNotify_HitImpact : public UGameplayCueNotify_Static
-{
-    class USoundBase* Sound;
-    class UParticleSystem* ParticleSystem;
-
-};
-
-struct FGameplayCueNotifyData
-{
-    FGameplayTag GameplayCueTag;
-    FSoftObjectPath GameplayCueNotifyObj;
-    UClass* LoadedGameplayCueClass;
-
-};
-
 class UGameplayCueSet : public UDataAsset
 {
     TArray<FGameplayCueNotifyData> GameplayCueData;
@@ -1459,112 +1772,6 @@ class UGameplayCueTranslator : public UObject
 
 class UGameplayCueTranslator_Test : public UGameplayCueTranslator
 {
-};
-
-struct FAttributeBasedFloat
-{
-    FScalableFloat Coefficient;
-    FScalableFloat PreMultiplyAdditiveValue;
-    FScalableFloat PostMultiplyAdditiveValue;
-    FGameplayEffectAttributeCaptureDefinition BackingAttribute;
-    FCurveTableRowHandle AttributeCurve;
-    EAttributeBasedFloatCalculationType AttributeCalculationType;
-    EGameplayModEvaluationChannel FinalChannel;
-    FGameplayTagContainer SourceTagFilter;
-    FGameplayTagContainer TargetTagFilter;
-
-};
-
-struct FCustomCalculationBasedFloat
-{
-    TSubclassOf<class UGameplayModMagnitudeCalculation> CalculationClassMagnitude;
-    FScalableFloat Coefficient;
-    FScalableFloat PreMultiplyAdditiveValue;
-    FScalableFloat PostMultiplyAdditiveValue;
-    FCurveTableRowHandle FinalLookupCurve;
-
-};
-
-struct FSetByCallerFloat
-{
-    FName DataName;
-    FGameplayTag DataTag;
-
-};
-
-struct FGameplayEffectModifierMagnitude
-{
-    EGameplayEffectMagnitudeCalculation MagnitudeCalculationType;
-    FScalableFloat ScalableFloatMagnitude;
-    FAttributeBasedFloat AttributeBasedMagnitude;
-    FCustomCalculationBasedFloat CustomMagnitude;
-    FSetByCallerFloat SetByCallerMagnitude;
-
-};
-
-struct FGameplayModEvaluationChannelSettings
-{
-    EGameplayModEvaluationChannel Channel;
-
-};
-
-struct FGameplayModifierInfo
-{
-    FGameplayAttribute Attribute;
-    TEnumAsByte<EGameplayModOp::Type> ModifierOp;
-    FScalableFloat Magnitude;
-    FGameplayEffectModifierMagnitude ModifierMagnitude;
-    FGameplayModEvaluationChannelSettings EvaluationChannelSettings;
-    FGameplayTagRequirements SourceTags;
-    FGameplayTagRequirements TargetTags;
-
-};
-
-struct FGameplayEffectExecutionScopedModifierInfo
-{
-    FGameplayEffectAttributeCaptureDefinition CapturedAttribute;
-    FGameplayTag TransientAggregatorIdentifier;
-    EGameplayEffectScopedModifierAggregatorType AggregatorType;
-    TEnumAsByte<EGameplayModOp::Type> ModifierOp;
-    FGameplayEffectModifierMagnitude ModifierMagnitude;
-    FGameplayModEvaluationChannelSettings EvaluationChannelSettings;
-    FGameplayTagRequirements SourceTags;
-    FGameplayTagRequirements TargetTags;
-
-};
-
-struct FConditionalGameplayEffect
-{
-    TSubclassOf<class UGameplayEffect> EffectClass;
-    FGameplayTagContainer RequiredSourceTags;
-
-};
-
-struct FGameplayEffectExecutionDefinition
-{
-    TSubclassOf<class UGameplayEffectExecutionCalculation> CalculationClass;
-    FGameplayTagContainer PassedInTags;
-    TArray<FGameplayEffectExecutionScopedModifierInfo> CalculationModifiers;
-    TArray<class TSubclassOf<UGameplayEffect>> ConditionalGameplayEffectClasses;
-    TArray<FConditionalGameplayEffect> ConditionalGameplayEffects;
-
-};
-
-struct FGameplayEffectCue
-{
-    FGameplayAttribute MagnitudeAttribute;
-    float MinLevel;
-    float MaxLevel;
-    FGameplayTagContainer GameplayCueTags;
-
-};
-
-struct FInheritedTagContainer
-{
-    FGameplayTagContainer CombinedTags;
-    FGameplayTagContainer Added;
-    FGameplayTagContainer Removed;
-
 };
 
 class UGameplayEffect : public UObject
@@ -1619,29 +1826,6 @@ class UGameplayEffectCustomApplicationRequirement : public UObject
     bool CanApplyGameplayEffect(const class UGameplayEffect* GameplayEffect, const FGameplayEffectSpec& Spec, class UAbilitySystemComponent* ASC);
 };
 
-struct FGameplayEffectCustomExecutionParameters
-{
-};
-
-struct FGameplayModifierEvaluatedData
-{
-    FGameplayAttribute Attribute;
-    TEnumAsByte<EGameplayModOp::Type> ModifierOp;
-    float Magnitude;
-    FActiveGameplayEffectHandle Handle;
-    bool IsValid;
-
-};
-
-struct FGameplayEffectCustomExecutionOutput
-{
-    TArray<FGameplayModifierEvaluatedData> OutputModifiers;
-    uint8 bTriggerConditionalGameplayEffects;
-    uint8 bHandledStackCountManually;
-    uint8 bHandledGameplayCuesManually;
-
-};
-
 class UGameplayEffectExecutionCalculation : public UGameplayEffectCalculation
 {
     bool bRequiresPassedInTags;
@@ -1666,62 +1850,11 @@ class UGameplayModMagnitudeCalculation : public UGameplayEffectCalculation
     float CalculateBaseMagnitude(const FGameplayEffectSpec& Spec);
 };
 
-struct FGameplayTagReponsePair
-{
-    FGameplayTag Tag;
-    TSubclassOf<class UGameplayEffect> ResponseGameplayEffect;
-    TArray<class TSubclassOf<UGameplayEffect>> ResponseGameplayEffects;
-    int32 SoftCountCap;
-
-};
-
-struct FGameplayTagResponseTableEntry
-{
-    FGameplayTagReponsePair Positive;
-    FGameplayTagReponsePair Negative;
-
-};
-
 class UGameplayTagReponseTable : public UDataAsset
 {
     TArray<FGameplayTagResponseTableEntry> Entries;
 
     void TagResponseEvent(const FGameplayTag Tag, int32 NewCount, class UAbilitySystemComponent* ASC, int32 idx);
-};
-
-struct FGameplayCueTag
-{
-    FGameplayTag GameplayCueTag;
-
-};
-
-struct FMovieSceneGameplayCueKey
-{
-    FGameplayCueTag Cue;
-    FVector Location;
-    FVector Normal;
-    FName AttachSocketName;
-    float NormalizedMagnitude;
-    FMovieSceneObjectBindingID Instigator;
-    FMovieSceneObjectBindingID EffectCauser;
-    class UPhysicalMaterial* PhysicalMaterial;
-    int32 GameplayEffectLevel;
-    int32 AbilityLevel;
-    bool bAttachToBinding;
-
-};
-
-struct FMovieSceneGameplayCueChannel : public FMovieSceneChannel
-{
-    TArray<FFrameNumber> KeyTimes;
-    TArray<FMovieSceneGameplayCueKey> KeyValues;
-
-};
-
-class UMovieSceneGameplayCueTriggerSection : public UMovieSceneHookSection
-{
-    FMovieSceneGameplayCueChannel Channel;
-
 };
 
 class UMovieSceneGameplayCueSection : public UMovieSceneHookSection
@@ -1737,142 +1870,9 @@ class UMovieSceneGameplayCueTrack : public UMovieSceneNameableTrack
     void SetSequencerTrackHandler(FSetSequencerTrackHandlerInGameplayCueTrackHandler InGameplayCueTrackHandler);
 };
 
-class ITickableAttributeSetInterface : public IInterface
+class UMovieSceneGameplayCueTriggerSection : public UMovieSceneHookSection
 {
-};
-
-struct FAttributeMetaData : public FTableRowBase
-{
-    float BaseValue;
-    float MinValue;
-    float MaxValue;
-    FString DerivedAttributeInfo;
-    bool bCanStack;
-
-};
-
-struct FGameplayAttributeData
-{
-    float BaseValue;
-    float CurrentValue;
-
-};
-
-struct FGameplayAbilityTargetData
-{
-};
-
-struct FGameplayAbilityTargetData_SingleTargetHit : public FGameplayAbilityTargetData
-{
-    FHitResult HitResult;
-    bool bHitReplaced;
-
-};
-
-struct FGameplayAbilityTargetData_ActorArray : public FGameplayAbilityTargetData
-{
-    FGameplayAbilityTargetingLocationInfo SourceLocation;
-    TArray<TWeakObjectPtr<AActor>> TargetActorArray;
-
-};
-
-struct FGameplayAbilityTargetData_LocationInfo : public FGameplayAbilityTargetData
-{
-    FGameplayAbilityTargetingLocationInfo SourceLocation;
-    FGameplayAbilityTargetingLocationInfo TargetLocation;
-
-};
-
-struct FGameplayAbilitySpecHandleAndPredictionKey
-{
-    FGameplayAbilitySpecHandle AbilityHandle;
-    int32 PredictionKeyAtCreation;
-
-};
-
-struct FAbilityTaskDebugMessage
-{
-    class UGameplayTask* FromTask;
-    FString Message;
-
-};
-
-struct FAbilityEndedData
-{
-    class UGameplayAbility* AbilityThatEnded;
-    FGameplayAbilitySpecHandle AbilitySpecHandle;
-    bool bReplicateEndAbility;
-    bool bWasCancelled;
-
-};
-
-struct FMinimalGameplayCueReplicationProxy
-{
-    class UAbilitySystemComponent* Owner;
-
-};
-
-struct FGameplayCueTranslationLink
-{
-    class UGameplayCueTranslator* RulesCDO;
-
-};
-
-struct FGameplayCueTranslatorNodeIndex
-{
-    int32 Index;
-
-};
-
-struct FGameplayCueTranslatorNode
-{
-    TArray<FGameplayCueTranslationLink> links;
-    FGameplayCueTranslatorNodeIndex CachedIndex;
-    FGameplayTag CachedGameplayTag;
-    FName CachedGameplayTagName;
-
-};
-
-struct FGameplayCueTranslationManager
-{
-    TArray<FGameplayCueTranslatorNode> TranslationLUT;
-    TMap<class FName, class FGameplayCueTranslatorNodeIndex> TranslationNameToIndexMap;
-    class UGameplayTagsManager* TagManager;
-
-};
-
-struct FActiveGameplayEffectQuery
-{
-};
-
-struct FGameplayTagBlueprintPropertyMapping
-{
-    FGameplayTag TagToMap;
-    TFieldPath<FProperty> PropertyToEdit;
-    FName PropertyName;
-    FGuid PropertyGuid;
-
-};
-
-struct FGameplayTagBlueprintPropertyMap
-{
-    TArray<FGameplayTagBlueprintPropertyMapping> PropertyMappings;
-
-};
-
-struct FGameplayEffectContext
-{
-    TWeakObjectPtr<class AActor> Instigator;
-    TWeakObjectPtr<class AActor> EffectCauser;
-    TWeakObjectPtr<class UGameplayAbility> AbilityCDO;
-    TWeakObjectPtr<class UGameplayAbility> AbilityInstanceNotReplicated;
-    int32 AbilityLevel;
-    TWeakObjectPtr<class UObject> SourceObject;
-    TWeakObjectPtr<class UAbilitySystemComponent> InstigatorAbilitySystemComponent;
-    TArray<TWeakObjectPtr<AActor>> Actors;
-    FVector WorldOrigin;
-    uint8 bHasWorldOrigin;
-    uint8 bReplicateSourceObject;
+    FMovieSceneGameplayCueChannel Channel;
 
 };
 

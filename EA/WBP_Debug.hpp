@@ -11,12 +11,14 @@ class UWBP_Debug_C : public UUserWidget
     class UWBP_TransparentButton_C* ButtonCheatResources;
     class UWBP_TransparentButton_C* ButtonCheatTechPts;
     class UWBP_TransparentButton_C* ButtonCheatUnlockAll;
+    class UTextBlock* CustomText;
     class UTextBlock* Grid;
     class UTextBlock* Grid_1;
     class UTextBlock* Playercoords;
     class UTextBlock* TextBlock;
     class UTextBlock* TextBlock_0;
 
+    void UpdateCustomText(FText InText);
     FText GetAsteroidsCount();
     FText GetPlayerVelocity();
     FText GetPreviewCoords();

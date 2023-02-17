@@ -13,13 +13,12 @@ enum class EPaperSpriteAtlasPadding {
     EPaperSpriteAtlasPadding_MAX = 2,
 };
 
-namespace ETileMapProjectionMode {
+namespace ESpriteCollisionMode {
     enum Type {
-        Orthogonal = 0,
-        IsometricDiamond = 1,
-        IsometricStaggered = 2,
-        HexagonalStaggered = 3,
-        ETileMapProjectionMode_MAX = 4,
+        None = 0,
+        Use2DPhysics = 1,
+        Use3DPhysics = 2,
+        ESpriteCollisionMode_MAX = 3,
     };
 }
 
@@ -57,12 +56,13 @@ enum class ESpriteShapeType {
     ESpriteShapeType_MAX = 3,
 };
 
-namespace ESpriteCollisionMode {
+namespace ETileMapProjectionMode {
     enum Type {
-        None = 0,
-        Use2DPhysics = 1,
-        Use3DPhysics = 2,
-        ESpriteCollisionMode_MAX = 3,
+        Orthogonal = 0,
+        IsometricDiamond = 1,
+        IsometricStaggered = 2,
+        HexagonalStaggered = 3,
+        ETileMapProjectionMode_MAX = 4,
     };
 }
 

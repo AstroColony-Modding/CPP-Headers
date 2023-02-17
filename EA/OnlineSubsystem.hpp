@@ -3,13 +3,6 @@
 
 #include "OnlineSubsystem_enums.hpp"
 
-struct FInAppPurchaseProductRequest
-{
-    FString ProductIdentifier;
-    bool bIsConsumable;
-
-};
-
 struct FInAppPurchaseProductInfo
 {
     FString Identifier;
@@ -23,6 +16,13 @@ struct FInAppPurchaseProductInfo
     FString DecimalSeparator;
     FString GroupingSeparator;
     FString ReceiptData;
+
+};
+
+struct FInAppPurchaseProductRequest
+{
+    FString ProductIdentifier;
+    bool bIsConsumable;
 
 };
 
@@ -48,18 +48,18 @@ struct FNamedInterfaceDef
 
 };
 
-class UNamedInterfaces : public UObject
-{
-    TArray<FNamedInterface> NamedInterfaces;
-    TArray<FNamedInterfaceDef> NamedInterfaceDefs;
-
-};
-
 class ITurnBasedMatchInterface : public IInterface
 {
 
     void OnMatchReceivedTurn(FString Match, bool bDidBecomeActive);
     void OnMatchEnded(FString Match);
+};
+
+class UNamedInterfaces : public UObject
+{
+    TArray<FNamedInterface> NamedInterfaces;
+    TArray<FNamedInterfaceDef> NamedInterfaceDefs;
+
 };
 
 #endif

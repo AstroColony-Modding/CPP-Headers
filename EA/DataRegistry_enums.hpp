@@ -9,20 +9,6 @@ enum class EDataRegistryAcquireStatus {
     EDataRegistryAcquireStatus_MAX = 7,
 };
 
-enum class EMetaDataRegistrySourceAssetUsage {
-    NoAssets = 0,
-    SearchAssets = 1,
-    RegisterAssets = 2,
-    SearchAndRegisterAssets = 3,
-    EMetaDataRegistrySourceAssetUsage_MAX = 4,
-};
-
-enum class EDataRegistrySubsystemGetItemResult {
-    Found = 0,
-    NotFound = 1,
-    EDataRegistrySubsystemGetItemResult_MAX = 2,
-};
-
 enum class EDataRegistryAvailability {
     DoesNotExist = 0,
     Unknown = 1,
@@ -31,5 +17,19 @@ enum class EDataRegistryAvailability {
     LocalAsset = 4,
     PreCached = 5,
     EDataRegistryAvailability_MAX = 6,
+};
+
+enum class EDataRegistrySubsystemGetItemResult {
+    Found = 0,
+    NotFound = 1,
+    EDataRegistrySubsystemGetItemResult_MAX = 2,
+};
+
+enum class EMetaDataRegistrySourceAssetUsage {
+    NoAssets = 0,
+    SearchAssets = 1,
+    RegisterAssets = 2,
+    SearchAndRegisterAssets = 3,
+    EMetaDataRegistrySourceAssetUsage_MAX = 4,
 };
 

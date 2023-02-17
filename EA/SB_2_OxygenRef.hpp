@@ -15,6 +15,7 @@ class USB_2_OxygenRef_C : public UEHReferencedMissionObject
     void OnOxygenReffiled();
     void NodeActivated(class UMOTextNode* ActivatedNode);
     void LocalMissionStarted();
+    void OnJobModeChanged();
     void ExecuteUbergraph_SB_2_OxygenRef(int32 EntryPoint);
 };
 

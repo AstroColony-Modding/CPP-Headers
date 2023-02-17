@@ -6,19 +6,14 @@ class UWBP_ModsList_C : public UEHModsListWidget
     FPointerToUberGraphFrame UberGraphFrame;
     class UTGConfigurableTextBlock* Author;
     class UTGConfigurableTextBlock* Description;
-    class UHorizontalBox* HorizontalBox;
     class UVerticalBox* ModDetailsVertical;
     class UTGConfigurableTextBlock* Name;
-    class UScrollBox* RegisteredOverridesScrollBox;
     class UImage* Thumbnail;
     class UTGConfigurableTextBlock* Version;
     class UWBP_ModOption_C* WBP_ModOption;
 
-    void PopulateRegisteredOverrides();
-    void PopulateUGCList();
-    void Update Registered Overrides();
-    void OnModsOptionSelected(class UTGViewModel* ViewModel);
     void OnContextChanged();
+    void OnModsOptionSelected(class UTGViewModel* ViewModel);
     void ExecuteUbergraph_WBP_ModsList(int32 EntryPoint);
 };
 

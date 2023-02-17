@@ -29,15 +29,14 @@ class ABP_EnvironmentManager_C : public AEHEnvironmentManager
     void UpdateDust(bool IsDustActive, FLinearColor DustColor);
     void UpdateNightActive(bool Active);
     void NormalDistribution(float X, float my, float sigma2, float& Value);
-    void InpActEvt_Insert_K2Node_InputKeyEvent_1(FKey Key);
-    void InpActEvt_N_K2Node_InputKeyEvent_0(FKey Key);
-    void ToggleDust();
-    void ToggleRain();
+    void InpActEvt_Insert_K2Node_InputKeyEvent_0(FKey Key);
     void OnPlayerEnteredGrid(class AEHGrid* Grid);
     void OnPlayerLeftGrid(class AEHGrid* Grid);
-    void ToggleDayNight();
     void HandleSettingsApplied();
+    void ToggleRain();
     void ReceiveBeginPlay();
+    void ToggleDust();
+    void ToggleDayNight();
     void ExecuteUbergraph_BP_EnvironmentManager(int32 EntryPoint);
 };
 

@@ -7,7 +7,6 @@ class UBP_GameInstance_C : public UEHGameInstance
 
     void OnFailure_16FCF0874C249FF1BD31378D2401B224();
     void OnSuccess_16FCF0874C249FF1BD31378D2401B224();
-    void OnPlayerLoginChanged(int32 PlayerNum);
     void OnSessionInviteAccepted(int32 LocalPlayerNum, FBPUniqueNetId PersonInvited, const FBlueprintSessionResult& SessionToJoin);
     void OnInvalidSavegameVersionLoad();
     void ExecuteUbergraph_BP_GameInstance(int32 EntryPoint);

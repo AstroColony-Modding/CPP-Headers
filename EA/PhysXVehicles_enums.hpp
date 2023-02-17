@@ -1,10 +1,3 @@
-enum EWheelSweepType {
-    SimpleAndComplex = 0,
-    Simple = 1,
-    Complex = 2,
-    EWheelSweepType_MAX = 3,
-};
-
 namespace EVehicleDifferential4W {
     enum Type {
         LimitedSlip_4W = 0,
@@ -16,4 +9,11 @@ namespace EVehicleDifferential4W {
         EVehicleDifferential4W_MAX = 6,
     };
 }
+
+enum EWheelSweepType {
+    SimpleAndComplex = 0,
+    Simple = 1,
+    Complex = 2,
+    EWheelSweepType_MAX = 3,
+};
 

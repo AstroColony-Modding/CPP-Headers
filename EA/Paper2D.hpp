@@ -3,11 +3,117 @@
 
 #include "Paper2D_enums.hpp"
 
-class UMaterialExpressionSpriteTextureSampler : public UMaterialExpressionTextureSampleParameter2D
+struct FIntMargin
 {
-    bool bSampleAdditionalTextures;
-    int32 AdditionalSlotIndex;
-    FText SlotDisplayName;
+    int32 Left;
+    int32 Top;
+    int32 Right;
+    int32 Bottom;
+
+};
+
+struct FPaperFlipbookKeyFrame
+{
+    class UPaperSprite* Sprite;
+    int32 FrameRun;
+
+};
+
+struct FPaperSpriteAtlasSlot
+{
+    TSoftObjectPtr<UPaperSprite> SpriteRef;
+    int32 AtlasIndex;
+    int32 X;
+    int32 Y;
+    int32 Width;
+    int32 Height;
+
+};
+
+struct FPaperSpriteSocket
+{
+    FTransform LocalTransform;
+    FName SocketName;
+
+};
+
+struct FPaperTerrainMaterialRule
+{
+    class UPaperSprite* StartCap;
+    TArray<class UPaperSprite*> Body;
+    class UPaperSprite* EndCap;
+    float MinimumAngle;
+    float MaximumAngle;
+    bool bEnableCollision;
+    float CollisionOffset;
+    int32 DrawOrder;
+
+};
+
+struct FPaperTileInfo
+{
+    class UPaperTileSet* TileSet;
+    int32 PackedTileIndex;
+
+};
+
+struct FPaperTileMetadata
+{
+    FName UserDataName;
+    FSpriteGeometryCollection CollisionData;
+    uint8 TerrainMembership;
+
+};
+
+struct FPaperTileSetTerrain
+{
+    FString TerrainName;
+    int32 CenterTileIndex;
+
+};
+
+struct FSpriteAssetInitParameters
+{
+};
+
+struct FSpriteDrawCallRecord
+{
+    FVector Destination;
+    class UTexture* BaseTexture;
+    FColor Color;
+
+};
+
+struct FSpriteGeometryCollection
+{
+    TArray<FSpriteGeometryShape> Shapes;
+    TEnumAsByte<ESpritePolygonMode::Type> GeometryType;
+    int32 PixelsPerSubdivisionX;
+    int32 PixelsPerSubdivisionY;
+    bool bAvoidVertexMerging;
+    float AlphaThreshold;
+    float DetailAmount;
+    float SimplifyEpsilon;
+
+};
+
+struct FSpriteGeometryShape
+{
+    ESpriteShapeType ShapeType;
+    TArray<FVector2D> Vertices;
+    FVector2D BoxSize;
+    FVector2D BoxPosition;
+    float Rotation;
+    bool bNegativeWinding;
+
+};
+
+struct FSpriteInstanceData
+{
+    FMatrix Transform;
+    class UPaperSprite* SourceSprite;
+    FColor VertexColor;
+    int32 MaterialIndex;
 
 };
 
@@ -17,10 +123,43 @@ class APaperCharacter : public ACharacter
 
 };
 
-struct FPaperFlipbookKeyFrame
+class APaperFlipbookActor : public AActor
 {
-    class UPaperSprite* Sprite;
-    int32 FrameRun;
+    class UPaperFlipbookComponent* RenderComponent;
+
+};
+
+class APaperGroupedSpriteActor : public AActor
+{
+    class UPaperGroupedSpriteComponent* RenderComponent;
+
+};
+
+class APaperSpriteActor : public AActor
+{
+    class UPaperSpriteComponent* RenderComponent;
+
+};
+
+class APaperTerrainActor : public AActor
+{
+    class USceneComponent* DummyRoot;
+    class UPaperTerrainSplineComponent* SplineComponent;
+    class UPaperTerrainComponent* RenderComponent;
+
+};
+
+class APaperTileMapActor : public AActor
+{
+    class UPaperTileMapComponent* RenderComponent;
+
+};
+
+class UMaterialExpressionSpriteTextureSampler : public UMaterialExpressionTextureSampleParameter2D
+{
+    bool bSampleAdditionalTextures;
+    int32 AdditionalSlotIndex;
+    FText SlotDisplayName;
 
 };
 
@@ -38,12 +177,6 @@ class UPaperFlipbook : public UObject
     int32 GetNumKeyFrames();
     int32 GetNumFrames();
     int32 GetKeyFrameIndexAtTime(float Time, bool bClampToEnds);
-};
-
-class APaperFlipbookActor : public AActor
-{
-    class UPaperFlipbookComponent* RenderComponent;
-
 };
 
 class UPaperFlipbookComponent : public UMeshComponent
@@ -87,21 +220,6 @@ class UPaperFlipbookComponent : public UMeshComponent
     class UPaperFlipbook* GetFlipbook();
 };
 
-class APaperGroupedSpriteActor : public AActor
-{
-    class UPaperGroupedSpriteComponent* RenderComponent;
-
-};
-
-struct FSpriteInstanceData
-{
-    FMatrix Transform;
-    class UPaperSprite* SourceSprite;
-    FColor VertexColor;
-    int32 MaterialIndex;
-
-};
-
 class UPaperGroupedSpriteComponent : public UMeshComponent
 {
     TArray<class UMaterialInterface*> InstanceMaterials;
@@ -125,13 +243,6 @@ class UPaperRuntimeSettings : public UObject
 
 };
 
-struct FPaperSpriteSocket
-{
-    FTransform LocalTransform;
-    FName SocketName;
-
-};
-
 class UPaperSprite : public UObject
 {
     TArray<class UTexture*> AdditionalSourceTextures;
@@ -146,12 +257,6 @@ class UPaperSprite : public UObject
     class UBodySetup* BodySetup;
     int32 AlternateMaterialSplitIndex;
     TArray<FVector4> BakedRenderData;
-
-};
-
-class APaperSpriteActor : public AActor
-{
-    class UPaperSpriteComponent* RenderComponent;
 
 };
 
@@ -176,14 +281,6 @@ class UPaperSpriteComponent : public UMeshComponent
     class UPaperSprite* GetSprite();
 };
 
-class APaperTerrainActor : public AActor
-{
-    class USceneComponent* DummyRoot;
-    class UPaperTerrainSplineComponent* SplineComponent;
-    class UPaperTerrainComponent* RenderComponent;
-
-};
-
 class UPaperTerrainComponent : public UPrimitiveComponent
 {
     class UPaperTerrainMaterial* TerrainMaterial;
@@ -201,19 +298,6 @@ class UPaperTerrainComponent : public UPrimitiveComponent
     void SetTerrainColor(FLinearColor NewColor);
 };
 
-struct FPaperTerrainMaterialRule
-{
-    class UPaperSprite* StartCap;
-    TArray<class UPaperSprite*> Body;
-    class UPaperSprite* EndCap;
-    float MinimumAngle;
-    float MaximumAngle;
-    bool bEnableCollision;
-    float CollisionOffset;
-    int32 DrawOrder;
-
-};
-
 class UPaperTerrainMaterial : public UDataAsset
 {
     TArray<FPaperTerrainMaterialRule> Rules;
@@ -223,13 +307,6 @@ class UPaperTerrainMaterial : public UDataAsset
 
 class UPaperTerrainSplineComponent : public USplineComponent
 {
-};
-
-struct FPaperTileInfo
-{
-    class UPaperTileSet* TileSet;
-    int32 PackedTileIndex;
-
 };
 
 class UPaperTileLayer : public UObject
@@ -274,12 +351,6 @@ class UPaperTileMap : public UObject
 
 };
 
-class APaperTileMapActor : public AActor
-{
-    class UPaperTileMapComponent* RenderComponent;
-
-};
-
 class UPaperTileMapComponent : public UMeshComponent
 {
     int32 MapWidth;
@@ -315,54 +386,6 @@ class UPaperTileMapComponent : public UMeshComponent
     class UPaperTileLayer* AddNewLayer();
 };
 
-struct FIntMargin
-{
-    int32 Left;
-    int32 Top;
-    int32 Right;
-    int32 Bottom;
-
-};
-
-struct FSpriteGeometryShape
-{
-    ESpriteShapeType ShapeType;
-    TArray<FVector2D> Vertices;
-    FVector2D BoxSize;
-    FVector2D BoxPosition;
-    float Rotation;
-    bool bNegativeWinding;
-
-};
-
-struct FSpriteGeometryCollection
-{
-    TArray<FSpriteGeometryShape> Shapes;
-    TEnumAsByte<ESpritePolygonMode::Type> GeometryType;
-    int32 PixelsPerSubdivisionX;
-    int32 PixelsPerSubdivisionY;
-    bool bAvoidVertexMerging;
-    float AlphaThreshold;
-    float DetailAmount;
-    float SimplifyEpsilon;
-
-};
-
-struct FPaperTileMetadata
-{
-    FName UserDataName;
-    FSpriteGeometryCollection CollisionData;
-    uint8 TerrainMembership;
-
-};
-
-struct FPaperTileSetTerrain
-{
-    FString TerrainName;
-    int32 CenterTileIndex;
-
-};
-
 class UPaperTileSet : public UObject
 {
     FIntPoint TileSize;
@@ -391,29 +414,6 @@ class UTileMapBlueprintLibrary : public UBlueprintFunctionLibrary
     FName GetTileUserData(FPaperTileInfo Tile);
     FTransform GetTileTransform(FPaperTileInfo Tile);
     void BreakTile(FPaperTileInfo Tile, int32& TileIndex, class UPaperTileSet*& TileSet, bool& bFlipH, bool& bFlipV, bool& bFlipD);
-};
-
-struct FPaperSpriteAtlasSlot
-{
-    TSoftObjectPtr<UPaperSprite> SpriteRef;
-    int32 AtlasIndex;
-    int32 X;
-    int32 Y;
-    int32 Width;
-    int32 Height;
-
-};
-
-struct FSpriteDrawCallRecord
-{
-    FVector Destination;
-    class UTexture* BaseTexture;
-    FColor Color;
-
-};
-
-struct FSpriteAssetInitParameters
-{
 };
 
 #endif

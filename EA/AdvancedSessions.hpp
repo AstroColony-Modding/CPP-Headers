@@ -3,8 +3,73 @@
 
 #include "AdvancedSessions_enums.hpp"
 
+struct FBPFriendInfo
+{
+    FString DisplayName;
+    FString RealName;
+    EBPOnlinePresenceState OnlineState;
+    FBPUniqueNetId UniqueNetId;
+    bool bIsPlayingSameGame;
+    FBPFriendPresenceInfo PresenceInfo;
+
+};
+
+struct FBPFriendPresenceInfo
+{
+    bool bIsOnline;
+    bool bIsPlaying;
+    bool bIsPlayingThisGame;
+    bool bIsJoinable;
+    bool bHasVoiceSupport;
+    EBPOnlinePresenceState PresenceState;
+    FString StatusString;
+
+};
+
+struct FBPOnlineRecentPlayer : public FBPOnlineUser
+{
+    FString LastSeen;
+
+};
+
+struct FBPOnlineUser
+{
+    FBPUniqueNetId UniqueNetId;
+    FString DisplayName;
+    FString RealName;
+
+};
+
 struct FBPUniqueNetId
 {
+};
+
+struct FBPUserOnlineAccount
+{
+};
+
+struct FSessionPropertyKeyPair
+{
+};
+
+struct FSessionsSearchSetting
+{
+};
+
+class AAdvancedGameSession : public AGameSession
+{
+    TMap<class FUniqueNetIdRepl, class FText> BanList;
+
+};
+
+class IAdvancedFriendsInterface : public IInterface
+{
+
+    void OnSessionInviteReceived(FBPUniqueNetId PersonInviting, const FBlueprintSessionResult& SearchResult);
+    void OnSessionInviteAccepted(FBPUniqueNetId PersonInvited, const FBlueprintSessionResult& SearchResult);
+    void OnPlayerVoiceStateChanged(FBPUniqueNetId PlayerId, bool bIsTalking);
+    void OnPlayerLoginStatusChanged(EBPLoginStatus PreviousStatus, EBPLoginStatus NewStatus, FBPUniqueNetId PlayerUniqueNetID);
+    void OnPlayerLoginChanged(int32 PlayerNum);
 };
 
 class UAdvancedExternalUILibrary : public UBlueprintFunctionLibrary
@@ -33,53 +98,6 @@ class UAdvancedFriendsGameInstance : public UGameInstance
     void OnPlayerLoginChanged(int32 PlayerNum);
 };
 
-class IAdvancedFriendsInterface : public IInterface
-{
-
-    void OnSessionInviteReceived(FBPUniqueNetId PersonInviting, const FBlueprintSessionResult& SearchResult);
-    void OnSessionInviteAccepted(FBPUniqueNetId PersonInvited, const FBlueprintSessionResult& SearchResult);
-    void OnPlayerVoiceStateChanged(FBPUniqueNetId PlayerId, bool bIsTalking);
-    void OnPlayerLoginStatusChanged(EBPLoginStatus PreviousStatus, EBPLoginStatus NewStatus, FBPUniqueNetId PlayerUniqueNetID);
-    void OnPlayerLoginChanged(int32 PlayerNum);
-};
-
-struct FBPOnlineUser
-{
-    FBPUniqueNetId UniqueNetId;
-    FString DisplayName;
-    FString RealName;
-
-};
-
-struct FBPOnlineRecentPlayer : public FBPOnlineUser
-{
-    FString LastSeen;
-
-};
-
-struct FBPFriendPresenceInfo
-{
-    bool bIsOnline;
-    bool bIsPlaying;
-    bool bIsPlayingThisGame;
-    bool bIsJoinable;
-    bool bHasVoiceSupport;
-    EBPOnlinePresenceState PresenceState;
-    FString StatusString;
-
-};
-
-struct FBPFriendInfo
-{
-    FString DisplayName;
-    FString RealName;
-    EBPOnlinePresenceState OnlineState;
-    FBPUniqueNetId UniqueNetId;
-    bool bIsPlayingSameGame;
-    FBPFriendPresenceInfo PresenceInfo;
-
-};
-
 class UAdvancedFriendsLibrary : public UBlueprintFunctionLibrary
 {
 
@@ -91,22 +109,12 @@ class UAdvancedFriendsLibrary : public UBlueprintFunctionLibrary
     void GetFriend(class APlayerController* PlayerController, const FBPUniqueNetId FriendUniqueNetId, FBPFriendInfo& Friend);
 };
 
-class AAdvancedGameSession : public AGameSession
-{
-    TMap<class FUniqueNetIdRepl, class FText> BanList;
-
-};
-
-struct FBPUserOnlineAccount
-{
-};
-
 class UAdvancedIdentityLibrary : public UBlueprintFunctionLibrary
 {
 
     void SetUserAccountAttribute(const FBPUserOnlineAccount& AccountInfo, FString AttributeName, FString NewAttributeValue, EBlueprintResultSwitch& Result);
     void GetUserID(const FBPUserOnlineAccount& AccountInfo, FBPUniqueNetId& UniqueNetId);
-    void GetUserAccountRealName(const FBPUserOnlineAccount& AccountInfo, FString& UserName);
+    void GetUserAccountRealName(const FBPUserOnlineAccount& AccountInfo, FString& username);
     void GetUserAccountDisplayName(const FBPUserOnlineAccount& AccountInfo, FString& DisplayName);
     void GetUserAccountAuthAttribute(const FBPUserOnlineAccount& AccountInfo, FString AttributeName, FString& AuthAttribute, EBlueprintResultSwitch& Result);
     void GetUserAccountAttribute(const FBPUserOnlineAccount& AccountInfo, FString AttributeName, FString& AttributeValue, EBlueprintResultSwitch& Result);
@@ -116,14 +124,6 @@ class UAdvancedIdentityLibrary : public UBlueprintFunctionLibrary
     void GetPlayerAuthToken(class APlayerController* PlayerController, FString& AuthToken, EBlueprintResultSwitch& Result);
     void GetLoginStatus(const FBPUniqueNetId& UniqueNetId, EBPLoginStatus& LoginStatus, EBlueprintResultSwitch& Result);
     void GetAllUserAccounts(TArray<FBPUserOnlineAccount>& AccountInfos, EBlueprintResultSwitch& Result);
-};
-
-struct FSessionPropertyKeyPair
-{
-};
-
-struct FSessionsSearchSetting
-{
 };
 
 class UAdvancedSessionsLibrary : public UBlueprintFunctionLibrary

@@ -12,8 +12,6 @@ class ABP_MenuGameMode_C : public AEHGameModeBase
     void OnSuccess_DCEE52E14DBBE3501A257EB02A49E320();
     void HostSession();
     void ReceiveBeginPlay();
-    void OnInit();
-    void OnInitError(const FCFCoreError& Error);
     void ReceiveEndPlay(TEnumAsByte<EEndPlayReason::Type> EndPlayReason);
     void OnUnitialized();
     void OnUnitError(const FCFCoreError& Error);

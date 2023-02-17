@@ -20,7 +20,6 @@ class UWBP_SelectionSlot_C : public UUserWidget
     void SetBrush(TSoftObjectPtr<UTexture2D> Texture);
     void BndEvt__InteractiveAreaSettings_K2Node_ComponentBoundEvent_1_OnWidgetClickedEvent__DelegateSignature();
     void Construct();
-    void PreConstruct(bool IsDesignTime);
     void ExecuteUbergraph_WBP_SelectionSlot(int32 EntryPoint);
     void SlotClicked__DelegateSignature();
 };

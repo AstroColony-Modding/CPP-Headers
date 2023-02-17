@@ -1,3 +1,12 @@
+enum class EVoxelDataPinCategory {
+    Boolean = 0,
+    Int = 1,
+    Float = 2,
+    Material = 3,
+    Color = 4,
+    EVoxelDataPinCategory_MAX = 5,
+};
+
 enum class EVoxelFunctionAxisDependencies {
     X = 0,
     XYWithCache = 1,
@@ -33,6 +42,13 @@ enum class EVoxelGraphMaterialPreviewType {
     EVoxelGraphMaterialPreviewType_MAX = 10,
 };
 
+enum class EVoxelGraphPreviewAxes {
+    X = 0,
+    Y = 1,
+    Z = 2,
+    EVoxelGraphPreviewAxes_MAX = 3,
+};
+
 enum class EVoxelGraphPreviewShowValue {
     ShowValue = 0,
     ShowRange = 1,
@@ -48,37 +64,11 @@ enum class EVoxelGraphPreviewType {
     EVoxelGraphPreviewType_MAX = 4,
 };
 
-enum class EVoxelGraphPreviewAxes {
-    X = 0,
-    Y = 1,
-    Z = 2,
-    EVoxelGraphPreviewAxes_MAX = 3,
-};
-
 enum class EVoxelNodeIfBranchToUseForRangeAnalysis {
     None = 0,
     UseTrue = 1,
     UseFalse = 2,
     EVoxelNodeIfBranchToUseForRangeAnalysis_MAX = 3,
-};
-
-enum class EVoxelPortalNodePinCategory {
-    Boolean = 0,
-    Int = 1,
-    Float = 2,
-    Material = 3,
-    Color = 4,
-    Seed = 5,
-    EVoxelPortalNodePinCategory_MAX = 6,
-};
-
-enum class EVoxelDataPinCategory {
-    Boolean = 0,
-    Int = 1,
-    Float = 2,
-    Material = 3,
-    Color = 4,
-    EVoxelDataPinCategory_MAX = 5,
 };
 
 enum class EVoxelPinCategory {
@@ -92,5 +82,15 @@ enum class EVoxelPinCategory {
     Wildcard = 7,
     Vector = 8,
     EVoxelPinCategory_MAX = 9,
+};
+
+enum class EVoxelPortalNodePinCategory {
+    Boolean = 0,
+    Int = 1,
+    Float = 2,
+    Material = 3,
+    Color = 4,
+    Seed = 5,
+    EVoxelPortalNodePinCategory_MAX = 6,
 };
 

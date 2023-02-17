@@ -3,6 +3,42 @@
 
 #include "TGCoreInterfaceTypes_enums.hpp"
 
+struct FTGCameraAttachmentInfo
+{
+    class USceneComponent* Component;
+    FName SocketName;
+
+};
+
+struct FTGCameraState
+{
+    float FOV;
+    FVector Location;
+    FRotator Rotation;
+
+};
+
+struct FTGCameraTransition
+{
+    float TransitionTime;
+    class UCurveFloat* TransitionCurve;
+
+};
+
+struct FTGCameraTransitionConfig
+{
+    FTGCameraTransition FOVTransition;
+    FTGCameraTransition OffsetTransition;
+
+};
+
+struct FTGDesiredCameraState
+{
+    float FOV;
+    FVector Offset;
+
+};
+
 class ITGIAbility : public IInterface
 {
 };
@@ -49,42 +85,6 @@ class ITGIUISystem : public IInterface
 
 class ITGIWidgetValidation : public IInterface
 {
-};
-
-struct FTGCameraState
-{
-    float FOV;
-    FVector Location;
-    FRotator Rotation;
-
-};
-
-struct FTGCameraAttachmentInfo
-{
-    class USceneComponent* Component;
-    FName SocketName;
-
-};
-
-struct FTGCameraTransition
-{
-    float TransitionTime;
-    class UCurveFloat* TransitionCurve;
-
-};
-
-struct FTGCameraTransitionConfig
-{
-    FTGCameraTransition FOVTransition;
-    FTGCameraTransition OffsetTransition;
-
-};
-
-struct FTGDesiredCameraState
-{
-    float FOV;
-    FVector Offset;
-
 };
 
 #endif

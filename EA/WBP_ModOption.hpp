@@ -12,7 +12,6 @@ class UWBP_ModOption_C : public UEHModsOptionWidget
     class UImage* BlackBackground;
     class UImage* FlickerImage;
     class UImage* Image;
-    class UVerticalBox* MapsVerticalBox;
     class UTGConfigurableTextBlock* OptionName;
     bool bIsSelected;
     float ScrollPositionCached;
@@ -20,7 +19,6 @@ class UWBP_ModOption_C : public UEHModsOptionWidget
     float LastScrollPositionChange;
     float ScrolThreshold;
 
-    void InitMaps();
     FText Get_InteractiveArea_AccessibleText_2();
     void SetSelected(bool bIsSelected);
     void BndEvt__InteractiveArea_K2Node_ComponentBoundEvent_7_OnWidgetClickedEvent__DelegateSignature();

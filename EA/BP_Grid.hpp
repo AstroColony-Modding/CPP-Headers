@@ -8,7 +8,7 @@ class ABP_Grid_C : public AEHGrid
     bool StartSearchingPaths;
     int32 LastID;
     int32 PathsFound;
-    class UObject* DebugAISpline;
+    class ABP_DebugAISpline_C* DebugAISpline;
     int32 FloorSize;
     FVector StartTest;
     FVector EndTest;
@@ -25,10 +25,11 @@ class ABP_Grid_C : public AEHGrid
     FLinearColor GetColor();
     void AddSpecialist(const FIntVector& CellCoords, EAIProfession Profession);
     void DrawDebugAIMove();
+    void DrawDebugFloorPoints();
     void DrawDebugAerialPoints();
     void DrawDebugForPath(TArray<FIntVector>& Path);
     void InpActEvt_N_K2Node_InputKeyEvent_1(FKey Key);
-    void InpActEvt_B_K2Node_InputKeyEvent_0(FKey Key);
+    void InpActEvt_H_K2Node_InputKeyEvent_0(FKey Key);
     void ReceiveBeginPlay();
     void AssetsLoaded();
     void ReceiveEndPlay(TEnumAsByte<EEndPlayReason::Type> EndPlayReason);

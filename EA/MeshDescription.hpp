@@ -3,7 +3,7 @@
 
 #include "MeshDescription_enums.hpp"
 
-class UDEPRECATED_MeshDescription : public UObject
+struct FEdgeID : public FElementID
 {
 };
 
@@ -13,7 +13,7 @@ struct FElementID
 
 };
 
-struct FVertexID : public FElementID
+struct FPolygonGroupID : public FElementID
 {
 };
 
@@ -21,19 +21,19 @@ struct FPolygonID : public FElementID
 {
 };
 
-struct FVertexInstanceID : public FElementID
-{
-};
-
-struct FPolygonGroupID : public FElementID
-{
-};
-
 struct FTriangleID : public FElementID
 {
 };
 
-struct FEdgeID : public FElementID
+struct FVertexID : public FElementID
+{
+};
+
+struct FVertexInstanceID : public FElementID
+{
+};
+
+class UDEPRECATED_MeshDescription : public UObject
 {
 };
 

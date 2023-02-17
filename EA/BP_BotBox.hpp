@@ -84,14 +84,15 @@ class ABP_BotBox_C : public AActor
     void OnInterrupted_618E34364EF2F511F260888657539D8C(FName NotifyName);
     void OnBlendOut_618E34364EF2F511F260888657539D8C(FName NotifyName);
     void OnCompleted_618E34364EF2F511F260888657539D8C(FName NotifyName);
+    void OnWorldActorHit();
+    void OnWorldActorRemove();
+    void OnWorldActorSpawned(bool ShouldMoveToDestination, FVector DestinationOffset);
+    void LoadingGameData(class UEHSaveGame* SaveGame);
+    void SavingGameData(class UEHSaveGame* SaveGame);
     void SetSerializedActorUniqueName(const FName UniqueName);
+    void ReceiveTick(float DeltaSeconds);
     void ReceiveBeginPlay();
     void GunsParticle();
-    void SavingGameData(class UEHSaveGame* SaveGame);
-    void LoadingGameData(class UEHSaveGame* SaveGame);
-    void OnWorldActorSpawned(bool ShouldMoveToDestination, FVector DestinationOffset);
-    void OnWorldActorRemove();
-    void OnWorldActorHit();
     void ChasingStateChanged();
     void OnMissionEnded(class UMission* Mission, bool IsSuccesfull);
     void OnMissionObjectiveCompleted(const class UMission* Mission, const class UMOObjectiveNode* Node);
@@ -107,7 +108,6 @@ class ABP_BotBox_C : public AActor
     void SavegameObjectSerializeDataLoaded();
     void OnWorldActorRotate();
     void OnGameStarted();
-    void ReceiveTick(float DeltaSeconds);
     void ExecuteUbergraph_BP_BotBox(int32 EntryPoint);
 };
 

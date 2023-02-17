@@ -1,3 +1,10 @@
+enum class EBPLoginStatus {
+    NotLoggedIn = 0,
+    UsingLocalProfile = 1,
+    LoggedIn = 2,
+    EBPLoginStatus_MAX = 3,
+};
+
 enum class EBPOnlinePresenceState {
     Online = 0,
     Offline = 1,
@@ -6,24 +13,6 @@ enum class EBPOnlinePresenceState {
     DoNotDisturb = 4,
     Chat = 5,
     EBPOnlinePresenceState_MAX = 6,
-};
-
-enum class EBPUserPrivileges {
-    CanPlay = 0,
-    CanPlayOnline = 1,
-    CanCommunicateOnline = 2,
-    CanUseUserGeneratedContent = 3,
-    EBPUserPrivileges_MAX = 4,
-};
-
-enum class EOnlineComparisonOpRedux {
-    Equals = 0,
-    NotEquals = 1,
-    GreaterThan = 2,
-    GreaterThanEquals = 3,
-    LessThan = 4,
-    LessThanEquals = 5,
-    EOnlineComparisonOpRedux_MAX = 6,
 };
 
 enum class EBPOnlineSessionState {
@@ -45,6 +34,14 @@ enum class EBPServerPresenceSearchType {
     EBPServerPresenceSearchType_MAX = 3,
 };
 
+enum class EBPUserPrivileges {
+    CanPlay = 0,
+    CanPlayOnline = 1,
+    CanCommunicateOnline = 2,
+    CanUseUserGeneratedContent = 3,
+    EBPUserPrivileges_MAX = 4,
+};
+
 enum class EBlueprintAsyncResultSwitch {
     OnSuccess = 0,
     AsyncLoading = 1,
@@ -58,17 +55,20 @@ enum class EBlueprintResultSwitch {
     EBlueprintResultSwitch_MAX = 2,
 };
 
+enum class EOnlineComparisonOpRedux {
+    Equals = 0,
+    NotEquals = 1,
+    GreaterThan = 2,
+    GreaterThanEquals = 3,
+    LessThan = 4,
+    LessThanEquals = 5,
+    EOnlineComparisonOpRedux_MAX = 6,
+};
+
 enum class ESessionSettingSearchResult {
     Found = 0,
     NotFound = 1,
     WrongType = 2,
     ESessionSettingSearchResult_MAX = 3,
-};
-
-enum class EBPLoginStatus {
-    NotLoggedIn = 0,
-    UsingLocalProfile = 1,
-    LoggedIn = 2,
-    EBPLoginStatus_MAX = 3,
 };
 

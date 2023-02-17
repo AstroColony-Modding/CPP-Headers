@@ -3,36 +3,12 @@
 
 #include "ApexDestruction_enums.hpp"
 
-class ADestructibleActor : public AActor
+struct FDestructibleAdvancedParameters
 {
-    class UDestructibleComponent* DestructibleComponent;
-    FDestructibleActorOnActorFracture OnActorFracture;
-    void ActorFractureSignature(const FVector& HitPoint, const FVector& HitDirection);
-
-};
-
-class UDestructibleComponent : public USkinnedMeshComponent
-{
-    uint8 bFractureEffectOverride;
-    TArray<FFractureEffect> FractureEffects;
-    bool bEnableHardSleeping;
-    float LargeChunkThreshold;
-    FDestructibleComponentOnComponentFracture OnComponentFracture;
-    void ComponentFractureSignature(const FVector& HitPoint, const FVector& HitDirection);
-
-    void SetDestructibleMesh(class UDestructibleMesh* NewMesh);
-    class UDestructibleMesh* GetDestructibleMesh();
-    void ApplyRadiusDamage(float BaseDamage, const FVector& HurtOrigin, float DamageRadius, float ImpulseStrength, bool bFullDamage);
-    void ApplyDamage(float DamageAmount, const FVector& HitLocation, const FVector& ImpulseDir, float ImpulseStrength);
-};
-
-struct FFractureMaterial
-{
-    FVector2D UVScale;
-    FVector2D UVOffset;
-    FVector Tangent;
-    float UAngle;
-    int32 InteriorElementIndex;
+    float DamageCap;
+    float ImpactVelocityThreshold;
+    float MaxChunkSpeed;
+    float FractureImpulseScale;
 
 };
 
@@ -42,18 +18,6 @@ struct FDestructibleChunkParameters
     bool bDoNotFracture;
     bool bDoNotDamage;
     bool bDoNotCrumble;
-
-};
-
-class UDestructibleFractureSettings : public UObject
-{
-    int32 CellSiteCount;
-    FFractureMaterial FractureMaterialDesc;
-    int32 RandomSeed;
-    TArray<FVector> VoronoiSites;
-    int32 OriginalSubmeshCount;
-    TArray<class UMaterialInterface*> Materials;
-    TArray<FDestructibleChunkParameters> ChunkParameters;
 
 };
 
@@ -79,28 +43,20 @@ struct FDestructibleDebrisParameters
 
 };
 
-struct FDestructibleAdvancedParameters
-{
-    float DamageCap;
-    float ImpactVelocityThreshold;
-    float MaxChunkSpeed;
-    float FractureImpulseScale;
-
-};
-
-struct FDestructibleSpecialHierarchyDepths
-{
-    int32 SupportDepth;
-    int32 MinimumFractureDepth;
-    bool bEnableDebris;
-    int32 DebrisDepth;
-    int32 EssentialDepth;
-
-};
-
 struct FDestructibleDepthParameters
 {
     TEnumAsByte<EImpactDamageOverride> ImpactDamageOverride;
+
+};
+
+struct FDestructibleParameters
+{
+    FDestructibleDamageParameters DamageParameters;
+    FDestructibleDebrisParameters DebrisParameters;
+    FDestructibleAdvancedParameters AdvancedParameters;
+    FDestructibleSpecialHierarchyDepths SpecialHierarchyDepths;
+    TArray<FDestructibleDepthParameters> DepthParameters;
+    FDestructibleParametersFlag Flags;
 
 };
 
@@ -118,14 +74,58 @@ struct FDestructibleParametersFlag
 
 };
 
-struct FDestructibleParameters
+struct FDestructibleSpecialHierarchyDepths
 {
-    FDestructibleDamageParameters DamageParameters;
-    FDestructibleDebrisParameters DebrisParameters;
-    FDestructibleAdvancedParameters AdvancedParameters;
-    FDestructibleSpecialHierarchyDepths SpecialHierarchyDepths;
-    TArray<FDestructibleDepthParameters> DepthParameters;
-    FDestructibleParametersFlag Flags;
+    int32 SupportDepth;
+    int32 MinimumFractureDepth;
+    bool bEnableDebris;
+    int32 DebrisDepth;
+    int32 EssentialDepth;
+
+};
+
+struct FFractureMaterial
+{
+    FVector2D UVScale;
+    FVector2D UVOffset;
+    FVector Tangent;
+    float UAngle;
+    int32 InteriorElementIndex;
+
+};
+
+class ADestructibleActor : public AActor
+{
+    class UDestructibleComponent* DestructibleComponent;
+    FDestructibleActorOnActorFracture OnActorFracture;
+    void ActorFractureSignature(const FVector& HitPoint, const FVector& HitDirection);
+
+};
+
+class UDestructibleComponent : public USkinnedMeshComponent
+{
+    uint8 bFractureEffectOverride;
+    TArray<FFractureEffect> FractureEffects;
+    bool bEnableHardSleeping;
+    float LargeChunkThreshold;
+    FDestructibleComponentOnComponentFracture OnComponentFracture;
+    void ComponentFractureSignature(const FVector& HitPoint, const FVector& HitDirection);
+
+    void SetDestructibleMesh(class UDestructibleMesh* NewMesh);
+    class UDestructibleMesh* GetDestructibleMesh();
+    void ApplyRadiusDamage(float BaseDamage, const FVector& HurtOrigin, float DamageRadius, float ImpulseStrength, bool bFullDamage);
+    void ApplyDamage(float DamageAmount, const FVector& HitLocation, const FVector& ImpulseDir, float ImpulseStrength);
+};
+
+class UDestructibleFractureSettings : public UObject
+{
+    int32 CellSiteCount;
+    FFractureMaterial FractureMaterialDesc;
+    int32 RandomSeed;
+    TArray<FVector> VoronoiSites;
+    int32 OriginalSubmeshCount;
+    TArray<class UMaterialInterface*> Materials;
+    TArray<FDestructibleChunkParameters> ChunkParameters;
 
 };
 

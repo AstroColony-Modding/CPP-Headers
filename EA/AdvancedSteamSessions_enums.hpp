@@ -1,21 +1,22 @@
-enum class FBPWorkshopFileType {
-    k_EWorkshopFileTypeCommunity = 0,
-    k_EWorkshopFileTypeMicrotransaction = 1,
-    k_EWorkshopFileTypeCollection = 2,
-    k_EWorkshopFileTypeArt = 3,
-    k_EWorkshopFileTypeVideo = 4,
-    k_EWorkshopFileTypeScreenshot = 5,
-    k_EWorkshopFileTypeGame = 6,
-    k_EWorkshopFileTypeSoftware = 7,
-    k_EWorkshopFileTypeConcept = 8,
-    k_EWorkshopFileTypeWebGuide = 9,
-    k_EWorkshopFileTypeIntegratedGuide = 10,
-    k_EWorkshopFileTypeMerch = 11,
-    k_EWorkshopFileTypeControllerBinding = 12,
-    k_EWorkshopFileTypeSteamworksAccessInvite = 13,
-    k_EWorkshopFileTypeSteamVideo = 14,
-    k_EWorkshopFileTypeMax = 15,
-    k_MAX = 16,
+enum class EBPTextFilteringContext {
+    FContext_Unknown = 0,
+    FContext_GameContent = 1,
+    FContext_Chat = 2,
+    FContext_Name = 3,
+    FContext_MAX = 4,
+};
+
+enum class ESteamUserOverlayType {
+    steamid = 0,
+    chat = 1,
+    jointrade = 2,
+    stats = 3,
+    achievements = 4,
+    friendadd = 5,
+    friendremove = 6,
+    friendrequestaccept = 7,
+    friendrequestignore = 8,
+    ESteamUserOverlayType_MAX = 9,
 };
 
 enum class FBPSteamResult {
@@ -113,25 +114,24 @@ enum class FBPSteamResult {
     FBPSteamResult_MAX = 92,
 };
 
-enum class EBPTextFilteringContext {
-    FContext_Unknown = 0,
-    FContext_GameContent = 1,
-    FContext_Chat = 2,
-    FContext_Name = 3,
-    FContext_MAX = 4,
-};
-
-enum class ESteamUserOverlayType {
-    steamid = 0,
-    chat = 1,
-    jointrade = 2,
-    stats = 3,
-    achievements = 4,
-    friendadd = 5,
-    friendremove = 6,
-    friendrequestaccept = 7,
-    friendrequestignore = 8,
-    ESteamUserOverlayType_MAX = 9,
+enum class FBPWorkshopFileType {
+    k_EWorkshopFileTypeCommunity = 0,
+    k_EWorkshopFileTypeMicrotransaction = 1,
+    k_EWorkshopFileTypeCollection = 2,
+    k_EWorkshopFileTypeArt = 3,
+    k_EWorkshopFileTypeVideo = 4,
+    k_EWorkshopFileTypeScreenshot = 5,
+    k_EWorkshopFileTypeGame = 6,
+    k_EWorkshopFileTypeSoftware = 7,
+    k_EWorkshopFileTypeConcept = 8,
+    k_EWorkshopFileTypeWebGuide = 9,
+    k_EWorkshopFileTypeIntegratedGuide = 10,
+    k_EWorkshopFileTypeMerch = 11,
+    k_EWorkshopFileTypeControllerBinding = 12,
+    k_EWorkshopFileTypeSteamworksAccessInvite = 13,
+    k_EWorkshopFileTypeSteamVideo = 14,
+    k_EWorkshopFileTypeMax = 15,
+    k_MAX = 16,
 };
 
 enum class SteamAvatarSize {

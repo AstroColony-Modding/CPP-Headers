@@ -3,130 +3,221 @@
 
 #include "AstroColony_enums.hpp"
 
-struct FEHItemInstance
+struct FAIArray
+{
+    TArray<class UEHAIObject*> AIObjects;
+
+};
+
+struct FAIWorkRequest
+{
+    EAIWorkRequestState RequestState;
+    EAIWorkActionType ActionType;
+    class UEHInteractableObject* PrimaryDevice;
+    FIntVector PrimaryActionCoord;
+    class UEHInteractableObject* SecondaryDevice;
+    class UEHItem* ResrouceToTransfer;
+    UClass* DemandClass;
+
+};
+
+struct FBinaryDataContainer
+{
+    TArray<uint8> ContainerData;
+
+};
+
+struct FCallAction
+{
+    class UEHInteractableObject* InteractableObject;
+
+};
+
+struct FCampaignData : public FTableRowBase
+{
+    FName ScenarioLevelName;
+    FString DisplayName;
+    FText Description;
+    TSoftObjectPtr<UTexture2D> Icon;
+    bool IsEnabledByDefault;
+    bool IsConstructed;
+    TSoftClassPtr<UEHScenarioComponent> ScenarioManagerTemplate;
+    FEHScenarioParams ScenarioParams;
+
+};
+
+struct FCellTransformation
+{
+    FTransform Transform;
+    int32 MeshID;
+
+};
+
+struct FContainerPushDefinition
+{
+    FIntVector Coord;
+    EEHInstanceRotation GateRotation;
+    float InsidePushOffset;
+    EPushDirection PushDirection;
+    TArray<class UEHItem*> RestrictedItems;
+    EInstanceCellType RestrictedType;
+    TSubclassOf<class UEHConveyorObject> ConveyorPushType;
+    FEHGeneratedReactiveMesh GateMesh;
+
+};
+
+struct FContainersArray
+{
+    TArray<class UEHItemsContainer*> Containers;
+
+};
+
+struct FContainersMap
+{
+    TMap<class FName, class UEHItemsContainer*> ContainerCategories;
+
+};
+
+struct FDecalInfo
+{
+    TSubclassOf<class UEHDecalComponent> DecalTemplate;
+    FTransform Transform;
+    class UEHCustomMeshAsset* OutletMesh;
+    class UEHCustomMeshAsset* PreviewMesh;
+    class UEHCustomMeshAsset* DecalMesh;
+
+};
+
+struct FEHActors
+{
+    TArray<class AActor*> Actors;
+
+};
+
+struct FEHAsteroidData
+{
+    class UStaticMesh* Mesh;
+    FVector Velocity;
+    FRotator Spin;
+    FVector Color;
+    uint8 UniverseIndex;
+    TArray<FEHItemInstance> Items;
+
+};
+
+struct FEHAsteroidExtraction
+{
+    class UEHResourceItem* ExtractedResource;
+    uint8 NuberOfHits;
+
+};
+
+struct FEHAttractedAsteroidData
+{
+    class UStaticMesh* Mesh;
+    class UEHAsteroidsCatcher* AsteroidCatcher;
+    FVector Color;
+    TArray<FEHItemInstance> Items;
+    uint8 UniverseIndex;
+
+};
+
+struct FEHBaseButtonProperties
+{
+    FMargin Padding;
+    FSlateChildSize Size;
+    TEnumAsByte<EHorizontalAlignment> BaseButtonHorizontalAlignment;
+    TEnumAsByte<EVerticalAlignment> BaseButtonVerticalAlignment;
+    FName ButtonStyleName;
+    FName TextStyleName;
+    bool ShowShadowText;
+    bool ShouldSpecifySize;
+    float Width;
+    float Height;
+    bool CanReceiveFocus;
+    bool CanBeNavigatedTo;
+    bool TreatHoverAsFocus;
+    bool ShouldSpecifyContentPadding;
+    FMargin ContentPadding;
+    TEnumAsByte<EHorizontalAlignment> ContentHorizontalAlignment;
+    TEnumAsByte<EVerticalAlignment> ContentVerticalAlignment;
+
+};
+
+struct FEHBasicUnlockData
+{
+    FText DisplayName;
+    class UTexture2D* Icon;
+    bool IsRecipe;
+    class UEHAsset* UnlockItem;
+
+};
+
+struct FEHCatchedAsteroid
+{
+    FTransform Transform;
+    FVector Color;
+    TArray<FEHItemInstance> Items;
+
+};
+
+struct FEHCelestialBodyGeneration
+{
+    EChunkGenerationType Type;
+    FVector position;
+    class UEHCelestialGenerationObject* CelestialGenerationObject;
+
+};
+
+struct FEHCellType
 {
     class UEHItem* Item;
-    int32 Quantity;
+    class UEHInteractableObject* InteractableObject;
+    FIntVector CellCoords;
+    EEHInstanceRotation CellRotation;
+    FVector InstanceLocation;
+    uint8 CellState;
 
 };
 
-class UContainerSlotWidget : public UUserWidget
+struct FEHCharacters
 {
-    int32 Index;
-    class UEHItemsContainer* ItemsContainer;
-    FText CustomNumberText;
-    TSubclassOf<class UEHItemVariantsWidget> VariantsWidgetClass;
-    bool IsConstructionItemUnlocked;
-    bool IsTextAlwaysVisible;
-    FEHItemInstance Item;
-    class UImage* ItemImage;
-    class UBorder* TextBorder;
-    class UTextBlock* NumberText;
-    class UTextBlock* ItemName;
-    class UBorder* Border;
-    class UOverlay* VariantsOverlay;
+    TArray<class AEHCharacter*> Characters;
 
-    void UpdateSlotState();
-    void UpdateCustomText(const FText& InCustomText);
-    void Refresh();
-    void OnSlotSelectionChanged(const bool IsSelected);
-    void OnClickSplit();
-    void OnClickDetails();
-    void HandleItemDragEnd();
-    void HandleItemDragBegin(class UDraggableItemPayload* DraggableItemPayload);
 };
 
-class UDraggableItemPayload : public UObject
+struct FEHConstructCategory : public FTableRowBase
 {
-    class UEHItemsContainer* ItemsContainer;
+    FText Name;
+    TArray<FEHConstructSubcategory> Subcategories;
+    class UTexture2D* Texture;
 
 };
 
-class UDraggableItemWidget : public UUserWidget
+struct FEHConstructSubcategory
 {
-    class UImage* ItemImage;
+    FName ID;
+    FText Name;
 
 };
 
-class UDraggableWidget : public UUserWidget
-{
-};
-
-class UDragOperationWidget : public UDragDropOperation
-{
-};
-
-class IEHAcceptPushedResourceInterface : public IInterface
-{
-};
-
-class UEHAchievementsManager : public UTGUIAchievementsManager
-{
-    class AEHGamePlayerController* PlayerController;
-
-    void UnlockAchievement(const EEHAchievement Achievement);
-    void ShutdownCompleted();
-    void QueryAchievementsCompleted();
-    bool IsAchievementUnlocked(const EEHAchievement Achievement);
-    FName GetAchievementName(const EEHAchievement Achievement);
-};
-
-class AEHActorLevelBoundaries : public AActor
-{
-    class UEHDeviceItem* DeviceItem;
-
-};
-
-struct FGeneratedCustomMesh
-{
-    class UEHCustomMeshAsset* CustomMeshAsset;
-    FTransform Transform;
-
-};
-
-class UEHInteractableObject : public UObject
-{
-    FIntVector CachedCellCoord;
-    EEHInstanceRotation InstanceRotation;
-    int32 MeshIndex;
-    TArray<FIntVector> OtherDivecesInsideCells;
-    TArray<FName> InstanceTags;
-    FEHInteractableObjectOnInteractableRotationChanged OnInteractableRotationChanged;
-    void OnInteractableRotationChanged(EEHInstanceRotation Rotation);
-    class UEHItem* FormerItem;
-    TArray<FGeneratedCustomMesh> CustomMeshes;
-
-    bool SupportsWater();
-    bool SupportsSignal();
-    bool SupportsElectricity();
-    void SetGrid(class AEHGrid* GridIn);
-    void OnInteractableRotationChanged__DelegateSignature(EEHInstanceRotation Rotation);
-    FVector GetWorldLocation();
-    FVector GetWorldFloorLocation();
-    int32 GetSize();
-    class AEHGrid* GetGridReference();
-    class UEHDeviceItem* GetDeviceFormerItem();
-    void DebugDisableBillboard();
-    void AddCustomMesh(const FGeneratedCustomMesh& CustomMesh);
-};
-
-class UEHDeviceObject : public UEHInteractableObject
+struct FEHDeviceReplicationData
 {
     class AActor* ChildActor;
-    bool IsSwitchedOn;
-    FEHDeviceObjectOnDeviceSwitchStateChanged OnDeviceSwitchStateChanged;
-    void OnDeviceSwitchStateChanged();
 
-    void OnRep_ChildActor();
-    void OnDeviceSwitchStateChanged__DelegateSignature();
 };
 
-struct FEHRequestedResource
+struct FEHGameplayAspectUnlock : public FTableRowBase
 {
-    class UEHItem* Item;
-    uint8 MaxWorkersAssigned;
-    uint8 MaxResources;
-    uint8 CurrentWorkersAssigned;
+    TSoftObjectPtr<UEHAsset> UnlockItem;
+    FName UnlockName;
+
+};
+
+struct FEHGeneratedReactiveMesh
+{
+    TSoftClassPtr<UEHReactiveHISMComponent> ReactiveMesh;
+    FTransform Transform;
 
 };
 
@@ -137,11 +228,256 @@ struct FEHGlobalPointInstance
 
 };
 
-struct FEHRecipeRequirements
+struct FEHGridCellType : public FEHCellType
 {
-    bool RequireElectricity;
-    bool RequireWater;
-    bool RequireSpecialist;
+    class AEHGrid* Grid;
+
+};
+
+struct FEHHeadGroom
+{
+    TSoftObjectPtr<UStaticMesh> FaceMesh;
+    TArray<TSoftObjectPtr<UGroomAsset>> GroomMeshes;
+    TArray<TSoftObjectPtr<UMaterialInterface>> MaterialOverrides;
+
+};
+
+struct FEHHeadMeshes
+{
+    class UStaticMeshComponent* FaceComponent;
+    TArray<class UEHGroomComponent*> GroomComponents;
+
+};
+
+struct FEHHumanNeed
+{
+    EHHumanNeedID NeedID;
+    float Value;
+
+};
+
+struct FEHHumanNeedData : public FTableRowBase
+{
+    bool IsEnabled;
+    FText Name;
+    class UTexture2D* Texture;
+    float DefaultValue;
+    float ChangeOverTime;
+    float CriticalLevel;
+
+};
+
+struct FEHIndicationConfigData
+{
+    EEHWidgetIndicatorType WidgetIndicatorType;
+    class UTexture2D* Icon;
+    FLinearColor BorderColor;
+    bool ShouldShowOffScreen;
+    bool ShouldHideCloseDistance;
+    float CloseDistance;
+
+};
+
+struct FEHInstanceCellDefinition
+{
+    EInstanceCellType InstanceCellType;
+    FIntVector CellCoords;
+    EEHInstanceRotation Rotation;
+
+};
+
+struct FEHInterpolateCellParams
+{
+    float AIBlendingInterpolationSpeed;
+    TArray<float> AnimationSpeeds;
+    float InRangeBlendingClampA;
+    float InRangeBlendingClampB;
+    float InterpolationRotateSpeed;
+    float InterpolationAIRotateSpeed;
+    float InterpolationCurveMultiplayer;
+    float InRangeDimensionClampA;
+    float InRangeDimensionClampB;
+    float OutRangeDimensionClampA;
+    float OutRangeDimensionClampB;
+
+};
+
+struct FEHItemInstance
+{
+    class UEHItem* Item;
+    int32 Quantity;
+
+};
+
+struct FEHItemMesh
+{
+    class UEHItem* Item;
+    class UStaticMesh* Mesh;
+
+};
+
+struct FEHItemSlotMesh
+{
+    TSoftObjectPtr<UStaticMesh> Mesh;
+    TArray<TSoftObjectPtr<UMaterialInterface>> Materials;
+    TArray<TSoftObjectPtr<UMaterialInterface>> DeformableMaterials;
+
+};
+
+struct FEHItemStats : public FTableRowBase
+{
+    uint8 MaxStackSize;
+    uint8 BuyCost;
+    uint8 SellCost;
+    float PickupTime;
+    float PickupRange;
+
+};
+
+struct FEHItemsTranche
+{
+    TArray<FEHItemInstance> ItemTranches;
+
+};
+
+struct FEHLayerOverride
+{
+    EVoxelTerrainType TerrainType;
+    TSoftObjectPtr<UMaterialInstance> LayerMaterial;
+    uint8 ChanceToSpawn;
+
+};
+
+struct FEHMPScenarioParams
+{
+    int32 SeedNumber;
+    bool PlayerConsumesOxygen;
+    bool StartCampaign;
+    bool SharedTechnologies;
+    bool SharedTechnologyPoints;
+
+};
+
+struct FEHMaterials
+{
+    TArray<class UMaterialInterface*> Materials;
+
+};
+
+struct FEHNebulaGeneration
+{
+    int32 MaterialIndex;
+    FVector Scale;
+    FRotator Rotation;
+    FVector LightPosition;
+    float LightColorAlpha;
+    float LightIntensity;
+    float EmissionColorAlpha;
+    float Emission;
+    float Density;
+
+};
+
+struct FEHOutlet
+{
+    EEHDecalType Type;
+    FIntVector OutletCord;
+    FTransform OutletTransform;
+
+};
+
+struct FEHPartScheme
+{
+    FString Name;
+    TSoftObjectPtr<UStaticMesh> StaticMesh;
+    TArray<TSoftObjectPtr<UMaterialInstance>> Materials;
+
+};
+
+struct FEHPartSuffix
+{
+    FText Name;
+    FName MirrorLeftRightID;
+    FName MirrorRearFrontID;
+
+};
+
+struct FEHPawns
+{
+    TArray<class APawn*> Pawns;
+
+};
+
+struct FEHPendingPlayerContainer
+{
+};
+
+struct FEHPlanetoidDecalInfo
+{
+    TSoftObjectPtr<UMaterialInterface> Material;
+    FVector Size;
+    uint8 SpawnChance;
+
+};
+
+struct FEHPlanetoidParticleInfo
+{
+    TSoftObjectPtr<UParticleSystem> Particle;
+    FVector Offset;
+    uint8 SpawnChance;
+
+};
+
+struct FEHPlayerAction
+{
+    FName ActionName;
+    FText ActionDisplayText;
+
+};
+
+struct FEHPlayerActionSet
+{
+    int32 ActionsBits;
+    class UEHItem* ActionItem;
+    class UEHInteractableObject* InteractableObject;
+    class AActor* WorldInteractiveActor;
+    int32 HitItem;
+
+};
+
+struct FEHPreviewKeyPreset
+{
+    TMap<class FKey, class ESettingsControllerActions> ActionsKeys;
+
+};
+
+struct FEHProductionProgress : public FEHProgress
+{
+    FName Name;
+
+};
+
+struct FEHProductionReplicationData
+{
+    TArray<FEHRecipeReplicationData> ReplicatedRecipes;
+    uint8 DedicatedSpecialistsNumber;
+    TArray<FEHRecipe> DynamicRecipes;
+
+};
+
+struct FEHProgress
+{
+    float ProductionStartTime;
+    bool IsProducing;
+    FTimerHandle TimerHandle;
+    float Ratio;
+    float PreviouslyCompletedProgress;
+
+};
+
+struct FEHPushOut
+{
+    class UEHItemsContainer* PushContainer;
 
 };
 
@@ -162,269 +498,386 @@ struct FEHRecipe : public FTableRowBase
 
 };
 
-class UEHItemsContainer : public UEHDeviceObject
+struct FEHRecipeReplicationData
 {
-    TArray<FEHItemInstance> Items;
-    bool IsPreviewContainer;
-    bool IsRemovable;
-    EEHSlotDragType SlotDragType;
-    TMap<UEHItem*, int32> ItemsLookupCounts;
-    bool HasInvertedPushDefinitions;
-    TArray<FEHRequestedResource> RequestedResources;
-    FEHItemsContainerOnItemsChange OnItemsChange;
-    void OnItemsChange();
-    FEHItemsContainerOnRequestedResourcesChanged OnRequestedResourcesChanged;
-    void OnItemsChange();
-    FEHItemsContainerOnItemSet OnItemSet;
-    void OnItemSet(const int32 Index);
-    FEHItemsContainerOnItemsPushedOut OnItemsPushedOut;
-    void OnItemsPushed(class UEHItem* Item, const FIntVector PushCoord);
-    FEHItemsContainerOnItemsPushedIn OnItemsPushedIn;
-    void OnItemsPushed(class UEHItem* Item, const FIntVector PushCoord);
-    FEHItemsContainerOnItemsDelivered OnItemsDelivered;
-    void OnItemsDelivered(FEHItemInstance DeliveredItems);
-    FEHItemsContainerOnTransferedItemsForRecipe OnTransferedItemsForRecipe;
-    void OnTransferedItemsForRecipe(FEHRecipe Recipe, const int32 Count);
-
-    void ResetRequestedItems();
-    void RemoveRequestedItem(class UEHItem* Item);
-    void PickItem(class UEHItem* Item);
-    void OnTransferedItemsForRecipe__DelegateSignature(FEHRecipe Recipe, const int32 Count);
-    void OnItemsPushed__DelegateSignature(class UEHItem* Item, const FIntVector PushCoord);
-    void OnItemSet__DelegateSignature(const int32 Index);
-    void OnItemsDelivered__DelegateSignature(FEHItemInstance DeliveredItems);
-    void OnItemsChange__DelegateSignature();
-    void NotifyItemsChanged();
-    void Multi_TakeSingleItem(const class UEHItem* Item);
-    void MoveSingleItemToInventory(class UEHItem* Item);
-    void InvertPushDefinitions();
-    bool HasPushDefinitions();
-    bool HasItem(const FEHItemInstance& ItemInstance);
-    bool CheckTakingItems(const TArray<FEHItemInstance>& ItemInstances);
-    bool AddRequestedItem(class UEHItem* Item, const uint8 MaxWorkersAssigned, const uint8 MaxResources);
-    void AddItems(const TArray<FEHItemInstance>& ItemInstences);
-    void AddItem(const FEHItemInstance& ItemInstance);
-};
-
-struct FAIWorkRequest
-{
-    EAIWorkRequestState RequestState;
-    EAIWorkActionType ActionType;
-    class UEHInteractableObject* PrimaryDevice;
-    FIntVector PrimaryActionCoord;
-    class UEHInteractableObject* SecondaryDevice;
-    class UEHItem* ResrouceToTransfer;
-    UClass* DemandClass;
+    FName Name;
+    int32 AutoDeactivateCounts;
+    bool IsSelected;
+    float ProductionRatio;
+    float CompletedProgress;
+    bool IsRunning;
 
 };
 
-class UEHAIObject : public UEHItemsContainer
+struct FEHRecipeRequirements
 {
-    EAIProfession AIProfession;
-    float AttachedResourceHeight;
-    float AttachedResourceScale;
-    class UEHItem* ResourceHolderItem;
-    class UEHItem* AttachedResource;
-    class UEHItem* AttachedVisualItem;
-    float AttachedVisualItemHeight;
-    FIntVector CreationCellCoord;
-    bool IsMovingOnPath;
-    bool IsNudged;
-    bool IsBoarding;
-    FIntVector LastRequestedPath;
-    int32 RetryCount;
-    FAIWorkRequest CurrentWorkRequest;
-    FIntVector NextDirectionCoord;
-    FEHAIObjectOnWorkRequestStateChanged OnWorkRequestStateChanged;
-    void OnWorkRequestStateChanged();
-    TArray<FIntVector> Path;
-    int32 CurrentPathIndex;
-    class UEHAIExternalDependenciesDataObject* AIExternalDependenciesDataObject;
-
-    void TransferAIToAnotherGrid(class AEHGrid* AnotherGrid);
-    void RequestPath(const FIntVector& DestinationCoord, const int32 RetryCountIn);
-    void OnWorkRequestStateChanged__DelegateSignature();
-    void Multi_RemoveAttachedItem();
-    void Multi_AddAttachedItem(class UEHItem* Item);
-    bool IsTransferedTo(class AEHGrid* TestedGrid);
-    bool IsTransfered();
-    bool IsInsideBuilding();
-    bool HasWorkplaceAssigned();
-    void GoOnPathDirectly(const TArray<FIntVector>& FullPath);
-    class UEHInteractableObject* GetWorkplace();
-    FIntVector GetNormalizedDirection();
-    class UEHInteractableObject* GetEnteredBuilding();
-    class UEHItem* GetCarriedItem();
-};
-
-class UEHAIBreederObject : public UEHAIObject
-{
-    FEHItemInstance CarriedItem;
-    uint8 CarriedWater;
-    EHBreedAnimalTypes CurrentAnimal;
+    bool RequireElectricity;
+    bool RequireWater;
+    bool RequireSpecialist;
 
 };
 
-class UEHAIDirectorComponent : public UActorComponent
+struct FEHRequestedResource
 {
-};
-
-class UEHAIExternalDependenciesDataObject : public UObject
-{
-};
-
-class UEHAIFabricatorDroneObject : public UEHAIObject
-{
-};
-
-class UEHAIFarmerObject : public UEHAIObject
-{
-    class UEHItem* CarriedItem;
-    uint8 CarriedWater;
-    EHHarvestPlantTypes CurrentPlant;
+    class UEHItem* Item;
+    uint8 MaxWorkersAssigned;
+    int32 MaxResources;
+    uint8 CurrentWorkersAssigned;
 
 };
 
-struct FEHHeadMeshes
+struct FEHResourceVeinNetworks
 {
-    class UStaticMeshComponent* FaceComponent;
-    TArray<class UEHGroomComponent*> GroomComponents;
+    TArray<class UEHResourceVeinNetwork*> ResourceVeinNetworks;
 
 };
 
-struct FEHHumanNeed
+struct FEHScenarioDetails
 {
-    EHHumanNeedID NeedID;
-    float Value;
+    bool IsScenarioSuccessful;
+    EEHScenarioFailureReason ScenarioFailureReason;
+    FString DisplayName;
+    FString TimeToDisplay;
+    class UTexture2D* Icon;
+    FString Version;
+    FEHScenarioParams ScenarioParams;
+    uint8 PlayersCount;
 
 };
 
-class UEHAIHumanObject : public UEHAIObject
+struct FEHScenarioParams
 {
-    class UDataTable* DataTable;
-    bool IsFemale;
-    FString HumanName;
-    int32 HumanHeadID;
-    FEHHeadMeshes HeadMeshes;
-    TArray<float> CustomChangesOverTime;
-    TArray<FEHHumanNeed> HumanNeeds;
-
-    void Multi_FoodReceived(class UEHItem* Food);
-    void Multi_EnableBillboard(const EEHBillboardType BillboardType);
-    void Multi_DisableBillboard(const EEHBillboardType BillboardType);
-    void InitCollectionData();
-    FEHHumanNeed GetHumanNeed(const EHHumanNeedID HumanNeedID);
-};
-
-class UEHAIHumanSpecialist : public UEHAIHumanObject
-{
-    FEHAIHumanSpecialistOnProfessionChanged OnProfessionChanged;
-    void OnProfessionChanged();
-
-    void OnProfessionChanged__DelegateSignature();
-    void ChangeProfession(EAIProfession NewProfession);
-};
-
-class UEHAIHumanTrainee : public UEHAIHumanObject
-{
-    EAIProfession TrainSpecialization;
+    FString SeedName;
+    int32 SeedNumber;
+    bool PlayerConsumesOxygen;
+    bool FreeConstruction;
+    bool StartCampaign;
+    TArray<FEHItemInstance> DefaultItems;
+    TArray<FEHGlobalPointInstance> DefaultGlobalPoints;
+    TArray<class UEHTechnologyAsset*> UnlockedTechnologies;
+    bool ShouldGenerateChunks;
+    int32 ChunkElementsCount;
+    float TerrainTypeSpawnChances;
+    float ShapeTypeSpawnChances;
 
 };
 
-class UEHAsset : public UPrimaryDataAsset
+struct FEHServerParams
 {
-    FText ItemName;
-    FText Description;
-    FText LongDescription;
+    FString Name;
+    bool IsPublic;
+    bool AllowLateJoin;
+    int32 MaxNumberOfPlayers;
+    FString SavegameName;
+
+};
+
+struct FEHSignalNetworks
+{
+    TArray<class UEHSignalNetwork*> SignalNetworks;
+
+};
+
+struct FEHSimpleCell
+{
+    class UEHItem* Item;
+    FIntVector CellCoords;
+    EEHInstanceRotation CellRotation;
+
+};
+
+struct FEHStartingStation
+{
+    FString DisplayName;
+    FName StreamingID;
+    EEHStartingStationSize Size;
     TSoftObjectPtr<UTexture2D> Icon;
-    int32 DebugSortPriority;
-    bool IsUnlockedByDefault;
-    EUnlockType UnlockType;
-    FText LockedToastTitle;
-    FText LockedToastDescription;
 
 };
 
-struct FEHItemSlotMesh
+struct FEHThumbstickPreviewKeyLayout
 {
-    TSoftObjectPtr<UStaticMesh> Mesh;
-    TArray<TSoftObjectPtr<UMaterialInterface>> Materials;
-    TArray<TSoftObjectPtr<UMaterialInterface>> DeformableMaterials;
+    TMap<class ESettingsThumbstickActions, class ESettingsControllerActions> ActionsKeys;
 
 };
 
-class UEHItem : public UEHAsset
+struct FEHTrackableInfo
 {
-    FString ItemSuffix;
-    FPrimaryAssetType ItemType;
-    EInstanceCellType InstanceCellType;
-    EHConstructionType InventoryMode;
-    FName InventorySubcategoryName;
-    TArray<FEHItemSlotMesh> SlotMeshes;
-    EHConstructParticleType ConstructParticleType;
-    EHCollectiveConstructionType CollectiveConstructionType;
-    bool ShouldAddModeItem;
-    TSoftClassPtr<UEHInstancedStaticMeshComponent> CustomConstructionCollider;
-    bool BlockVisibilityCollision;
-    float ZOffset;
-    FVector Scale;
-    FVector Dimensions;
-    FVector2D DimensionConveyScale;
-    bool UsesBlendingAnimations;
-    int32 DynamicMaterialInstanceID;
-    int32 NumCustomDataFloats;
-    int32 CustomDepthStencilValue;
-    TArray<class UEHItem*> VariantItems;
-    TArray<class UEHItem*> RelatedItems;
-    TSoftObjectPtr<UStaticMesh> PreviewMesh;
-    bool ShowInDetailedList;
-    TMap<class EPlayerActionType, class EHJobModeType> ActonJobModes;
-    EHConstructRotationType ConstructRotationType;
-    bool CanSelect;
-    bool CanOpen;
-    bool CanRemove;
-    bool CanInteract;
-    bool CanUpgrade;
-    bool CanExtract;
-    bool CanFly;
-    bool IgnoredWhenSaving;
-    FText InteractText;
-    TSoftClassPtr<UInteractBaseWidget> InteractWidgetClass;
-    bool RequiresFloorForConstruction;
-    bool IsBlockingCoord;
-    bool RandomizeYaw;
-    bool RandomItemMesh;
-    float RandomScaleFactor;
-    float RandomInclinationFactor;
-    bool ReceiveDecals;
-    bool AffectDistanceFieldLighting;
+    class UTexture2D* Texture;
+
+};
+
+struct FEHVectors
+{
+    TArray<FVector> Vectors;
+
+};
+
+struct FEHVehicleDefinition
+{
+    FString VehicleName;
+    EEHVehicleType VehicleType;
+    TArray<FEHVehiclePart> Parts;
+    TMap<class EEHVehiclePartType, class EEHVehiclePartMirrorType> SizeMirrorModes;
+    TMap<class EEHVehiclePartType, class EEHVehiclePartMirrorType> OffsetMirrorModes;
+    int32 UniqueID;
+
+};
+
+struct FEHVehiclePart
+{
+    EEHVehiclePartType PartType;
+    FTransform Transform;
+    FName PartID;
+    uint8 SchemeID;
+    TArray<FLinearColor> Colors;
+
+};
+
+struct FEHVehiclePartTypeData
+{
+    FText Name;
+    FText Description;
+    class UTexture2D* Icon;
     TArray<FEHItemInstance> Cost;
-    float ConstrcutionBasicScienceReceiveChance;
-    int32 MaxStackSize;
-    class UEHItem* UpgradeItem;
-    bool UsePreviewMeshForEditor;
+    float ProductionTime;
+    TArray<FName> ColorNames;
+    TArray<FEHPartScheme> Schemes;
+    FIntPoint SizeXMinMax;
+    FIntPoint SizeYMinMax;
+    FIntPoint SizeZMinMax;
+    EEHVehiclePartScale UseXforMultipleScales;
+    FIntPoint OffsetXMinMax;
+    FIntPoint OffsetYMinMax;
+    FIntPoint OffsetZMinMax;
+    bool CanBeRemoved;
+    TSoftClassPtr<USceneComponent> PredefinedComponent;
+    TSoftObjectPtr<UStaticMesh> PredefinedMesh;
+    TArray<FVector> PredefinedLocation;
+    uint8 NumberOfUses;
 
-    bool HasVariants();
-    FString GetIdentifierString();
-    FText GetFullName();
-    bool CanRotate();
 };
 
-class UEHBlockItem : public UEHItem
+struct FEHVehicleTypeData
 {
-    bool BlockSupportsFloorConstruction;
+    FText Name;
+    TSoftObjectPtr<UTexture2D> Icon;
+    TSoftClassPtr<APawn> Pawn;
+    float SpawnHeightOffset;
+    TArray<EEHVehiclePartType> CompatibleParts;
+    int32 PossibleActions;
+    FEHItemInstance OutputItem;
 
 };
 
-class UEHInteractableItem : public UEHBlockItem
+struct FGeneratedCustomMesh
 {
-    EEHBillboardTemplateType BillboardTemplateType;
-    FVector BillboardOffset;
-    TSubclassOf<class UEHSSEInitializer> SSEInitializerTemplate;
-    class UEHInteractableObject* InteractableObjectTemplate;
+    class UEHCustomMeshAsset* CustomMeshAsset;
+    FTransform Transform;
 
-    class UEHInteractableObject* GetInteractableTemplate();
-    class UEHInteractableObject* GetDefaultInteractableObject(class AActor* GridActor);
+};
+
+struct FHUBModDefinition
+{
+    FUGCPackage UGCPackage;
+    FString PakFilename;
+    class UACModConfig* ACModConfig;
+
+};
+
+struct FInstancesContainer
+{
+    TArray<class UEHHISMCellComponent*> Instances;
+
+};
+
+struct FIntVector16
+{
+    int16 X;
+    int16 Y;
+    int16 Z;
+
+};
+
+struct FInteractableObjectArray
+{
+    TArray<class UEHInteractableObject*> InteractableObjects;
+
+};
+
+struct FItemArray
+{
+    TArray<TSoftObjectPtr<UEHItem>> Items;
+
+};
+
+struct FMenuData : public FTableRowBase
+{
+    EMenuType ParentMenuType;
+    EMenuType MenuType;
+    FText CategoryName;
+    FText MenuName;
+    FText Title;
+    FText Description;
+    FText ToolTip;
+    TArray<EButtonBarAction> Options;
+    FText NarratedText;
+    bool IsEnabledByDefault;
+    EEHMenuPlatformVisibility PlatformVisibility;
+
+};
+
+struct FMeshPivotInfo
+{
+    FString Filename;
+    TArray<FString> TransformNames;
+    TArray<FTransform> MeshInstanceTransforms;
+
+};
+
+struct FOverlayInfo
+{
+    EEHUIOverlayID OverlayID;
+    bool ShouldOpen;
+
+};
+
+struct FPathFindRequest
+{
+    class UEHAIObject* AIObject;
+    FIntVector StartPosition;
+    FIntVector EndPosition;
+    bool AerialRequest;
+    bool IgnoreAI;
+
+};
+
+struct FPushContainerCoord
+{
+    bool IsPushingOut;
+    FIntVector Coord;
+    FTransform GateTransform;
+
+};
+
+struct FResourceAction
+{
+    int32 Priority;
+    class UEHItem* Item;
+    class UEHItemsContainer* Container;
+    bool IsStoringResource;
+
+};
+
+struct FResourceActionArray
+{
+    TArray<FResourceAction> Containers;
+
+};
+
+struct FSAVE
+{
+    FString saveName;
+    FDateTime DateTime;
+
+};
+
+struct FSaveGridItem
+{
+    FIntVector ItemCoord;
+    EEHInstanceRotation Rotation;
+    TArray<uint8> InteractableObjectData;
+    TMap<class FName, class FBinaryDataContainer> AssociatedObjectsData;
+
+};
+
+struct FSaveGridItemContainer
+{
+    class UEHItem* Item;
+    TArray<FSaveGridItem> Instances;
+
+};
+
+struct FSaveMultiplayerPlayer
+{
+    uint8 PlayerId;
+    FTransform Transform;
+    FRotator ControlRotation;
+    bool JetpackOn;
+    TArray<FBinaryDataContainer> InventoryContainersData;
+
+};
+
+struct FSaveSpawnActor
+{
+    FTransform Transform;
+    UClass* Class;
+
+};
+
+struct FSaveTransferCell
+{
+    FIntVector Direction;
+    FVector Destination;
+    bool IsInsideBuilding;
+    TArray<FSaveGridItem> Items;
+
+};
+
+struct FScreenDefinition
+{
+    TSoftClassPtr<UTGUIScreen> ScreenTemplate;
+    TSoftClassPtr<UEHScreenViewModel> ViewModelTemplate;
+
+};
+
+struct FSettingResolutionData : public FTableRowBase
+{
+    FVector2D AspectRatio;
+    TArray<FIntPoint> Resolutions;
+
+};
+
+struct FSettingsCategoryData : public FTableRowBase
+{
+    ESettingsCategoryType SettingsCategoryType;
+    ESettingsCategoryType ParentCategoryType;
+    FText CategoryName;
+    TArray<FName> MouseKeyboardOnlySubcategories;
+    TArray<FName> ControllerOnlySubcategories;
+
+};
+
+struct FSettingsOptionData : public FTableRowBase
+{
+    ESettingsCategoryType ParentCategoryType;
+    ESettingOptionType SettingOptionType;
+    FText SettingOptionName;
+    TArray<FString> Options;
+    TArray<class UTexture2D*> PreviewImageRef;
+    TArray<FText> PreviewDescriptions;
+    ESettingWidgetType WidgetType;
+    FString DefaultOption;
+    FName Annotation;
+    bool HasExtraIndent;
+    bool IsEnabled;
+    bool ShouldBeConstructed;
+    bool HasDynamicOptions;
+    FText TooltipDescription;
+    ESettingPreviewType PreviewType;
+
+};
+
+struct FSettingsSlidersData : public FTableRowBase
+{
+    ESettingOptionType SettingOptionType;
+    ESliderStepType SliderStepType;
+    float GamepadKeyboardStepValue;
+    float StepRound;
+    float MouseWidgetStep;
+    int32 MinimumFractionalDigits;
+    int32 MaximumFractionalDigits;
+
 };
 
 struct FStructureSize
@@ -435,176 +888,59 @@ struct FStructureSize
 
 };
 
-struct FEHOutlet
+struct FTGCodingStandardBlueprintVarGroup
 {
-    EEHDecalType Type;
-    FIntVector OutletCord;
-    FTransform OutletTransform;
+    TArray<int32> WidgetCameraLevels;
+    float CameraTraceVolumeWidth;
+    float CameraTraceVolumeHeight;
+    bool ShowCameraWidget;
+    bool ShowWeaponWidget;
 
 };
 
-struct FEHGeneratedReactiveMesh
+struct FUIActionMapping : public FTableRowBase
 {
-    TSoftClassPtr<UEHReactiveHISMComponent> ReactiveMesh;
-    FTransform Transform;
+    EButtonBarAction ButtonBarAction;
+    FName InputAction;
+    FText DisplayText;
+    uint8 Priority;
+    EButtonBarItemVisibility VisibilityWithControllers;
 
 };
 
-struct FContainerPushDefinition
+struct FVehicleArray
 {
-    FIntVector Coord;
-    EEHInstanceRotation GateRotation;
-    float InsidePushOffset;
-    EPushDirection PushDirection;
-    TArray<class UEHItem*> RestrictedItems;
-    EInstanceCellType RestrictedType;
-    TSubclassOf<class UEHConveyorObject> ConveyorPushType;
-    FEHGeneratedReactiveMesh GateMesh;
+    TArray<class UEHAIObject*> AIObjects;
 
 };
 
-class UEHDeviceItem : public UEHInteractableItem
+struct FVoxelShapeData
 {
-    int32 DeviceTypeFlags;
-    FStructureSize StructureSize;
-    TArray<FTransform> InsideMeshesTransforms;
-    TSoftClassPtr<AActor> InteractiveActorClass;
-    bool SpawnActorOnlyForInteraction;
-    TArray<FEHOutlet> Outlets;
-    TArray<FContainerPushDefinition> PushDefinitions;
-    TArray<FGeneratedCustomMesh> CustomMeshes;
-    TArray<FEHGeneratedReactiveMesh> ReactiveMeshes;
-    bool ShouldCreateColliderBlocks;
-    bool CreateCollidersForAllDirections;
-    bool ColliderCheckOccupiedCoord;
-    bool CreatedDeviceRegisteredAsVacant;
-    bool ShowDisabledStatePreview;
+    FText ShapeName;
+    TSubclassOf<class UVoxelGenerator> GeneratorClass;
 
 };
 
-class UEHAIItem : public UEHDeviceItem
+struct FVoxelTerrainDigData
 {
-    float AIMovementSpeed;
-    float SlopeZOffset;
-    float SlopeAngle;
-    class UTexture2D* AIIndicationMapIcon;
-    float HumanHeadHeight;
+    FText TerrainName;
+    TSoftObjectPtr<UVoxelInstancedMaterialCollection> InstanceMaterialCollection;
+    class UEHItem* ItemToPick;
+    float PickChance;
+    TSoftObjectPtr<UMaterialInterface> ColliderWorldMaterial;
+    TSoftObjectPtr<UMaterialInterface> DestructibleMaterial;
+    float DestructibleSpawnScale;
+    float DestructibleImpulseStrength;
+    FLinearColor DustColor;
+    FLinearColor MapColor;
+    TArray<FEHLayerOverride> LayersOverrides;
 
 };
 
-class UEHAIMinerObject : public UEHAIObject
+class AEHActorLevelBoundaries : public AActor
 {
-};
+    class UEHDeviceItem* DeviceItem;
 
-class UEHAITransportBotObject : public UEHAIObject
-{
-};
-
-class UEHCustomAsset : public UEHAsset
-{
-};
-
-class UEHVisualMeshAsset : public UEHCustomAsset
-{
-    FText ItemDescription;
-    FName AssetName;
-    TArray<TSoftObjectPtr<UStaticMesh>> StaticMeshes;
-    uint8 NumCustomDataFloats;
-
-};
-
-class UEHAnimalMeshAsset : public UEHVisualMeshAsset
-{
-    EHBreedAnimalTypes BreedAnimalType;
-    EHAnimalSize AnimalSize;
-    float GrowingPhaseTime;
-    uint8 ConsumedPhaseWater;
-    uint8 ConsumedPhaseGrain;
-    class UEHItem* ProducedResource;
-
-};
-
-class UEHAnimatedEllipsisTextWidget : public UTGUserWidget
-{
-    class UEHAnimatedEllipsisTextWidgetViewModel* TextWidgetViewModel;
-
-    void EnableEllipsis(bool AreEllipsisEnabled);
-};
-
-class UEHViewModel : public UTGViewModel
-{
-    FTextBindable ToolTipText;
-
-};
-
-class UEHAnimatedEllipsisTextWidgetViewModel : public UEHViewModel
-{
-    FTextBindable TextToShow;
-    FBoolBindable ShowEllipsis;
-
-};
-
-class UEHLogicObject : public UEHDeviceObject
-{
-    TArray<class UEHItem*> SelectedResources;
-    FEHLogicObjectOnSelectedResourcesChanged OnSelectedResourcesChanged;
-    void OnSelectedResourcesChanged();
-
-};
-
-class UEHSignalObject : public UEHLogicObject
-{
-    class UEHSignalNetwork* SignalNetworkIn;
-    class UEHSignalNetwork* SignalNetworkOut;
-    TArray<FEHItemInstance> ResourcesSignalOut;
-    FEHSignalObjectOnResourcesSignalOutChanged OnResourcesSignalOutChanged;
-    void OnResourcesSignalOutChanged();
-    FEHSignalObjectOnSelectedDeviceChanged OnSelectedDeviceChanged;
-    void OnSelectedDeviceChanged();
-
-};
-
-class UEHArithmeticCombinatorObject : public UEHSignalObject
-{
-    uint8 MathOperationIndex;
-    int32 OperationValue;
-
-    void UpdateOperationValue(int32 OperationValue);
-    void UpdateMathOperation(uint8 MathOperationIndex);
-    void HandleSelectedResourcesChanged();
-};
-
-class UEHAssetManager : public UAssetManager
-{
-};
-
-class UEHDataObject : public UObject
-{
-};
-
-struct FEHAsteroidData
-{
-    class UStaticMesh* Mesh;
-    FVector Velocity;
-    FRotator Spin;
-    FVector Color;
-    TArray<FEHItemInstance> Items;
-
-};
-
-class UEHAsteroidCatcherDataObject : public UEHDataObject
-{
-    FEHAsteroidData AsteroidData;
-    FTransform AsteroidTransform;
-    FRotator CannonRelativeRotation;
-
-};
-
-class AEHInteractivePawn : public APawn
-{
-    int32 PossesedFlags;
-
-    class UEHInteractableObject* GetInteractableObject();
 };
 
 class AEHAsteroidCatcherPawn : public AEHInteractivePawn
@@ -613,155 +949,8 @@ class AEHAsteroidCatcherPawn : public AEHInteractivePawn
     void ActivateAutoCatching();
 };
 
-class AEHWorldInteractiveActor : public AActor
-{
-    FEHWorldInteractiveActorOnWorldInteractiveInfoChanged OnWorldInteractiveInfoChanged;
-    void OnWorldInteractiveInfoChanged();
-    class UTexture2D* InteractionIcon;
-    FText InteractionDisplayName;
-    TMap<class EPlayerActionType, class EHJobModeType> ActionTypeJobModes;
-    int32 ActionsFlags;
-
-    void OnWorldInteractiveInfoChanged__DelegateSignature();
-    void NotifyInfoChanged();
-};
-
 class AEHAsteroidDebris : public AEHWorldInteractiveActor
 {
-};
-
-struct FEHProgress
-{
-    float ProductionStartTime;
-    bool IsProducing;
-    FTimerHandle TimerHandle;
-    float Ratio;
-    float PreviouslyCompletedProgress;
-
-};
-
-struct FEHProductionProgress : public FEHProgress
-{
-    FName Name;
-
-};
-
-class UEHProductionObject : public UEHItemsContainer
-{
-    bool ShowProductionItemsContainer;
-    EAIProfession RequiredJobProfession;
-    uint8 MaximumSpecialistsNumber;
-    uint8 DedicatedSpecialistsNumber;
-    TArray<class UEHAIObject*> AssignedWorkplaceAIs;
-    FEHProductionObjectOnSelectedRecipesChanged OnSelectedRecipesChanged;
-    void OnSelectedRecipesChanged();
-    FEHProductionObjectOnAutoDeactivateCountsChanged OnAutoDeactivateCountsChanged;
-    void OnAutoDeactivateCountsChanged();
-    FEHProductionObjectOnItemProduced OnItemProduced;
-    void OnItemProduced(FEHItemInstance ProducedItem);
-    FEHProductionObjectOnGlobalPointProduced OnGlobalPointProduced;
-    void OnGlobalPointProduced(FEHGlobalPointInstance ProducedGlobalPoint);
-    FEHProductionObjectOnAssignedAIWorkersChanged OnAssignedAIWorkersChanged;
-    void OnAssignedAIWorkersChanged(uint8 AICount);
-    FEHProductionObjectDedicatedSpecialistsNumberChanged DedicatedSpecialistsNumberChanged;
-    void OnAssignedAIWorkersChanged(uint8 AICount);
-    FEHProductionObjectOnCraftingStateChanged OnCraftingStateChanged;
-    void OnCraftingStateChanged(FName RecipeName);
-    TArray<class UEHAIObject*> AIsInside;
-    uint8 AIInsideCount;
-    TMap<class FName, class FEHProductionProgress> RecipesProgresses;
-    TMap<class FName, class FEHRecipe> SelectedRecipes;
-    TMap<FName, int32> RecipesAutoDeactivateCounts;
-    TSet<UEHItem*> ProducedItemsCached;
-
-    bool UsesRecipesForProduction();
-    void OnSelectedRecipesChanged__DelegateSignature();
-    void OnItemProduced__DelegateSignature(FEHItemInstance ProducedItem);
-    void OnGlobalPointProduced__DelegateSignature(FEHGlobalPointInstance ProducedGlobalPoint);
-    void OnCraftingStateChanged__DelegateSignature(FName RecipeName);
-    void OnAutoDeactivateCountsChanged__DelegateSignature();
-    void OnAssignedAIWorkersChanged__DelegateSignature(uint8 AICount);
-    bool IsWorkplaceForAI();
-    bool IncreaseDedicatedWorkplaceAI();
-    bool HasProducingRecipe();
-    void HandleLoadGameFinished(bool IsLoadedFromSavegame);
-    float GetSpecialistRatio();
-    TArray<FEHRecipe> GetRecipes();
-    FEHProductionProgress GetRecipeProgress(const FName& RecipeName);
-    float GetProductionRatio(bool RequireSpecialist);
-    bool DecreaseDedicatedWorkplaceAI();
-};
-
-class UEHCraftingObject : public UEHProductionObject
-{
-    class UEHElectricNetwork* ElectricNetwork;
-    int32 ProducedElectricity;
-    int32 ConsumedElectricity;
-    int32 ConsumedWater;
-    int32 ProducedWater;
-    class UEHWaterNetwork* WaterNetwork;
-    FEHCraftingObjectOnCraftingElectricityChanged OnCraftingElectricityChanged;
-    void OnCraftingUtilityChanged();
-    FEHCraftingObjectOnCraftingWaterChanged OnCraftingWaterChanged;
-    void OnCraftingUtilityChanged();
-
-    void OnRep_ProducedWater();
-    void OnRep_ProducedElectricity();
-    void OnCraftingUtilityChanged__DelegateSignature();
-    bool HasPower();
-    int32 GetProducedElectricity();
-    bool GetIsWaterDevice();
-    int32 GetConsumedElectricity();
-    class AActor* GetChildActor();
-};
-
-struct FEHCatchedAsteroid
-{
-    FTransform Transform;
-    FVector Color;
-    TArray<FEHItemInstance> Items;
-
-};
-
-class UEHAsteroidsCatcher : public UEHCraftingObject
-{
-    int32 AttractedAsteroidIndex;
-    class UParticleSystem* LaserBeamParticle;
-    TArray<FTransform> LaserBeamOffsets;
-    class UParticleSystem* ProcessingParticle;
-    FVector ProcessingOffset;
-    FVector AsteroidMeshOffset;
-    float AsteroidScale;
-    FEHAsteroidsCatcherOnAsteroidCatchStateChanged OnAsteroidCatchStateChanged;
-    void OnAsteroidCatchStateChanged(EAsteroidCatchStateChanged CatchStateChange);
-    FEHCatchedAsteroid AttractedAsteroid;
-    FEHCatchedAsteroid ProcessedAsteroid;
-    float AsteroidProcessingTime;
-
-    bool RemoveProcessedAsteroid();
-    bool RemoveAttractedAsteroid();
-    void OnAsteroidCatchStateChanged__DelegateSignature(EAsteroidCatchStateChanged CatchStateChange);
-    void NotifyAsteroidCatched();
-    void NotifyAsteroidAttraceted(const FEHAsteroidData& AsteroidData, const FTransform& Transform);
-    bool IsProcessingAsteroid();
-    bool IsAttractingAsteroid();
-    void HandleGameStarted();
-};
-
-struct FEHAsteroidExtraction
-{
-    class UEHResourceItem* ExtractedResource;
-    uint8 NuberOfHits;
-
-};
-
-struct FEHAttractedAsteroidData
-{
-    class UStaticMesh* Mesh;
-    class UEHAsteroidsCatcher* AsteroidCatcher;
-    FVector Color;
-    TArray<FEHItemInstance> Items;
-
 };
 
 class AEHAsteroidSpawner : public AEHWorldInteractiveActor
@@ -817,9 +1006,1206 @@ class AEHAsteroidSpawner : public AEHWorldInteractiveActor
     void Multi_AddAttractedAsteroid(class UEHAsteroidsCatcher* AsteroidCatcher, const FTransform& Transform, const FEHAsteroidData& AsteroidData);
     void Multi_AddAsteroid(const FTransform& Transform, const FEHAsteroidData& AsteroidData, const FEHAsteroidExtraction& AsteroidExtraction);
     void HandleAssetsLoaded();
-    FEHAsteroidData GenerateAsteroidData();
+    FEHAsteroidData GenerateAsteroidData(class UEHItem* ResourceItem);
     class UEHResourceItem* ExtractResource(const int32 InstanceIndex);
     void CollidingAsteroidDestroyed(const int32 InstanceIndex, const FVector ImpactPoint);
+};
+
+class AEHBlackHole : public AEHRemotlyConstructedActor
+{
+    EBlackHoleType BlackHoleType;
+
+    void UpdateOpacity(const float Opacity);
+    void OnCreated();
+};
+
+class AEHCelestialBodyActor : public AActor
+{
+    FName SerializedActorUniqueName;
+
+};
+
+class AEHCharacter : public AVoxelCharacter
+{
+    class UCameraComponent* FirstPersonCamera;
+    class USpringArmComponent* CameraSpring;
+    class USpringArmComponent* TraceCameraPoint;
+    float MouseVerticalSensitivity;
+    float MouseHorizontalSensitivity;
+    class UEHInventoryComponent* InventoryComponent;
+    class AEHGamePlayerController* GamePlayerController;
+    bool StationaryJetpack;
+    bool Booster;
+    FEHCharacterOnJetpackModeChanged OnJetpackModeChanged;
+    void OnJetpackModeChanged(bool IsActive);
+    class UPrimitiveComponent* BaseComponent;
+    class USphereComponent* SphereGridDetectorComponent;
+
+    void UpdateMPTool();
+    void Server_UpdateStationaryJetpack(bool IsOn);
+    void Server_UpdateBooster(bool IsOn);
+    void Server_ToggleStationaryJetpack();
+    void Server_LaunchCharacter_ZOverride(const FVector& LaunchVelocity);
+    void Server_LaunchCharacter(const FVector& LaunchVelocity);
+    void Server_DetachCharacter();
+    void Server_AttachCharacterToActor(class AActor* ParentActor);
+    void Scan();
+    void SC_LaunchCharacter_ZOverride(const FVector& LaunchVelocity);
+    void SC_LaunchCharacter(const FVector& LaunchVelocity);
+    void OnRep_StationaryJetpack();
+    void OnJetpackModeChanged__DelegateSignature(bool IsActive);
+    void Multi_UpdateHidden(const bool NewHidden);
+    void Multi_Teleport(const FVector& Location, const FRotator& Rotation);
+    void Multi_DetachActor();
+    void Multi_AttachActor(class AActor* ParentActor);
+    void HandlePlayerLeftGrid(class AEHGrid* Grid);
+    void HandlePlayerEnteredGrid(class AEHGrid* Grid);
+    void HandleMovingChanged(bool IsMoving);
+    class USceneComponent* GetToolRoot();
+    float GetInteractionDistance(const FVector& Location);
+    FVector GetInteractionDirection(const FVector& Location);
+    class USceneComponent* GetInteractionComponent();
+    class UEHCharacterMovementComponent* GetEHMovementComponent();
+    FVector GetCharacterVelocity();
+    void DisableJetpackFloorCheck();
+    void Deactivate();
+    void Client_UpdateBaseComponent(class AEHMovableSpaceActor* MovableSpaceActor);
+    void Client_NotifyStationaryJetpackChanged(bool JetpackOn);
+    void Client_NotifyClientMovingChanged(bool IsMoving);
+    void Client_NotifyBoosterChanged(bool IsOn);
+    void Activate();
+};
+
+class AEHChunk : public AActor
+{
+    bool ProcedurallyGenerated;
+    EChunkGenerationType ChunkGenerationType;
+    FName PlanetoidStreamingLevel;
+    TSoftClassPtr<AEHVoxelWorld> VoxelWorldTemplate;
+    TSoftClassPtr<AEHVoxelWorld> VoxelWorldTemplateSmall;
+    TSubclassOf<class AEHColliderWorld> ColliderWorldTemplate;
+    TSubclassOf<class AEHPlanetoidGrid> PlanetoidTemplate;
+    int32 NoiseMultiplyX;
+    int32 NoiseMultiplyY;
+    int32 NoiseMultiplyZ;
+    TMap<EChunkGenerationType, float> SpawnRatioForGenerationTypes;
+    float GenerateChance;
+    TMap<FName, int32> SeedsVoxelWorld;
+    float ZOffsetVoxelWorld;
+    float ZOffsetPlanetoidGrid;
+    FIntVector ChunkCoords;
+    FVector ChunkMiddlePosition;
+    bool CollisionsEnabled;
+    float ColliderDeactivateTime;
+    bool IsLoadedFromSavegame;
+    bool CelestialBodiesGenerated;
+    FVector2D SphereRadius;
+    FVector2D LightIntensity;
+    FVector2D NebulaEmission;
+    FVector2D NebulaDensity;
+    class USceneComponent* SceneRoot;
+    class AEHPlanetoidGrid* PlanetoidGrid;
+    TArray<class AEHPlanetoidGrid*> SmallPlanetoidGrids;
+    class AActor* CelestialBody;
+    TArray<FEHCelestialBodyGeneration> CelestialGenerations;
+    TArray<FEHNebulaGeneration> NebulaGenerations;
+
+    void UpdateCollision(bool InCollisionsEnabled);
+    void SpawnVoxelWorld(class AEHPlanetoidGrid* EHPlanetoidGrid, const bool IsPlanet, const int32 Index);
+    void SpawnCelestialBodies();
+    void OnRep_SmallPlanetoidGrids();
+    void OnRep_PlanetoidGrid();
+    void OnChunkGenerated();
+    void OnChunkCreated();
+    void LoadStreamingPlanetoid();
+    void HandleWorldLoaded(class AVoxelWorld* VoxelWorld);
+    void HandleUniverseChanged();
+    void HandleSettingsApplied();
+    TArray<FEHCelestialBodyGeneration> GetCelestialGenerations(const EChunkGenerationType GenerationTyp);
+};
+
+class AEHColliderWorld : public AVoxelWorld
+{
+    class AEHVoxelWorld* VoxelWorldMain;
+    bool ShouldCreateColliderWorld;
+
+    void UpdateColliderGridVisibility();
+    void SetGeneratorParams();
+};
+
+class AEHCometStrike : public AEHCelestialBodyActor
+{
+    bool Activated;
+    FVector ImpactPoint;
+    class AActor* CometProjectile;
+
+    void RecoverCometProjectile(const FVector& CometProjectilePosition);
+};
+
+class AEHDrillActor : public AEHInteractiveActor
+{
+
+    void RecoverDrillPosition(const FIntVector& Coord, const bool IsDrillingGround);
+    void OnResourceMined();
+    void OnGroundMined();
+    void OnDrillingStopped();
+    void MoveDrillToMiningPosition(const FIntVector& Coord, const bool IsDrillingGround);
+};
+
+class AEHElectromagneticField : public AEHCelestialBodyActor
+{
+    class UProjectileMovementComponent* ProjectileMovementComponent;
+
+};
+
+class AEHEnvironmentManager : public AActor
+{
+    TArray<TSoftObjectPtr<USoundBase>> GameplayMusic;
+    TSoftObjectPtr<USoundBase> IntroMusic;
+
+    void StartGameplayMusic();
+    void HandleSettingsApplied();
+    void AudioFinished();
+};
+
+class AEHGameModeBase : public AGameModeBase
+{
+    TMap<class UEHInteractableObject*, class FEHCharacters> ContainersWatchingPlayers;
+    TMap<class UEHItem*, class FEHCharacters> ItemsWatchingPlayers;
+    TMap<class AEHCharacter*, class UEHInteractableObject*> WatchedContainers;
+    TArray<class AEHCharacter*> AllPlayers;
+    TArray<FEHPendingPlayerContainer> PendingPlayerContainerUnregisters;
+
+    void PlayerLeftGame(class AEHPlayerController* PlayerController);
+    void InitCF();
+};
+
+class AEHGamePlayerController : public AEHPlayerController
+{
+    bool ControlMode;
+    bool BoosterMode;
+    bool IsRefillingOxygen;
+    float Health;
+    float Oxygen;
+    uint8 UniverseIndex;
+    bool IsCharacterFarAway;
+    bool HasOxygen;
+    bool LosingHealth;
+    bool ShouldUpdateWorldOrigin;
+    bool EnableDebugMode;
+    EEHDebugMode DebugMode;
+    bool IsDebugTravelUniverse;
+    FEHGamePlayerControllerOnDebugModeChanged OnDebugModeChanged;
+    void OnModeChanged();
+    FEHGamePlayerControllerOnControlModeChanged OnControlModeChanged;
+    void OnModeChanged();
+    FEHGamePlayerControllerOnCharacterPossedChanged OnCharacterPossedChanged;
+    void OnModeChanged();
+    FEHGamePlayerControllerOnCharacterFarAwayChanged OnCharacterFarAwayChanged;
+    void OnModeChanged();
+    FEHGamePlayerControllerOnCharacterRefillingOxygenChanged OnCharacterRefillingOxygenChanged;
+    void OnCharacterRefillingOxygenChanged();
+    FEHGamePlayerControllerOnUniverseChanged OnUniverseChanged;
+    void OnUniverseChanged(uint8 PreviousIndex, uint8 NewIndex);
+    FEHGamePlayerControllerOnPauseStateChanged OnPauseStateChanged;
+    void OnPauseStateChanged(bool IsPaused);
+    FEHGamePlayerControllerOnOxygenReffiled OnOxygenReffiled;
+    void OnOxygenReffiled();
+    FEHGamePlayerControllerOnBarrierOxygenReffiled OnBarrierOxygenReffiled;
+    void OnOxygenReffiled();
+    FEHGamePlayerControllerHasOxygenChanged HasOxygenChanged;
+    void OnOxygenReffiled();
+    FEHGamePlayerControllerLosingHealthChanged LosingHealthChanged;
+    void OnOxygenReffiled();
+    class UEHScenarioComponent* ScenarioManager;
+
+    void TriggerCinematicSequence();
+    void ToggleControlMode(const bool ControlModeEnabled);
+    void ToggleCharacterRefillingOxygen(const bool IsBarrierRefillingOxygen, class UEHBarrierNetwork* BarrierNetwork);
+    void ShowUniverseActors(const uint8 ActorsUniverseIndex);
+    bool ShowActors();
+    bool ShouldRebaseWorldOrigin();
+    bool SetVirtualCamera(bool IsActive);
+    void SetGamePaused(bool bPaused);
+    void SetDebugMode(bool IsOn);
+    void Server_PossesPawn(class APawn* InPawn, bool ShouldAttachCharacter);
+    void Server_PossesCharacterAtLocation(const FVector& Location, const bool ShouldTeleportPlayer, bool ShouldDetachCharacter);
+    void Server_PossesCharacter();
+    void OnUniverseChanged__DelegateSignature(uint8 PreviousIndex, uint8 NewIndex);
+    void OnPauseStateChanged__DelegateSignature(bool IsPaused);
+    void OnOxygenReffiled__DelegateSignature();
+    void OnModeChanged__DelegateSignature();
+    void OnCharacterRefillingOxygenChanged__DelegateSignature();
+    bool IsGirdDebugActive();
+    bool IsCharacterPossesed();
+    void HideUniverseActors(const uint8 ActorsUniverseIndex);
+    bool HideActors();
+    void HandlePossessImpossible();
+    void HandlePlayerAction(FName PlayerActionName);
+    void GoToPreviousUniverse(const bool UpdateActorsVisibility);
+    void GoToNextUniverse(const bool UpdateActorsVisibility);
+    FName GetUniverseSignature();
+    class AEHCharacter* GetEHCharacter();
+    void DebugShowActors(bool On, const uint8 Index);
+    void Client_NotifyPossessImpossible();
+    void Client_BarrierOxygenRefilled();
+};
+
+class AEHGameState : public ATGGameState
+{
+    FEHGameStateOnSciencePointsUpdated OnSciencePointsUpdated;
+    void OnSciencePointsUpdated();
+    int32 NumberOfReplicatedLoadActors;
+    FEHGameStateOnTechnologyChanged OnTechnologyChanged;
+    void OnTechnologyChanged();
+    TArray<int32> GlobalPoints;
+
+    void OnTechnologyChanged__DelegateSignature();
+    void OnSciencePointsUpdated__DelegateSignature();
+    void OnRep_GlobalPoints();
+    void Multi_SetGlobalTimeDilation(float GlobalTimeDilation);
+    int32 GetPointByType(const EGlobalPointType GlobalPointType);
+    void AddGlobalPoints(const TArray<FEHGlobalPointInstance>& GlobalPointInstances);
+    void AddGlobalPoint(const FEHGlobalPointInstance& GlobalPointInstance);
+};
+
+class AEHGrid : public AActor
+{
+    FString GridName;
+    FName GridUniqueID;
+    bool ModifiedByPlayer;
+    bool SaveGridItemsData;
+    bool SaveNavPoints;
+    FVector FloorMiddlePosition;
+    class UEHDevicesComponent* DevicesComponent;
+    class UEHPathfindingComponent* PathfindingComponent;
+    class UEHAIDirectorComponent* AIDirectorComponent;
+    class UEHThrusterNetwork* ThrusterNetwork;
+    TArray<class AEHGrid*> DockedGrids;
+    FEHGridOnDockedGridsChanged OnDockedGridsChanged;
+    void OnDockedGridsChanged();
+    class UHierarchicalInstancedStaticMeshComponent* FloorMiddleEdges;
+    class UHierarchicalInstancedStaticMeshComponent* FloorLeftEdges;
+    class UHierarchicalInstancedStaticMeshComponent* FloorRightEdges;
+    class UHierarchicalInstancedStaticMeshComponent* FloorDiagonalEdges;
+    class UHierarchicalInstancedStaticMeshComponent* FloorCornerEdges;
+    class UInstancedStaticMeshComponent* ValidationBaseConstruction;
+    class UEHBoxComponent* CCWallComponent;
+    class UEHBoxComponent* CCFloorComponent;
+    class UEHBoxComponent* SelectionBoxComponent;
+    TSet<FIntVector> AerialPoints;
+    TSet<FIntVector> FloorPoints;
+    TSet<FIntVector> AIPoints;
+    TSet<FIntVector> BlockPoints;
+    TSet<FIntVector> PlanetoidAerialPoints;
+    TSet<FIntVector> PlanetoidSurfacePoints;
+    TMap<class FIntVector, class EEHInstanceRotation> PlanetoidWalkableRamps;
+    bool IsReplicationReady;
+    uint8 UniverseIndex;
+    TMap<class UEHItem*, class FInstancesContainer> ItemComponents;
+    TMap<class FName, class FInstancesContainer> CustomMeshes;
+    class USceneComponent* SceneRoot;
+    class USceneComponent* ShaderMovementRoot;
+    TMap<class UEHItem*, class UMaterialInstanceDynamic*> DynamicMaterials;
+    TArray<class UStaticMeshComponent*> CustomHighlightMeshes;
+    TMap<class FIntVector, class UEHFlareComponent*> FlaresMap;
+    TMap<class FIntVector, class UEHBillboardsLineComponent*> BillboardsMap;
+    TMap<class FIntVector, class UEHReactiveMeshComponent*> ReactiveMeshMap;
+    TMap<class FIntVector, class FEHCellType> CellEmpty;
+    class AEHBlackHole* ActiveBlackHole;
+    bool ScreenIndicatorActive;
+    class UEHGridDataObject* GridDataObjectCached;
+    TArray<class UEHInteractableObject*> ReplicatedInteractables;
+    TMap<class FEHCellType, class EEHInstanceRotation> PendingAddClientInstances;
+    TMap<class FEHCellType, class EEHInstanceRotation> PendingUpgradeClientInstances;
+    TMap<class FIntVector, class UEHConveyorObject*> PendingRemovedPushes;
+    TArray<FEHPushOut> PendingClientPushes;
+
+    void UpdateProfession(const FIntVector& CellCoords, const EAIProfession Profression);
+    void UpdateGridShaderPosition(const FVector& PreviousShaderPosition, const FVector& ShaderPosition);
+    void UpdateCollisions(const bool InCollisionEnabled);
+    void RotateInstance(const FIntVector& CellCoords, const EEHRotationDirection RotationDirection, EInstanceCellType InstanceCellType, const EEHInstanceRotation Rotation);
+    bool RemoveInstance(EInstanceCellType InstanceCellType, const FIntVector& CellCoords, const EEHInstanceRotation Rotation);
+    void OnRep_ThrusterNetwork();
+    void OnRep_ReplicatedDevices();
+    void OnRep_IsReplicationReady();
+    void OnDockedGridsChanged__DelegateSignature();
+    void Multi_UpgradePendingInstance(class UEHItem* Item, const FIntVector& CellCoords, class UEHInteractableObject* InteractableObject, const EEHInstanceRotation Rotation);
+    void Multi_UpgradeInstance(const EInstanceCellType InstanceCellType, const FIntVector& CellCoords, class UEHInteractableObject* InteractableObject, const EEHInstanceRotation Rotation);
+    void Multi_TransferResourceCell(const FIntVector& ResourceCoord, const FIntVector& Direction);
+    void Multi_TransferAICell(const FIntVector16& AICoord, uint8 DirectionPacked);
+    void Multi_SwapAIChain(const TArray<class UEHAIObject*>& ChainAIs, const TArray<FIntVector>& AICoords, const TArray<uint8>& PathIndexes);
+    void Multi_StopAnimationBlending(const FIntVector& CellCoords);
+    void Multi_StartSimulation();
+    void Multi_RotateInstance(const FIntVector& CellCoords, const EEHRotationDirection RotationDirection, EInstanceCellType InstanceCellType, const EEHInstanceRotation Rotation);
+    void Multi_RemoveResource(const FIntVector16& ResourceCoord);
+    void Multi_RemoveInstanceBulk(const TArray<FEHSimpleCell>& Cells);
+    void Multi_RemoveInstance(const EInstanceCellType InstanceCellType, const FIntVector& CellCoords, const EEHInstanceRotation Rotation);
+    void Multi_RemoveAI(class UEHAIObject* AIObject);
+    void Multi_PushOutResource(class UEHItemsContainer* PushContainer, class UEHItem* Resource, const uint8& PushIndex);
+    void Multi_PushOutAI(class UEHItemsContainer* PushContainer, class UEHItem* AIItemToPush, const FIntVector& AISpawnCoord, const FIntVector& PushCoords);
+    void Multi_OnAILeft(const FIntVector& DeviceCoord, class UEHAIObject* AIObject);
+    void Multi_OnAIEntered(class UEHInteractableObject* InteractableObject, class UEHAIObject* AIObject);
+    void Multi_NotifyTransferedResourceRemoved(const FIntVector& ResourceCoord, const FIntVector& Direction);
+    void Multi_NotifyPossiblyTransferedResourceRemoved(const FIntVector& ResourceCoord);
+    void Multi_HitExtract(class UEHInventoryComponent* PlayerInventoryComponent, const FIntVector& HitCoord, const FVector& HitLocation);
+    void Multi_FarmerEntered(const FIntVector& FarmCoord, class UEHAIObject* NewFarmer);
+    void Multi_ExtractResource(const FIntVector& ResourceCoord);
+    void Multi_EnsureResourceRemoved(const FIntVector& ResourceCoord, const FIntVector& DirectionFrom);
+    void Multi_EnsureResourcePushed(const FIntVector& ResourceCoord, const FIntVector& Direction);
+    void Multi_BreederEntered(const FIntVector& PastureCoord, class UEHAIObject* NewBreeder);
+    void Multi_AddPendingInstance(class UEHItem* Item, const FIntVector& CellCoords, class UEHInteractableObject* InteractableObject, const EEHInstanceRotation Rotation);
+    void Multi_AddInstanceBulk(const TArray<FEHSimpleCell>& Cells, const TArray<class UEHInteractableObject*>& InteractableObjects, class UEHGridComponent* ClientGridComponent);
+    void Multi_AddInstanceAndTransfer(class UEHItem* Item, const FIntVector& CellCoords, const FIntVector& Direction);
+    void Multi_AddInstance(class UEHItem* Item, const FIntVector& CellCoords, const EEHInstanceRotation Rotation);
+    void HandleRotationChange();
+    void HandleJobModeChange();
+    void HandleItemChange();
+    void HandleGameStarted();
+    void HandleGameSimulationStarted();
+    void HandleAssetsLoaded();
+    FVector GetWorldPositionFromLocalPosition(const FVector& LocalPosition);
+    FIntVector GetPointForImpact(bool& Found);
+    class AEHMovableSpaceActor* GetMovableSpaceActor();
+    FVector GetLocalPositionFromWorldPosition(const FVector& WorldPosition);
+    FEHCellType GetInstance(const FIntVector& CellCoords, EInstanceCellType CellType, EEHInstanceRotation InstanceRotation);
+    class UEHHISMComponent* GetHISMComponentBP(class UEHItem* Item, int32 InstanceIndex);
+    FVector GetCubeWorldPosition(const FIntVector& CellCoords);
+    FVector GetCubeBottomWorldPosition(const FIntVector& CellCoords);
+    FIntVector GetCellCoords(const FVector& LocalPosition);
+    void ForceAddInsideGridInstance(class UEHItem* Item, const FIntVector& CellCoords, const FIntVector& ParentDeviceCoord, const EEHInstanceRotation Rotation);
+    class UEHInteractableObject* FindHitInteractable(class UPrimitiveComponent* HitComponent, const int32 HitItem);
+    void FinalizeGridGeneration();
+    TSet<UEHElectricNetwork*> ElectromagneticFieldBlackout(const TSet<FIntVector>& PointsForBlackout);
+    void DebugDestroyInteractable(class UEHInteractableObject* Interactable);
+    void DebugClearReplcatedDevices();
+    void BlackHoleDestroyInstances(class AEHBlackHole* BlackHoleActor, const TSet<FEHInstanceCellDefinition>& InstancesToDestroy);
+    void BeginGridGeneration();
+    void AssetsLoaded();
+    bool AddInstance(class UEHItem* Item, const FIntVector& CellCoords, class UEHInteractableObject* InteractableObjectToRestore, const EEHInstanceRotation Rotation, const uint8 MeshID);
+    void AddGridInstance(class UEHItem* Item, const FIntVector& CellCoords, class UEHInteractableObject* InteractableObjectToRestore, const EEHInstanceRotation Rotation, const uint8 MeshID, const bool ForceRemoveExisting);
+};
+
+class AEHHUD : public ATGHUD
+{
+    TSubclassOf<class UDraggableItemWidget> DraggableItemWidgetClass;
+    TMap<class FName, class EEHHUDMenuType> MenuTypesForActions;
+    class UEHConfig* EHConfig;
+    TArray<class UTGUIConfigCustom*> CustomConfigs;
+    bool HasBackground;
+    bool ShowFrontendByDefault;
+    EEHUIScreenID FirstScreenToOpen;
+    class UEHCheatComponent* EHCheatComponent;
+    class UEHBackgroundComponent* EHBackgroundComponent;
+    class UTGWidgetPredefinedAnimationsComponent* TGWidgetAnimationsManager;
+
+    void UpdateHUDVisibility(const bool ShowHUDIn);
+    void TriggerAction(const FName ActionName);
+    void OpenPauseScreen();
+    void OpenInGameScreen(const EEHUIScreenID ScreenID);
+    void OnGameStarted();
+    void HoldTimersCleared();
+    void HandleKeyAction(const FKey& InKey);
+    void HandleGamePreStarted();
+    class UEHHUDWidget* GetEHHUDWidget();
+    void CloseInGameScreen();
+};
+
+class AEHHUDGame : public AEHHUD
+{
+    TMap<class UClass*, class EEHPopMenuType> OpenedPopupMenus;
+    float TechTreeScrollOffset;
+    FEHHUDGameOnIndicatorStateChanged OnIndicatorStateChanged;
+    void OnIndicatorStateChanged(class UObject* IndicatedObject);
+    class UEHInteractableObject* OpenedMenuInteractable;
+    bool ShowBlackScreen;
+    class UMenuWidget* OpenedMenu;
+    class UUserWidget* OpenedScreen;
+    class UEHMapWidget* MapWidget;
+    class UEHModularVehicleWidget* ModularVehicleWidget;
+    FEHHUDGamePopMenuOpened PopMenuOpened;
+    void PopMenuOpened(EEHPopMenuType Type);
+    FEHHUDGamePopMenuClosed PopMenuClosed;
+    void PopMenuClosed(TSubclassOf<class UInteractBaseWidget> IndicatedObject);
+    FEHHUDGameOnMouseShowStateChanged OnMouseShowStateChanged;
+    void OnMouseShowStateChanged(bool IsMouseShown);
+    FEHHUDGameOnMenuOpenStateChanged OnMenuOpenStateChanged;
+    void OnMenuOpenStateChanged(bool IsOpened);
+    TSoftClassPtr<UEHMapWidget> MapWidgetClass;
+    TSoftClassPtr<UEHModularVehicleWidget> ModularVehicleWidgetClass;
+    class UEHHUDIndicatorsWidget* HUDIndicators;
+    TArray<TSoftClassPtr<UTipWidget>> TipWidgets;
+    TSoftClassPtr<UMenuWidget> PopMenuClasses;
+    TSoftClassPtr<UMenuWidget> HUDMenuClasses;
+
+    void UnregisterScreenIndicator(class UObject* IndicatedObject);
+    class UMenuWidget* ToggleMenuByType(EEHHUDMenuType HUDMenuType);
+    void RegisterScreenIndicator(class UObject* IndicatedObject);
+    void PopMenuOpened__DelegateSignature(EEHPopMenuType Type);
+    void PopMenuClosed__DelegateSignature(TSubclassOf<class UInteractBaseWidget> IndicatedObject);
+    void OpenPauseMenuSafe();
+    class UMenuWidget* OpenMenuByType(EEHHUDMenuType HUDMenuType);
+    void OpenInteractMenu(class UEHInteractableObject* InteractableObject);
+    void OnMouseShowStateChanged__DelegateSignature(bool IsMouseShown);
+    void OnMenuOpenStateChanged__DelegateSignature(bool IsOpened);
+    void OnIndicatorStateChanged__DelegateSignature(class UObject* IndicatedObject);
+    bool IsScreenIndicatorRegistered(class UObject* IndicatedObject);
+    class UCanvasPanel* GetVisibleScreenCanvas();
+    EEHPopMenuType GetPopMenuType(const TSubclassOf<class UMenuWidget> Widget);
+    TSubclassOf<class UMenuWidget> GetPopMenuClass(const EEHPopMenuType Type);
+    void CreateModularVehicleWidget();
+    void CreateMapWidget();
+    void CloseOpenedInteractionMenu();
+};
+
+class AEHHUDMenu : public AEHHUD
+{
+};
+
+class AEHInteractiveActor : public AActor
+{
+    class UEHInteractableObject* InteractableObject;
+
+    class UEHInteractableObject* GetInteractableObject();
+};
+
+class AEHInteractivePawn : public APawn
+{
+    int32 PossesedFlags;
+
+    class UEHInteractableObject* GetInteractableObject();
+};
+
+class AEHLobbyGameState : public AGameStateBase
+{
+    class UEHTcpSocketConnection* TcpSocketConnection;
+    FEHLobbyGameStateMSScenarioParamsChanged MSScenarioParamsChanged;
+    void OnLobbyStateChanged();
+    FEHLobbyGameStateMaxLobbyPlayersChanged MaxLobbyPlayersChanged;
+    void OnLobbyStateChanged();
+    int32 MaxLobbyPlayers;
+    FEHMPScenarioParams MPScenarioParams;
+    int32 connectionIdGameServer;
+
+    void Send(const TArray<uint8>& Data);
+    void OnRep_MPScenarioParams();
+    void OnRep_MaxLobbyPlayers();
+    void OnMessageReceived(int32 ConId, TArray<uint8>& Message);
+    void OnLobbyStateChanged__DelegateSignature();
+    void OnDisconnected(int32 ConId);
+    void OnConnected(int32 ConnectionId);
+    void ClientSavegameLoaded(int32 SavegameSize);
+};
+
+class AEHLobbyPlayerController : public AEHPlayerController
+{
+
+    void StartSavegameReplication();
+    void LobbyLoadSavegame();
+    void Client_SendPackage(const TArray<uint8>& PackageData);
+    void Client_NotifySavegameReplicationStarted(const int32 SavegameSizeIn);
+};
+
+class AEHMeteorRain : public AEHCelestialBodyActor
+{
+    class UProjectileMovementComponent* ProjectileMovementComponent;
+
+};
+
+class AEHMovableSpaceActor : public AActor
+{
+    FVector SpaceVelocity;
+    FEHMovableSpaceActorOnMovingChanged OnMovingChanged;
+    void OnMovingChanged(const bool IsMoving);
+    FEHMovableSpaceActorOnMovingToDestinationChanged OnMovingToDestinationChanged;
+    void OnMovingToDestinationChanged(const bool IsMovingToDestination);
+    FEHMovableSpaceActorOnMovableSpaceActorLocationChanged OnMovableSpaceActorLocationChanged;
+    void OnMovableSpaceActorLocationChanged();
+    class UStaticMeshComponent* DockingPreview;
+    bool MovementDisabled;
+    float RealPositionUpdateTime;
+    FVector DestinationDirectionOffset;
+    FVector DockingStationOffset;
+    class UEHPrimitiveComponent* SceneRoot;
+    FVector CachedTickWorldOffset;
+    float SpaceSpeed;
+    bool IsMovingToDestination;
+    FVector MovementShaderOffset;
+    FVector PreviousMovementShaderOffset;
+    FVector DestinationPosition;
+
+    void StopMovement();
+    void SetVelocity(const FVector Velocity);
+    void OnShaderMovementUpdate();
+    void OnRealMovementUpdate();
+    void OnMovingToDestinationChanged__DelegateSignature(const bool IsMovingToDestination);
+    void OnMovingChanged__DelegateSignature(const bool IsMoving);
+    void OnMovableSpaceActorLocationChanged__DelegateSignature();
+    void Multi_VelocityChanged(const FVector& NewSpaceVelocity);
+    void Multi_AttachActor(class AActor* ChildActor);
+    void MoveToDestination(const FVector& InDestinationPosition);
+    FVector GetSpaceVelocity();
+    FVector CalculateVelocityForPoints(const FVector& StartPosition, const FVector& EndPosition);
+    void AddVelocity(const FVector VelocityChange);
+};
+
+class AEHPlanetoidGrid : public AEHGrid
+{
+    bool IsPlanet;
+    int32 PrimarySeed;
+    int32 SecondarySeed;
+    int32 GroundSpawnDepth;
+    float GroundSpawnChance;
+    float GroundSpawnFrequency;
+    float GroundTypeFrequency;
+    float GenerationDensity;
+    float GenerateTracePointsTime;
+    bool SpawnSurfaceDestructibles;
+    bool SpawnSurfaceVisuals;
+    bool SpawnGroundResources;
+    int32 ResourcesGenerationSize;
+    float Frequency;
+    float HigherNoise;
+    float LowerNoise;
+    TArray<uint8> PlanetoidDetailSpawnChanceIndexes;
+    float PlanetoidSurfaceDetailSpawnChanceSum;
+    FIntVector PlanetoidSize;
+    float PlanetoidMapRotation;
+    class UEHBlockItem* PlanetoidDepositItem;
+    FEHPlanetoidGridOnPlanetoidGenerated OnPlanetoidGenerated;
+    void OnPlanetoidGenerated();
+    bool PlanetoidGeneratorCompleted;
+    class AEHVoxelWorld* VoxelWorld;
+    FIntVector CorrectionLocation;
+    uint8 PlanetIndex;
+    uint8 PlanetoidTerrainID;
+    TMap<class EEHMiningResourceType, class FVector2D> SpawnRatioForGroundResource;
+
+    void UpdateMPCorrectionPosition();
+    void TraceHeightFound(const FVector& ImpactPoint);
+    void TestingValue(const FIntVector& Coord);
+    void SpawnDestructible(const FVector& position, const FVoxelTerrainDigData& DigData);
+    void SetSeed(int32 SeedLow);
+    void SetInterpolation(EVoxelNoiseInterpolation Interp);
+    void RemoveBox(const FIntVector& Coord);
+    void OnRep_VoxelWorld();
+    void OnRep_CorrectionLocation();
+    void OnPlanetoidGenerated__DelegateSignature();
+    void OnDebugPlanetoidGenerate();
+    void OnDebugPlanetoidCoordGenerate(const FIntVector& Coord);
+    void NotifyStreamingPlanetoidLoaded();
+    void Multi_RemoveBox(const FIntVector& Coord);
+    void ModifyBox(const FIntVector BoxMin, const FIntVector BoxMax, bool IsAdding);
+    bool IsProcedurallyGenerated();
+    void HadleCollectiveColliderStateChanged(bool ColliderActive);
+    FInteractableObjectArray GetWorldItems(const EEHMiningResourceType ResrouceType);
+    class AEHVoxelWorld* GetVoxelWorld();
+    float GetTestNoiseValue(float X, float Y, float NoiseFrequency, bool UseSimplexNoise);
+    FVector GetPlanetoidSize();
+    TArray<FIntVector> GetForbiddenVoxelCoordsForBox(const FVoxelIntBox& Box);
+    TArray<FIntVector> GetCoordsFromTraceImpactPoints();
+    bool DoesVoxelContainRock(const FIntVector& Coord);
+    void DebugRegenerateForSeed(const int32 NewPrimarySeed);
+    void DebugGeneratePlanetoid(const FIntPoint& Size);
+    void AsyncTraceTest();
+    void AddBox(const FIntVector& Coord);
+};
+
+class AEHPlayerController : public ATGPlayerController
+{
+
+    void UpdatePresenceStatus(const FText PresenceStatus);
+    void HandlePlayerStateInitialized();
+};
+
+class AEHPlayerState : public APlayerState
+{
+    FEHPlayerStateOnPlayerInfoChanged OnPlayerInfoChanged;
+    void OnPlayerInfoChanged();
+    FString Name;
+    bool Ready;
+
+    void UpdateReady(const bool ReadyIn);
+    void OnRep_Ready();
+    void OnRep_Name();
+    void OnPlayerInfoChanged__DelegateSignature();
+};
+
+class AEHRealTimeDilationActor : public AActor
+{
+    FEHRealTimeDilationActorOnTimeDilationChanged OnTimeDilationChanged;
+    void OnTimeDilationChanged();
+
+    void SetGlobalTimeDilation(float GlobalTimeDilation);
+    void OnTimeDilationChanged__DelegateSignature();
+    void ChangeTimeDilation(float TimeDilationChange);
+};
+
+class AEHRemoteFabricatorPawn : public AEHInteractivePawn
+{
+    class UEHHierarchicalInstancedStaticMeshComponent* HISMExpeditionDrones;
+    class UEHHierarchicalInstancedStaticMeshComponent* HISMComingBackDrones;
+    class AActor* RemotlyConstructedActor;
+    class UEHRemoteFabricatorObject* RemoteFabricatorObject;
+    class USceneComponent* SceneRoot;
+
+};
+
+class AEHRemotlyConstructedActor : public AEHWorldInteractiveActor
+{
+    int32 CompletedExpeditionsCount;
+    int32 CurrentlyConstructedPart;
+    TArray<FTransform> ConstructionTransforms;
+    float AccumulatedEnergy;
+    bool IsConstructionDone;
+    bool IsPowerActivated;
+    bool ModifiedByPlayer;
+    FName SerializedActorUniqueName;
+
+    void OnPowerActivated();
+    void OnPartConstructionCompleted();
+    void OnNextPartConstructionStarted();
+    void OnConstructionFinished();
+    void OnConstructionCanceled();
+};
+
+class AEHSSEItemBase : public AActor
+{
+    class UEHSSEInitializer* SSEInitializer;
+
+    class UEHItem* GetItem();
+};
+
+class AEHSpaceShuttleActor : public AActor
+{
+
+    void OnSpaceShuttleUndocked();
+    void OnSpaceShuttleDocked();
+    class UEHSpaceCarryComponent* GetSpaceCarryComponent();
+};
+
+class AEHVehiclePawn : public AVehiclePhysicsActor
+{
+    class AEHGamePlayerController* GamePlayerController;
+    FName SerializedActorUniqueName;
+
+    bool IsPossesed();
+    void HandlePlayerLeftGrid(class AEHGrid* Grid);
+    void HandlePlayerEnteredGrid(class AEHGrid* Grid);
+};
+
+class AEHVoxelWorld : public AVoxelWorld
+{
+    FName VoxelWorldUniqueID;
+    FRandomStream RandomStream;
+    FVoxelTerrainDigData VoxelTerrainDigData;
+    FVoxelShapeData VoxelShapeData;
+    EVoxelTerrainType VoxelTerrainType;
+    EVoxelShapeType VoxelShapeType;
+    FIntVector VoxelWorldSize;
+    float SteepStep;
+    bool IsRemovingVoxel;
+    class AEHColliderWorld* ColliderWorld;
+    class AEHPlanetoidGrid* PlanetoidGrid;
+    float HigherNoise;
+    float LowerNoise;
+
+    void VoxelRemoved(const FIntVector& Coord, const int32 VoxelType);
+    void VoxelDiggingFinished(const FIntVector& Coord);
+    void SetGeneratorParams();
+    void RemoveVoxelOld(const FIntVector& Coord);
+    void RemoveBox(const FVoxelIntBox& BoxBounds, class AEHCharacter* Character);
+    void OnValuesModified(const TArray<FModifiedVoxelValue>& ModifiedValues, class AEHCharacter* Character);
+    void Multi_RemoveBox(const FVoxelIntBox& BoxBounds, class AEHCharacter* Character);
+    void Multi_AddVoxel(const FIntVector& Coord);
+    void LoadVoxelWorld();
+    bool HasParam(const FName ParamName);
+    EVoxelTerrainType GetVoxelTypeFromLayer(const int32 LayerIndex);
+    FIntVector GetPlanetoidSize();
+    void DestroySaveState();
+    void AddVoxel(const FIntVector& Coord);
+};
+
+class AEHWorldInteractiveActor : public AActor
+{
+    FEHWorldInteractiveActorOnWorldInteractiveInfoChanged OnWorldInteractiveInfoChanged;
+    void OnWorldInteractiveInfoChanged();
+    class UTexture2D* InteractionIcon;
+    FText InteractionDisplayName;
+    TMap<class EPlayerActionType, class EHJobModeType> ActionTypeJobModes;
+    int32 ActionsFlags;
+
+    void OnWorldInteractiveInfoChanged__DelegateSignature();
+    void NotifyInfoChanged();
+};
+
+class AEHWorldInteractivePawn : public APawn
+{
+    class UTexture2D* InteractionIcon;
+    FText InteractionDisplayName;
+    TMap<class EPlayerActionType, class EHJobModeType> ActionTypeJobModes;
+    int32 UnpossesedFlags;
+    int32 PossesedFlags;
+    FName SerializedActorUniqueName;
+
+};
+
+class AEHWorldInteractiveVehicle : public AEHWorldInteractivePawn
+{
+};
+
+class ATGCodingStandardExampleActor : public ACharacter
+{
+    class USkeletalMeshComponent* MyMesh;
+    bool WantsToSprint;
+
+    void OnRep_WantsToSprint();
+};
+
+class IEHAcceptPushedResourceInterface : public IInterface
+{
+};
+
+class IEHColliderInterface : public IInterface
+{
+};
+
+class IEHCustomConstructionInterface : public IInterface
+{
+};
+
+class IEHCustomMeshInterface : public IInterface
+{
+};
+
+class IEHDynamicMaterialInterface : public IInterface
+{
+};
+
+class IEHElectricDeviceInterface : public IInterface
+{
+};
+
+class IEHGameHUDInterface : public IInterface
+{
+
+    bool TogglePopMenu(TSubclassOf<class UInteractBaseWidget> MenuWidget, class UEHInteractableObject* InteractableObject);
+    void TogglePhotoMode();
+    void ToggleMouse(bool ShowMouse);
+    void ToggleModularVehicleDesigner();
+    class UMenuWidget* ToggleMenu(TSubclassOf<class UMenuWidget> MenuWidget, class UObject* PayloadObject);
+    void ToggleMap();
+    void ToggleLog();
+    void ToggleHostPlayerLeft(class AEHGamePlayerController* GamePlayerController);
+    void OpenPopMenu(TSubclassOf<class UInteractBaseWidget> MenuWidget, class UEHInteractableObject* InteractableObject);
+    class UMenuWidget* OpenMenu(TSubclassOf<class UMenuWidget> MenuWidget, class UObject* PayloadObject);
+    void ClosePopMenu();
+    bool CloseCurrentMenu();
+    void ChangeCursorState(bool IsActive);
+};
+
+class IEHIndicationInterface : public IInterface
+{
+
+    bool IsRegisteringForbidden();
+    FText GetIndicationText();
+    FVector GetIndicationPosition();
+    FEHIndicationConfigData GetIndicationConfigData();
+};
+
+class IEHInteractableChildActorInterface : public IInterface
+{
+
+    void OnRotationFinished();
+    void OnRecovered(class UEHDataObject* DataObject);
+    void OnPrepareForSave(class UEHDataObject* DataObject);
+    void OnInteractionStarted();
+    void OnInteractionFinished();
+    void OnActiveStateChanged(const bool IsActive);
+    void Init(class UEHInteractableObject* InInteractableObject);
+};
+
+class IEHInteractionInterface : public IInterface
+{
+
+    uint8 GetInteractionCircleStepsNumber();
+    uint8 GetInteractionCircleStep();
+};
+
+class IEHMapTrackableInterface : public IInterface
+{
+
+    void SetDisplayName(const FText& DisplayName);
+    bool IsVisibleOnMap(const bool RadarActive);
+    bool IsKnown();
+    EEHTrackableType GetTrackableType();
+    EVoxelTerrainType GetTerrainType();
+    FVector GetScale();
+    float GetRotation();
+    TArray<int32> GetResourceCounts();
+    FVector GetMiddleOffset();
+    FText GetDisplayName();
+    FLinearColor GetColor();
+    EVoxelShapeType GeShapeType();
+};
+
+class IEHMetamorphosisInterface : public IInterface
+{
+};
+
+class IEHModularPartInterface : public IEHSceneInteractionInterface
+{
+
+    void SetVehiclePartType(const EEHVehiclePartType VehiclePartType);
+    void SetPartMaterials(const TArray<class UMaterialInterface*>& Materials);
+    EEHVehiclePartType GetVehiclePartType();
+    TArray<class UMaterialInterface*> GetPartMaterials();
+    void ApplyTransform(const FTransform& Transform);
+    void ApplyStaticMesh(const class UStaticMesh* StaticMesh);
+    void ApplyMaterials(const TArray<TSoftObjectPtr<UMaterialInterface>>& Materials);
+    void ApplyMaterial(const class UMaterialInterface* Material);
+    void ApplyColors(const TArray<FLinearColor>& Colors, const TArray<FName>& Names);
+};
+
+class IEHModularVehicleInterface : public IInterface
+{
+
+    void RemoveVehiclePart(class UActorComponent* ActorComponent);
+    void OnGridVehicleSpawn(class AEHGrid* Grid);
+    void OnDesignerVehiclePreviewSpawn();
+    void InitVehicle(const FEHVehicleDefinition& VehicleDefinition);
+    FEHVehicleDefinition GetVehicleDetails();
+    int32 GetPossibleVehicleActions();
+    bool CanExecuteAction(EEHVehicleAction VehicleAction);
+};
+
+class IEHObjectLoaderInterface : public IInterface
+{
+};
+
+class IEHPlayerWorldInteractionInterface : public IEHInteractionInterface
+{
+
+    void OnWorldActorSpawned(bool ShouldMoveToDestination, FVector DestinationOffset);
+    void OnWorldActorRotate();
+    void OnWorldActorRemove();
+    void OnWorldActorOpen();
+    void OnWorldActorInteract();
+    void OnWorldActorHit();
+    void OnWorldActorClick();
+    bool HasExplicitInteractions();
+    TSubclassOf<class UWorldInteractiveInfoWidget> GetWorldInteractiveInfoWidgetClass();
+    FText GetInteractionDisplayName();
+    int32 GetAvailableActionsBits();
+    TMap<class EPlayerActionType, class EHJobModeType> GetActionTypeJobModes();
+    TMap<class EPlayerActionType, class FText> GetActionNames();
+    class UTexture2D* GetActionIcon();
+};
+
+class IEHRemoteConstructionInterface : public IEHInteractionInterface
+{
+
+    int32 TotalExpeditionsCount();
+    void StartRemoteConstruction(class UEHRemoteFabricatorObject* RemoteFabricatorObject);
+    void OnExpeditionConstruct();
+    bool IsConstructionDone();
+    FName GetUniqueID();
+    uint8 GetPhasesCount();
+    FText GetName();
+    class UTexture2D* GetIcon();
+    TArray<FEHItemInstance> GetExpeditionCost();
+    int32 CompletedExpeditions();
+    void CancelRemoteConstruction(class UEHRemoteFabricatorObject* RemoteFabricatorObject);
+};
+
+class IEHRemoteEnergyInterface : public IEHInteractionInterface
+{
+
+    void RemoveEnergyTransmitter(class UEHEnergyTransmitterObject* EnergyTransmitter);
+    void OnEnergyProvided(float Energy, class UEHEnergyTransmitterObject* EnergyTransmitter);
+    bool IsPowerActivated();
+    FName GetUniqueID();
+    FText GetName();
+    class UTexture2D* GetIcon();
+    float EnergyRequired();
+    bool CanReceiveEnergy();
+    void AddEnergyTransmitter(class UEHEnergyTransmitterObject* EnergyTransmitter);
+    float AccumulatedEnergy();
+};
+
+class IEHSaveGameInterface : public IInterface
+{
+
+    bool ShouldSerializeUniqueClassSavegameData();
+    bool ShouldSerializeNamedActorSavegameSpawn();
+    bool ShouldSerializeNamedActorSavegameData();
+    void SetSerializedActorUniqueName(const FName UniqueName);
+    void SavingGameData(class UEHSaveGame* SaveGame);
+    void SavegameObjectSerializeDataLoaded();
+    void LoadingGameData(class UEHSaveGame* SaveGame);
+    FName GetSerializedActorUniqueName();
+};
+
+class IEHSceneInteractionInterface : public IInterface
+{
+
+    bool HasClickInteraction();
+    class USceneComponent* GetSetupComponent();
+    class UPrimitiveComponent* GetPrimitiveComponent();
+};
+
+class IEHSignalDeviceInterface : public IInterface
+{
+};
+
+class IEHTraceInterface : public IInterface
+{
+
+    bool ShouldTraceObject(class UObject* TracedObject);
+    int32 GetTraceOverrideActions(class UObject* TracedObject);
+    TMap<class EPlayerActionType, class FText> GetTraceActionNames();
+};
+
+class IEHVisitedByAIInterface : public IInterface
+{
+};
+
+class IEHWaterDeviceInterface : public IInterface
+{
+};
+
+class UContainerSlotWidget : public UUserWidget
+{
+    int32 Index;
+    class UEHItemsContainer* ItemsContainer;
+    FText CustomNumberText;
+    TSubclassOf<class UEHItemVariantsWidget> VariantsWidgetClass;
+    bool IsConstructionItemUnlocked;
+    bool IsTextAlwaysVisible;
+    FEHItemInstance Item;
+    class UImage* ItemImage;
+    class UBorder* TextBorder;
+    class UTextBlock* NumberText;
+    class UTextBlock* ItemName;
+    class UBorder* Border;
+    class UOverlay* VariantsOverlay;
+
+    void UpdateSlotState();
+    void UpdateCustomText(const FText& InCustomText);
+    void Refresh();
+    void OnSlotSelectionChanged(const bool IsSelected);
+    void OnClickSplit();
+    void OnClickDetails();
+    void HandleItemDragEnd();
+    void HandleItemDragBegin(class UDraggableItemPayload* DraggableItemPayload);
+};
+
+class UDragOperationWidget : public UDragDropOperation
+{
+};
+
+class UDraggableItemPayload : public UObject
+{
+    class UEHItemsContainer* ItemsContainer;
+
+};
+
+class UDraggableItemWidget : public UUserWidget
+{
+    class UImage* ItemImage;
+
+};
+
+class UDraggableWidget : public UUserWidget
+{
+};
+
+class UEHAIBreederObject : public UEHAIObject
+{
+    FEHItemInstance CarriedItem;
+    uint8 CarriedWater;
+    EHBreedAnimalTypes CurrentAnimal;
+
+};
+
+class UEHAIDirectorComponent : public UActorComponent
+{
+};
+
+class UEHAIExternalDependenciesDataObject : public UObject
+{
+};
+
+class UEHAIFabricatorDroneObject : public UEHAIObject
+{
+};
+
+class UEHAIFarmerObject : public UEHAIObject
+{
+    class UEHItem* CarriedItem;
+    uint8 CarriedWater;
+    EHHarvestPlantTypes CurrentPlant;
+
+};
+
+class UEHAIHumanObject : public UEHAIObject
+{
+    class UDataTable* DataTable;
+    bool IsFemale;
+    FString HumanName;
+    int32 HumanHeadID;
+    FEHHeadMeshes HeadMeshes;
+    TArray<float> CustomChangesOverTime;
+    TArray<FEHHumanNeed> HumanNeeds;
+
+    void Multi_FoodReceived(class UEHItem* Food);
+    void Multi_EnableBillboard(const EEHBillboardType BillboardType);
+    void Multi_DisableBillboard(const EEHBillboardType BillboardType);
+    void InitCollectionData();
+    FEHHumanNeed GetHumanNeed(const EHHumanNeedID HumanNeedID);
+};
+
+class UEHAIHumanSpecialist : public UEHAIHumanObject
+{
+    FEHAIHumanSpecialistOnProfessionChanged OnProfessionChanged;
+    void OnProfessionChanged();
+
+    void OnProfessionChanged__DelegateSignature();
+    void ChangeProfession(EAIProfession NewProfession);
+};
+
+class UEHAIHumanTrainee : public UEHAIHumanObject
+{
+    EAIProfession TrainSpecialization;
+
+};
+
+class UEHAIItem : public UEHDeviceItem
+{
+    float AIMovementSpeed;
+    float SlopeZOffset;
+    float SlopeAngle;
+    class UTexture2D* AIIndicationMapIcon;
+    float HumanHeadHeight;
+
+};
+
+class UEHAIMinerObject : public UEHAIObject
+{
+};
+
+class UEHAIObject : public UEHItemsContainer
+{
+    EAIProfession AIProfession;
+    float AttachedResourceHeight;
+    float AttachedResourceScale;
+    class UEHItem* ResourceHolderItem;
+    class UEHItem* AttachedResource;
+    class UEHItem* AttachedVisualItem;
+    float AttachedVisualItemHeight;
+    bool IsMovingOnPath;
+    bool IsNudged;
+    bool IsBoarding;
+    FIntVector LastRequestedPath;
+    int32 RetryCount;
+    FAIWorkRequest CurrentWorkRequest;
+    FIntVector NextDirectionCoord;
+    FEHAIObjectOnWorkRequestStateChanged OnWorkRequestStateChanged;
+    void OnWorkRequestStateChanged();
+    int32 CurrentPathIndex;
+    TArray<FIntVector> Path;
+    class UEHAIExternalDependenciesDataObject* AIExternalDependenciesDataObject;
+
+    void TransferAIToAnotherGrid(class AEHGrid* AnotherGrid);
+    void RequestPath(const FIntVector& DestinationCoord, const int32 RetryCountIn);
+    void OnWorkRequestStateChanged__DelegateSignature();
+    void Multi_RemoveAttachedItem();
+    void Multi_AddAttachedItem(class UEHItem* Item);
+    bool IsTransferedTo(class AEHGrid* TestedGrid);
+    bool IsTransfered();
+    bool IsInsideBuilding();
+    bool HasWorkplaceAssigned();
+    void GoOnPathDirectly(const TArray<FIntVector>& FullPath);
+    class UEHInteractableObject* GetWorkplace();
+    FIntVector GetNormalizedDirection();
+    class UEHInteractableObject* GetEnteredBuilding();
+    class UEHItem* GetCarriedItem();
+};
+
+class UEHAITransportBotObject : public UEHAIObject
+{
+};
+
+class UEHAchievementsManager : public UTGUIAchievementsManager
+{
+    class AEHGamePlayerController* PlayerController;
+
+    void UnlockAchievement(const EEHAchievement Achievement);
+    void ShutdownCompleted();
+    void QueryAchievementsCompleted();
+    bool IsAchievementUnlocked(const EEHAchievement Achievement);
+    FName GetAchievementName(const EEHAchievement Achievement);
+};
+
+class UEHAnimalMeshAsset : public UEHVisualMeshAsset
+{
+    EHBreedAnimalTypes BreedAnimalType;
+    EHAnimalSize AnimalSize;
+    float GrowingPhaseTime;
+    uint8 ConsumedPhaseWater;
+    uint8 ConsumedPhaseGrain;
+    class UEHItem* ProducedResource;
+
+};
+
+class UEHAnimatedEllipsisTextWidget : public UTGUserWidget
+{
+    class UEHAnimatedEllipsisTextWidgetViewModel* TextWidgetViewModel;
+
+    void EnableEllipsis(bool AreEllipsisEnabled);
+};
+
+class UEHAnimatedEllipsisTextWidgetViewModel : public UEHViewModel
+{
+    FTextBindable TextToShow;
+    FBoolBindable ShowEllipsis;
+
+};
+
+class UEHArithmeticCombinatorObject : public UEHSignalObject
+{
+    uint8 MathOperationIndex;
+    int32 OperationValue;
+
+    void UpdateOperationValue(int32 OperationValue);
+    void UpdateMathOperation(uint8 MathOperationIndex);
+    void HandleSelectedResourcesChanged();
+};
+
+class UEHAsset : public UPrimaryDataAsset
+{
+    FText ItemName;
+    FText Description;
+    FText LongDescription;
+    TSoftObjectPtr<UTexture2D> Icon;
+    int32 DebugSortPriority;
+    bool IsUnlockedByDefault;
+    EUnlockType UnlockType;
+    FText LockedToastTitle;
+    FText LockedToastDescription;
+
+};
+
+class UEHAssetManager : public UAssetManager
+{
+};
+
+class UEHAsteroidCatcherDataObject : public UEHDataObject
+{
+    FEHAsteroidData AsteroidData;
+    FTransform AsteroidTransform;
+    FRotator CannonRelativeRotation;
+
 };
 
 class UEHAsteroidSpawnerDataObject : public UEHDataObject
@@ -828,20 +2214,36 @@ class UEHAsteroidSpawnerDataObject : public UEHDataObject
 
 };
 
-class UEHHUDUUIComponent : public UActorComponent
+class UEHAsteroidsCatcher : public UEHCraftingObject
 {
+    FEHAsteroidsCatcherOnCatchedResourceChanged OnCatchedResourceChanged;
+    void OnCatchedResourceChanged();
+    int32 AttractedAsteroidIndex;
+    class UParticleSystem* LaserBeamParticle;
+    TArray<FTransform> LaserBeamOffsets;
+    class UParticleSystem* ProcessingParticle;
+    FVector ProcessingOffset;
+    FVector AsteroidMeshOffset;
+    float AsteroidScale;
+    FEHAsteroidsCatcherOnAsteroidCatchStateChanged OnAsteroidCatchStateChanged;
+    void OnAsteroidCatchStateChanged(EAsteroidCatchStateChanged CatchStateChange);
+    class UEHResourceItem* CatchResourceType;
+    FEHCatchedAsteroid AttractedAsteroid;
+    FEHCatchedAsteroid ProcessedAsteroid;
+    float AsteroidProcessingTime;
+
+    bool RemoveProcessedAsteroid();
+    bool RemoveAttractedAsteroid();
+    void OnCatchedResourceChanged__DelegateSignature();
+    void OnAsteroidCatchStateChanged__DelegateSignature(EAsteroidCatchStateChanged CatchStateChange);
+    bool IsProcessingAsteroid();
+    bool IsAttractingAsteroid();
+    bool ChangeCatchedResource(class UEHResourceItem* Resource);
 };
 
 class UEHBackgroundComponent : public UEHHUDUUIComponent
 {
     class UEHBackgroundViewModel* BackgroundViewModel;
-
-};
-
-class UEHScreenViewModel : public UEHViewModel
-{
-    class UEHButtonBarViewModel* ButtonBarViewModel;
-    class UEHDataProvider* DataProvider;
 
 };
 
@@ -864,29 +2266,16 @@ class UEHBackgroundWidget : public UTGUILayer
     void HandleBinkMediaOpened(FString OpenedUrl);
 };
 
-class UEHInteractableServiceObject : public UEHInteractableObject
-{
-    FEHInteractableServiceObjectOnAIInsideChanged OnAIInsideChanged;
-    void OnAIInsideChanged();
-    TArray<class UEHAIObject*> AIsInside;
-    uint8 AIInsideCount;
-
-};
-
 class UEHBarnLandObject : public UEHInteractableServiceObject
 {
     TSoftObjectPtr<UParticleSystem> PlantAnimalsParticle;
     TSoftObjectPtr<UParticleSystem> HarvestAnimalsParticle;
     TSoftObjectPtr<UParticleSystem> FeedingAnimalsParticle;
     TSoftObjectPtr<UParticleSystem> WaterAnimalsParticle;
+    class UEHAIBreederObject* AssignedBreeder;
     class UEHAIBreederObject* WorkingBreeder;
     TArray<class UEHBarnLandObject*> SiblingsBarnLands;
 
-    void Multi_BreederEntered(class UEHAIBreederObject* NewBreeder);
-};
-
-class UEHSpecialisticProductionObject : public UEHCraftingObject
-{
 };
 
 class UEHBarnObject : public UEHSpecialisticProductionObject
@@ -915,34 +2304,6 @@ class UEHBaseButtonViewModel : public UEHViewModel
     FTextBindable ButtonText;
     FTexture2DBindable ButtonImage;
     class UEHViewModel* PayloadViewModel;
-
-};
-
-class UEHUserWidget : public UTGUserWidget
-{
-
-    void OnEnterEvent();
-};
-
-struct FEHBaseButtonProperties
-{
-    FMargin Padding;
-    FSlateChildSize Size;
-    TEnumAsByte<EHorizontalAlignment> BaseButtonHorizontalAlignment;
-    TEnumAsByte<EVerticalAlignment> BaseButtonVerticalAlignment;
-    FName ButtonStyleName;
-    FName TextStyleName;
-    bool ShowShadowText;
-    bool ShouldSpecifySize;
-    float Width;
-    float Height;
-    bool CanReceiveFocus;
-    bool CanBeNavigatedTo;
-    bool TreatHoverAsFocus;
-    bool ShouldSpecifyContentPadding;
-    FMargin ContentPadding;
-    TEnumAsByte<EHorizontalAlignment> ContentHorizontalAlignment;
-    TEnumAsByte<EVerticalAlignment> ContentVerticalAlignment;
 
 };
 
@@ -988,19 +2349,11 @@ class UEHBaseButtonWidget : public UEHUserWidget
     void HandleOnClicked();
 };
 
-class UEHStorageObject : public UEHItemsContainer
-{
-};
-
 class UEHBaseWarehouse : public UEHStorageObject
 {
     TArray<FEHItemInstance> PreviewItems;
 
     void HandleGameStarted();
-};
-
-class UEHElectricityReactor : public UEHCraftingObject
-{
 };
 
 class UEHBatteryObject : public UEHElectricityReactor
@@ -1036,93 +2389,15 @@ class UEHBillboardsLineComponent : public UPrimitiveComponent
     void AddBillboardSprite(class UTexture2D* Sprite, const uint8 Index);
 };
 
-class AEHRemotlyConstructedActor : public AEHWorldInteractiveActor
-{
-    int32 CompletedExpeditionsCount;
-    int32 CurrentlyConstructedPart;
-    TArray<FTransform> ConstructionTransforms;
-    float AccumulatedEnergy;
-    bool IsConstructionDone;
-    bool IsPowerActivated;
-    FName SerializedActorUniqueName;
-
-    void OnPowerActivated();
-    void OnPartConstructionCompleted();
-    void OnNextPartConstructionStarted();
-    void OnConstructionFinished();
-    void OnConstructionCanceled();
-};
-
-class AEHBlackHole : public AEHRemotlyConstructedActor
-{
-    EBlackHoleType BlackHoleType;
-
-    void UpdateOpacity(const float Opacity);
-    void OnCreated();
-};
-
-class UEHCelestialGenerationObject : public UObject
-{
-};
-
 class UEHBlackHoleGenerationObject : public UEHCelestialGenerationObject
 {
     EBlackHoleType BlackHoleType;
 
 };
 
-struct FEHLayerOverride
+class UEHBlockItem : public UEHItem
 {
-    EVoxelTerrainType TerrainType;
-    TSoftObjectPtr<UMaterialInstance> LayerMaterial;
-    uint8 ChanceToSpawn;
-
-};
-
-struct FVoxelTerrainDigData
-{
-    FText TerrainName;
-    TSoftObjectPtr<UVoxelInstancedMaterialCollection> InstanceMaterialCollection;
-    class UEHItem* ItemToPick;
-    float PickChance;
-    TSoftObjectPtr<UMaterialInterface> ColliderWorldMaterial;
-    TSoftObjectPtr<UMaterialInterface> DestructibleMaterial;
-    float DestructibleSpawnScale;
-    float DestructibleImpulseStrength;
-    FLinearColor DustColor;
-    FLinearColor MapColor;
-    TArray<FEHLayerOverride> LayersOverrides;
-
-};
-
-struct FVoxelShapeData
-{
-    FText ShapeName;
-    TSubclassOf<class UVoxelGenerator> GeneratorClass;
-
-};
-
-struct FEHPartScheme
-{
-    FString Name;
-    TSoftObjectPtr<UStaticMesh> StaticMesh;
-    TArray<TSoftObjectPtr<UMaterialInstance>> Materials;
-
-};
-
-struct FEHGameplayAspectUnlock : public FTableRowBase
-{
-    TSoftObjectPtr<UEHAsset> UnlockItem;
-    FName UnlockName;
-
-};
-
-struct FEHBasicUnlockData
-{
-    FText DisplayName;
-    class UTexture2D* Icon;
-    bool IsRecipe;
-    class UEHAsset* UnlockItem;
+    bool BlockSupportsFloorConstruction;
 
 };
 
@@ -1144,6 +2419,7 @@ class UEHBlueprintFunctionLibrary : public UBlueprintFunctionLibrary
     bool IsPointHundred(const FIntPoint& A);
     bool IsMultiplayer();
     bool IsHorizontalRotation(const EEHInstanceRotation Rotation);
+    bool IsGameStarted();
     bool IsGameLoadedFromSavegame();
     bool IsDemo();
     TArray<class UEHResourceItem*> GetWarehouseResources(class UObject* WorldContextObject);
@@ -1183,14 +2459,10 @@ class UEHBlueprintFunctionLibrary : public UBlueprintFunctionLibrary
     void AddOffsetToTransforms(TArray<FTransform> Transforms, const FVector& Offset);
 };
 
-class UEHBoxComponentDepth : public UShapeComponent
+class UEHBoolOptionViewModel : public UEHOptionViewModel
 {
-    FVector BoxExtent;
-    float LineThickness;
 
-    void SetBoxExtent(FVector InBoxExtent, bool bUpdateOverlaps);
-    FVector GetUnscaledBoxExtent();
-    FVector GetScaledBoxExtent();
+    void OnBindableChanged(bool NewValue);
 };
 
 class UEHBoxComponent : public UEHBoxComponentDepth
@@ -1199,6 +2471,16 @@ class UEHBoxComponent : public UEHBoxComponentDepth
     bool IsCollective;
     bool IsFloor;
 
+};
+
+class UEHBoxComponentDepth : public UShapeComponent
+{
+    FVector BoxExtent;
+    float LineThickness;
+
+    void SetBoxExtent(FVector InBoxExtent, bool bUpdateOverlaps);
+    FVector GetUnscaledBoxExtent();
+    FVector GetScaledBoxExtent();
 };
 
 class UEHBreadcrumbEntryViewModel : public UTGViewModel
@@ -1265,10 +2547,6 @@ class UEHButtonBarWidget : public UTGUILayer
 
 };
 
-class UEHOptionViewModel : public UEHViewModel
-{
-};
-
 class UEHButtonViewModel : public UEHOptionViewModel
 {
 };
@@ -1329,14 +2607,6 @@ class UEHCampaignOptionWidget : public UTGUserWidget
     void HandleClicked();
 };
 
-class UEHUIScreen : public UTGUIScreen
-{
-    TSoftObjectPtr<USoundBase> MenuEnterAudio;
-    TSoftObjectPtr<USoundBase> MenuExitAudio;
-    class UEHScreenViewModel* ScreenViewModel;
-
-};
-
 class UEHCampaignScreen : public UEHUIScreen
 {
     class UEHCampaignViewModel* CampaignViewModel;
@@ -1350,12 +2620,6 @@ class UEHCampaignScreen : public UEHUIScreen
 class UEHCampaignViewModel : public UEHScreenViewModel
 {
     class UEHCampaignListViewModel* CampaignListViewModel;
-
-};
-
-class UEHInteractableServiceContainer : public UEHStorageObject
-{
-    TArray<class UEHAIObject*> AIsInside;
 
 };
 
@@ -1376,62 +2640,14 @@ class UEHCarbonReactor : public UEHElectricityReactor
 
 };
 
-class AEHCelestialBodyActor : public AActor
+class UEHCelestialGenerationObject : public UObject
 {
-    FName SerializedActorUniqueName;
-
-};
-
-class AEHCharacter : public AVoxelCharacter
-{
-    class UCameraComponent* FirstPersonCamera;
-    class USpringArmComponent* CameraSpring;
-    class USpringArmComponent* TraceCameraPoint;
-    float MouseVerticalSensitivity;
-    float MouseHorizontalSensitivity;
-    class UEHInventoryComponent* InventoryComponent;
-    class AEHGamePlayerController* GamePlayerController;
-    bool StationaryJetpack;
-    bool Booster;
-    FEHCharacterOnJetpackModeChanged OnJetpackModeChanged;
-    void OnJetpackModeChanged(bool IsActive);
-    class UPrimitiveComponent* BaseComponent;
-    class USphereComponent* SphereGridDetectorComponent;
-
-    void UpdateMPTool();
-    void Server_UpdateStationaryJetpack(bool IsOn);
-    void Server_UpdateBooster(bool IsOn);
-    void Server_ToggleStationaryJetpack();
-    void Server_LaunchCharacter_ZOverride(const FVector& LaunchVelocity);
-    void Server_LaunchCharacter(const FVector& LaunchVelocity);
-    void Server_DetachCharacter();
-    void Server_AttachCharacterToActor(class AActor* ParentActor);
-    void Scan();
-    void SC_LaunchCharacter_ZOverride(const FVector& LaunchVelocity);
-    void SC_LaunchCharacter(const FVector& LaunchVelocity);
-    void OnRep_StationaryJetpack();
-    void OnRep_Booster();
-    void OnJetpackModeChanged__DelegateSignature(bool IsActive);
-    void Multi_UpdateHidden(const bool NewHidden);
-    void Multi_DetachActor();
-    void Multi_AttachActor(class AActor* ParentActor);
-    void HandlePlayerLeftGrid(class AEHGrid* Grid);
-    void HandlePlayerEnteredGrid(class AEHGrid* Grid);
-    void HandleGameStarted();
-    class USceneComponent* GetToolRoot();
-    float GetInteractionDistance(const FVector& Location);
-    FVector GetInteractionDirection(const FVector& Location);
-    class USceneComponent* GetInteractionComponent();
-    class UEHCharacterMovementComponent* GetEHMovementComponent();
-    FVector GetCharacterVelocity();
-    void DisableJetpackFloorCheck();
-    void Deactivate();
-    void Client_UpdateBaseComponent(class AEHMovableSpaceActor* MovableSpaceActor);
-    void Activate();
 };
 
 class UEHCharacterMovementComponent : public UCharacterMovementComponent
 {
+
+    void SetSmoothingNetworkMode(ENetworkSmoothingMode NetworkSmoothingModeIn);
 };
 
 class UEHCheatComponent : public UTGUICheatComponent
@@ -1464,75 +2680,6 @@ class UEHChildActorComponent : public UChildActorComponent
 {
 };
 
-struct FEHCelestialBodyGeneration
-{
-    EChunkGenerationType Type;
-    FVector position;
-    class UEHCelestialGenerationObject* CelestialGenerationObject;
-
-};
-
-struct FEHNebulaGeneration
-{
-    int32 MaterialIndex;
-    FVector Scale;
-    FRotator Rotation;
-    FVector LightPosition;
-    float LightColorAlpha;
-    float LightIntensity;
-    float EmissionColorAlpha;
-    float Emission;
-    float Density;
-
-};
-
-class AEHChunk : public AActor
-{
-    bool ProcedurallyGenerated;
-    EChunkGenerationType ChunkGenerationType;
-    FName PlanetoidStreamingLevel;
-    TSoftClassPtr<AEHVoxelWorld> VoxelWorldTemplate;
-    TSoftClassPtr<AEHVoxelWorld> VoxelWorldTemplateSmall;
-    TSubclassOf<class AEHColliderWorld> ColliderWorldTemplate;
-    TSubclassOf<class AEHPlanetoidGrid> PlanetoidTemplate;
-    int32 NoiseMultiplyX;
-    int32 NoiseMultiplyY;
-    int32 NoiseMultiplyZ;
-    TMap<EChunkGenerationType, float> SpawnRatioForGenerationTypes;
-    float GenerateChance;
-    TMap<FName, int32> SeedsVoxelWorld;
-    float ZOffsetVoxelWorld;
-    float ZOffsetPlanetoidGrid;
-    FIntVector ChunkCoords;
-    FVector ChunkMiddlePosition;
-    bool CollisionsEnabled;
-    float ColliderDeactivateTime;
-    bool IsLoadedFromSavegame;
-    bool CelestialBodiesGenerated;
-    FVector2D SphereRadius;
-    FVector2D LightIntensity;
-    FVector2D NebulaEmission;
-    FVector2D NebulaDensity;
-    class USceneComponent* SceneRoot;
-    class AEHPlanetoidGrid* PlanetoidGrid;
-    TArray<class AEHPlanetoidGrid*> SmallPlanetoidGrids;
-    class AActor* CelestialBody;
-    TArray<FEHCelestialBodyGeneration> CelestialGenerations;
-    TArray<FEHNebulaGeneration> NebulaGenerations;
-
-    void UpdateCollision(bool InCollisionsEnabled);
-    void SpawnVoxelWorld(class AEHPlanetoidGrid* EHPlanetoidGrid, const bool IsPlanet, const int32 Index);
-    void SpawnCelestialBodies();
-    void OnRep_SmallPlanetoidGrids();
-    void OnRep_PlanetoidGrid();
-    void OnChunkGenerated();
-    void OnChunkCreated();
-    void LoadStreamingPlanetoid();
-    void HandleWorldLoaded(class AVoxelWorld* VoxelWorld);
-    void HandleSettingsApplied();
-    TArray<FEHCelestialBodyGeneration> GetCelestialGenerations(const EChunkGenerationType GenerationTyp);
-};
-
 class UEHCircularSaw : public UEHCraftingObject
 {
 };
@@ -1544,30 +2691,8 @@ class UEHCloseBox : public UTGUserWidget
     void HandleCloseClicked();
 };
 
-class IEHColliderInterface : public IInterface
-{
-};
-
-class AEHColliderWorld : public AVoxelWorld
-{
-    class AEHVoxelWorld* VoxelWorldMain;
-    bool ShouldCreateColliderWorld;
-
-    void UpdateColliderGridVisibility();
-    void SetGeneratorParams();
-};
-
 class UEHColumnObject : public UEHInteractableObject
 {
-};
-
-class AEHCometStrike : public AEHCelestialBodyActor
-{
-    bool Activated;
-    FVector ImpactPoint;
-    class AActor* CometProjectile;
-
-    void RecoverCometProjectile(const FVector& CometProjectilePosition);
 };
 
 class UEHConfig : public UTGUIConfigMain
@@ -1585,7 +2710,6 @@ class UEHConnectorStationObject : public UEHCraftingObject
     TArray<ELineDirection> ConveyLines;
     FIntVector AIEntranceCoord;
     TArray<FIntVector> LinesCoords;
-    class UEHItem* ConveyorLineItem;
     FEHConnectorStationObjectOnConveyorLinesChanged OnConveyorLinesChanged;
     void OnConveyorLinesChanged();
     FEHConnectorStationObjectOnDockingStateChanged OnDockingStateChanged;
@@ -1602,14 +2726,6 @@ class UEHConnectorStationObject : public UEHCraftingObject
 
 class UEHConstructor : public UEHCraftingObject
 {
-};
-
-class UInteractBaseWidget : public UUserWidget
-{
-    class UEHInteractableObject* InteractableObject;
-
-    void OnContextChanged();
-    void Init(class UEHInteractableObject* InInteractableObject);
 };
 
 class UEHContainerWidget : public UInteractBaseWidget
@@ -1635,6 +2751,18 @@ class UEHControlPanelObject : public UEHInteractableObject
 {
 };
 
+class UEHConveyorBeltObject : public UEHConveyorObject
+{
+};
+
+class UEHConveyorDeviceItem : public UEHDeviceItem
+{
+};
+
+class UEHConveyorJoint : public UEHStorageObject
+{
+};
+
 class UEHConveyorObject : public UEHInteractableObject
 {
     bool CanConvey;
@@ -1650,18 +2778,6 @@ class UEHConveyorObject : public UEHInteractableObject
 
 };
 
-class UEHConveyorBeltObject : public UEHConveyorObject
-{
-};
-
-class UEHConveyorDeviceItem : public UEHDeviceItem
-{
-};
-
-class UEHConveyorJoint : public UEHStorageObject
-{
-};
-
 class UEHCosmicHarpoonObject : public UEHConnectorStationObject
 {
     FEHCosmicHarpoonObjectOnAttractedPlanetoidChanged OnAttractedPlanetoidChanged;
@@ -1673,6 +2789,33 @@ class UEHCosmicHarpoonObject : public UEHConnectorStationObject
     void AttractPlanetoid(class AEHPlanetoidGrid* PlanetoidToAttract);
 };
 
+class UEHCraftingObject : public UEHProductionObject
+{
+    class UEHElectricNetwork* ElectricNetwork;
+    int32 ProducedElectricity;
+    int32 ConsumedElectricity;
+    int32 ConsumedWater;
+    int32 ProducedWater;
+    class UEHWaterNetwork* WaterNetwork;
+    FEHCraftingObjectOnCraftingElectricityChanged OnCraftingElectricityChanged;
+    void OnCraftingUtilityChanged();
+    FEHCraftingObjectOnCraftingWaterChanged OnCraftingWaterChanged;
+    void OnCraftingUtilityChanged();
+
+    void OnRep_ProducedWater();
+    void OnRep_ProducedElectricity();
+    void OnCraftingUtilityChanged__DelegateSignature();
+    bool HasPower();
+    int32 GetProducedElectricity();
+    bool GetIsWaterDevice();
+    int32 GetConsumedElectricity();
+    class AActor* GetChildActor();
+};
+
+class UEHCustomAsset : public UEHAsset
+{
+};
+
 class UEHCustomConstructionDeviceItem : public UEHDeviceItem
 {
     bool CCShouldCheckSweepResult;
@@ -1680,23 +2823,6 @@ class UEHCustomConstructionDeviceItem : public UEHDeviceItem
     FVector ConstructOffset;
     float CCCameraDistance;
 
-};
-
-class IEHCustomConstructionInterface : public IInterface
-{
-};
-
-class UEHHISMComponent : public UHierarchicalInstancedStaticMeshComponent
-{
-    EInstanceCellType InstanceType;
-    class UEHItem* Item;
-
-    void ResetRenderState();
-    void HISMMarkRenderStateDirty();
-};
-
-class UEHHISMCellComponent : public UEHHISMComponent
-{
 };
 
 class UEHCustomHISMComponent : public UEHHISMCellComponent
@@ -1707,6 +2833,7 @@ class UEHCustomMeshAsset : public UPrimaryDataAsset
 {
     FName AssetName;
     TArray<TSoftObjectPtr<UStaticMesh>> StaticMeshes;
+    TArray<TSoftObjectPtr<UMaterialInterface>> Materials;
     uint8 NumCustomDataFloats;
     uint8 TranslucencySortPriority;
     bool EnableCollisions;
@@ -1720,52 +2847,8 @@ class UEHCustomMeshLightAsset : public UEHCustomMeshAsset
 
 };
 
-struct FDecalInfo
+class UEHDataObject : public UObject
 {
-    TSubclassOf<class UEHDecalComponent> DecalTemplate;
-    FTransform Transform;
-    class UEHCustomMeshAsset* OutletMesh;
-    class UEHCustomMeshAsset* PreviewMesh;
-
-};
-
-struct FEHTrackableInfo
-{
-    class UTexture2D* Texture;
-
-};
-
-struct FEHHeadGroom
-{
-    TSoftObjectPtr<UStaticMesh> FaceMesh;
-    TArray<TSoftObjectPtr<UGroomAsset>> GroomMeshes;
-    TArray<TSoftObjectPtr<UMaterialInterface>> MaterialOverrides;
-
-};
-
-struct FEHStartingStation
-{
-    FString DisplayName;
-    FName StreamingID;
-    EEHStartingStationSize Size;
-    TSoftObjectPtr<UTexture2D> Icon;
-
-};
-
-struct FEHPlanetoidDecalInfo
-{
-    TSoftObjectPtr<UMaterialInterface> Material;
-    FVector Size;
-    uint8 SpawnChance;
-
-};
-
-struct FEHPlanetoidParticleInfo
-{
-    TSoftObjectPtr<UParticleSystem> Particle;
-    FVector Offset;
-    uint8 SpawnChance;
-
 };
 
 class UEHDataProvider : public UObject
@@ -1793,8 +2876,16 @@ class UEHDataProvider : public UObject
     TArray<class UEHBlockItem*> PlanetoidGroundDeposits;
     class UEHItem* DirtResource;
     class UEHItem* QuartzResource;
+    class UEHItem* HydrotonicResource;
     class UEHItem* FloorRecyclable;
     class UEHItem* WallRecyclable;
+    class UEHItem* ColonyOrigin;
+    class UEHItem* ConveyorLineItem;
+    class UEHItem* AdvConveyorLineItem;
+    class UEHItem* BulkHeightExtenderItem;
+    class UEHItem* BulkFoundationItem;
+    class UEHItem* BulkFloorItem;
+    class UEHItem* BulkDecorationItem;
     TArray<float> DestructibleSpawnChances;
     TArray<float> VisualSpawnChances;
     TArray<FEHPlanetoidDecalInfo> PlanetoidDecals;
@@ -1810,6 +2901,7 @@ class UEHDataProvider : public UObject
     FEHTrackableInfo GetTrackableInfo(const EEHTrackableType Type);
     TArray<FEHStartingStation> GetStartingStations(const EEHStartingStationSize Size);
     FDecalInfo GetOutletInfo(const EEHDecalType Type);
+    class UEHItem* GetBulkPreviewItem(class UEHAsset* Item);
 };
 
 class UEHDecalComponent : public UDecalComponent
@@ -1823,8 +2915,6 @@ class UEHDeciderCombinatorObject : public UEHSignalObject
     int32 ConditionValue;
     bool Response;
 
-    void UpdateMathCondition(uint8 MathConditionIndex);
-    void UpdateConditionValue(int32 ConditionValue);
     void HandleSelectedResourcesChanged();
 };
 
@@ -1845,43 +2935,34 @@ class UEHDestructibleComponent : public UDestructibleComponent
 {
 };
 
-struct FAIArray
+class UEHDeviceItem : public UEHInteractableItem
 {
-    TArray<class UEHAIObject*> AIObjects;
+    int32 DeviceTypeFlags;
+    FStructureSize StructureSize;
+    TArray<FTransform> InsideMeshesTransforms;
+    TSoftClassPtr<AActor> InteractiveActorClass;
+    bool SpawnActorOnlyForInteraction;
+    TArray<FEHOutlet> Outlets;
+    TArray<FContainerPushDefinition> PushDefinitions;
+    TArray<FGeneratedCustomMesh> CustomMeshes;
+    TArray<FEHGeneratedReactiveMesh> ReactiveMeshes;
+    bool ShouldCreateColliderBlocks;
+    bool CreateCollidersForAllDirections;
+    bool ColliderCheckOccupiedCoord;
+    bool CreatedDeviceRegisteredAsVacant;
+    bool ShowDisabledStatePreview;
 
 };
 
-struct FInteractableObjectArray
+class UEHDeviceObject : public UEHInteractableObject
 {
-    TArray<class UEHInteractableObject*> InteractableObjects;
+    class AActor* ChildActor;
+    bool IsSwitchedOn;
+    FEHDeviceObjectOnDeviceSwitchStateChanged OnDeviceSwitchStateChanged;
+    void OnDeviceSwitchStateChanged();
 
-};
-
-struct FResourceAction
-{
-    int32 Priority;
-    class UEHItem* Item;
-    class UEHItemsContainer* Container;
-    bool IsStoringResource;
-
-};
-
-struct FContainersArray
-{
-    TArray<class UEHItemsContainer*> Containers;
-
-};
-
-struct FResourceActionArray
-{
-    TArray<FResourceAction> Containers;
-
-};
-
-struct FEHResourceVeinNetworks
-{
-    TArray<class UEHResourceVeinNetwork*> ResourceVeinNetworks;
-
+    void OnRep_ChildActor();
+    void OnDeviceSwitchStateChanged__DelegateSignature();
 };
 
 class UEHDevicesComponent : public UActorComponent
@@ -1929,10 +3010,6 @@ class UEHDevicesComponent : public UActorComponent
     TArray<class UEHInteractableObject*> GetInteractableObjectsByItem(class UEHItem* Item);
 };
 
-class UEHDialogBoxElementViewModel : public UEHViewModel
-{
-};
-
 class UEHDialogBoxButtonViewModel : public UEHDialogBoxElementViewModel
 {
     class UEHBaseButtonViewModel* ButtonViewModel;
@@ -1961,10 +3038,8 @@ class UEHDialogBoxCurrencyButtonWidget : public UEHDialogBoxButtonWidget
 
 };
 
-class UEHPopupViewModel : public UTGPopupViewModel
+class UEHDialogBoxElementViewModel : public UEHViewModel
 {
-    class UEHButtonBarViewModel* ButtonBarViewModel;
-
 };
 
 class UEHDialogBoxViewModel : public UEHPopupViewModel
@@ -2003,23 +3078,6 @@ class UEHDockingStationObject : public UEHConnectorStationObject
     void Multi_DecreaseAstronautsCount();
 };
 
-class AEHInteractiveActor : public AActor
-{
-    class UEHInteractableObject* InteractableObject;
-
-    class UEHInteractableObject* GetInteractableObject();
-};
-
-class AEHDrillActor : public AEHInteractiveActor
-{
-
-    void RecoverDrillPosition(const FIntVector& Coord, const bool IsDrillingGround);
-    void OnResourceMined();
-    void OnGroundMined();
-    void OnDrillingStopped();
-    void MoveDrillToMiningPosition(const FIntVector& Coord, const bool IsDrillingGround);
-};
-
 class UEHDrillObject : public UEHCraftingObject
 {
     bool IsBigDrill;
@@ -2030,12 +3088,6 @@ class UEHDrillObject : public UEHCraftingObject
     void StartDrilling();
     void Multi_NotifyDrillMoved(const FIntVector& Coord);
     TArray<FEHItemInstance> GetProcessedItems();
-};
-
-class UEHInt32OptionViewModel : public UEHOptionViewModel
-{
-
-    void OnBindableChanged(int32 NewValue);
 };
 
 class UEHDropdownViewModel : public UEHInt32OptionViewModel
@@ -2049,10 +3101,6 @@ class UEHDropdownViewModel : public UEHInt32OptionViewModel
     void SelectOption(const int32 OptionID);
 };
 
-class IEHDynamicMaterialInterface : public IInterface
-{
-};
-
 class UEHEatStationObject : public UEHInteractableServiceObject
 {
     FTransform InsideFoodTransform;
@@ -2061,19 +3109,7 @@ class UEHEatStationObject : public UEHInteractableServiceObject
     void Multi_HungerRestored();
 };
 
-class UEHPipeObject : public UEHInteractableObject
-{
-};
-
 class UEHElectricCable : public UEHPipeObject
-{
-};
-
-class IEHElectricDeviceInterface : public IInterface
-{
-};
-
-class UEHNetwork : public UObject
 {
 };
 
@@ -2087,14 +3123,12 @@ class UEHElectricNetwork : public UEHNetwork
     float PowerEfficiency;
     float GenerationEfficiency;
 
-    void UpdateBlackout(class AEHGrid* Grid, bool HasBlackout);
+    void UpdateBlackout(bool HasBlackout);
     void OnPowerEfficiencyChanged__DelegateSignature();
 };
 
-class AEHElectromagneticField : public AEHCelestialBodyActor
+class UEHElectricityReactor : public UEHCraftingObject
 {
-    class UProjectileMovementComponent* ProjectileMovementComponent;
-
 };
 
 class UEHElevateBlockItem : public UEHDeviceItem
@@ -2103,11 +3137,11 @@ class UEHElevateBlockItem : public UEHDeviceItem
 
 };
 
-class UEHElevateObject : public UEHInteractableObject
+class UEHElevateLadderObject : public UEHElevateObject
 {
 };
 
-class UEHElevateLadderObject : public UEHElevateObject
+class UEHElevateObject : public UEHInteractableObject
 {
 };
 
@@ -2134,25 +3168,15 @@ class UEHEnergyTransmitterObject : public UEHCraftingObject
     void CancelEnergyReceiver();
 };
 
-class AEHEnvironmentManager : public AActor
-{
-    TArray<TSoftObjectPtr<USoundBase>> GameplayMusic;
-    TSoftObjectPtr<USoundBase> IntroMusic;
-
-    void StartGameplayMusic();
-    void HandleSettingsApplied();
-    void AudioFinished();
-};
-
 class UEHFarmLandObject : public UEHInteractableServiceObject
 {
     TSoftObjectPtr<UParticleSystem> PlantCropsParticle;
     TSoftObjectPtr<UParticleSystem> HarvestCropsParticle;
     TSoftObjectPtr<UParticleSystem> WaterCropsParticle;
     class UEHAIFarmerObject* WorkingFarmer;
+    class UEHAIFarmerObject* AssignedFarmer;
     TArray<class UEHFarmLandObject*> SiblingsFarmLands;
 
-    void Multi_FarmerEntered(class UEHAIFarmerObject* NewFarmer);
 };
 
 class UEHFarmObject : public UEHSpecialisticProductionObject
@@ -2173,6 +3197,12 @@ class UEHFlareComponent : public UStaticMeshComponent
     void SetFlareDirection(const float AngleYAxis, const float AngleZAxis);
 };
 
+class UEHFloatOptionViewModel : public UEHOptionViewModel
+{
+
+    void OnBindableChanged(float NewValue);
+};
+
 class UEHFloorItem : public UEHItem
 {
     bool IsCornerFloor;
@@ -2183,32 +3213,12 @@ class UEHFloorObject : public UEHInteractableObject
 {
 };
 
-class UEHResourceItem : public UEHItem
-{
-    EEHMiningResourceType MiningResourceType;
-    TArray<FTransform> BoxInsideInstances;
-    bool ImportInsideInstances;
-    FRotator RotateFactor;
-    bool RotateInsideInstances;
-    float ScaleFactor;
-    bool ScaleInsideInstances;
-    int32 WarehouseSortPriority;
-    FLinearColor ResourceColor;
-    uint8 HitNumberToExtract;
-    TSoftObjectPtr<UNiagaraSystem> ExtractionVFX;
-
-};
-
 class UEHFoodItem : public UEHResourceItem
 {
     float RestoreHungerRatio;
     float RestoreHungerTime;
     bool IsLiquidFood;
 
-};
-
-class UEHFoundationObject : public UEHInteractableObject
-{
 };
 
 class UEHFoundationBottomObject : public UEHFoundationObject
@@ -2219,13 +3229,16 @@ class UEHFoundationCornerObject : public UEHFoundationObject
 {
 };
 
-class UEHFoundationStationOriginObject : public UEHFoundationObject
+class UEHFoundationObject : public UEHInteractableObject
+{
+};
+
+class UEHFoundationStationOriginObject : public UEHInteractableObject
 {
     FVector OriginLocation;
 
     void RenameStation(FString StationName);
     void DestroyStation();
-    void CreateStationOrigin(class UEHGridComponent* GridComponent, FString StationName);
 };
 
 class UEHGameFunctionLibrary : public UBlueprintFunctionLibrary
@@ -2251,52 +3264,9 @@ class UEHGameFunctionLibrary : public UBlueprintFunctionLibrary
     class UEHGameInstance* GetEHGameInstance(const class UObject* WorldContextObject);
     class UEHCheatComponent* GetEHCheatComponent(const class UObject* WorldContextObject);
     class AEHCharacter* GetEHCharacter(const class UObject* WorldContextObject);
+    TArray<class AEHGamePlayerController*> GetAllPlayerControllers(const class UObject* WorldContextObject);
     class UEHAchievementsManager* GetAchievementsManager(const class UObject* WorldContextObject);
     bool CheckDebugMode(const class UObject* WorldContextObject, EEHDebugMode DebugMode);
-};
-
-class IEHGameHUDInterface : public IInterface
-{
-
-    bool TogglePopMenu(TSubclassOf<class UInteractBaseWidget> MenuWidget, class UEHInteractableObject* InteractableObject);
-    void TogglePhotoMode();
-    void ToggleMouse(bool ShowMouse);
-    void ToggleModularVehicleDesigner();
-    class UMenuWidget* ToggleMenu(TSubclassOf<class UMenuWidget> MenuWidget, class UObject* PayloadObject);
-    void ToggleMap();
-    void ToggleLog();
-    void OpenPopMenu(TSubclassOf<class UInteractBaseWidget> MenuWidget, class UEHInteractableObject* InteractableObject);
-    class UMenuWidget* OpenMenu(TSubclassOf<class UMenuWidget> MenuWidget, class UObject* PayloadObject);
-    void ClosePopMenu();
-    bool CloseCurrentMenu();
-    void ChangeCursorState(bool IsActive);
-};
-
-struct FEHScenarioParams
-{
-    FString SeedName;
-    int32 SeedNumber;
-    bool PlayerConsumesOxygen;
-    bool FreeConstruction;
-    bool StartCampaign;
-    TArray<FEHItemInstance> DefaultItems;
-    TArray<FEHGlobalPointInstance> DefaultGlobalPoints;
-    TArray<class UEHTechnologyAsset*> UnlockedTechnologies;
-    bool ShouldGenerateChunks;
-    int32 ChunkElementsCount;
-    float TerrainTypeSpawnChances;
-    float ShapeTypeSpawnChances;
-
-};
-
-struct FEHServerParams
-{
-    FString Name;
-    bool IsPublic;
-    bool AllowLateJoin;
-    int32 MaxNumberOfPlayers;
-    FString SavegameName;
-
 };
 
 class UEHGameInstance : public UTGGameInstance
@@ -2309,6 +3279,7 @@ class UEHGameInstance : public UTGGameInstance
     FString randomSeedName;
     FName StreamingID;
     FEHScenarioParams ScenarioParams;
+    FEHMPScenarioParams MPScenarioParams;
     FEHServerParams ServerParams;
     bool UseCampaignScenarioParams;
     FEHGameInstanceOnLoadGameFinished OnLoadGameFinished;
@@ -2325,6 +3296,7 @@ class UEHGameInstance : public UTGGameInstance
 
     void StartAsyncSoftAssetsLoading();
     void ResetState();
+    void RecoverySave();
     void QuickSave();
     void QuickLoad();
     void OnLoadGameFinished__DelegateSignature(bool IsLoadedFromSavegame);
@@ -2346,19 +3318,17 @@ class UEHGameInstance : public UTGGameInstance
     void CreateAutosave(int32 AutosaveMaxCount);
 };
 
-struct FEHCharacters
+class UEHGameUserSettings : public UTGGameUserSettings
 {
-    TArray<class AEHCharacter*> Characters;
+    bool CinematicAlreadyWatched;
+    FName LastCompletedScenario;
+    bool RestoreOpenWindowState;
 
-};
-
-class AEHGameModeBase : public AGameModeBase
-{
-    TMap<class UEHInteractableObject*, class FEHCharacters> ContainersWatchingPlayers;
-    TMap<class UEHItem*, class FEHCharacters> ItemsWatchingPlayers;
-    TMap<class AEHCharacter*, class UEHInteractableObject*> WatchedContainers;
-    TArray<class AEHCharacter*> AllPlayers;
-
+    void RunBenchmarkConfigureSettings();
+    bool HasBenchmarkResults();
+    bool GetRestoreOpenWindowState();
+    float GetBenchmarkGPU();
+    float GetBenchmarkCPU();
 };
 
 class UEHGamepadPreviewFrontWidget : public UTGUserWidget
@@ -2377,112 +3347,6 @@ class UEHGameplayEffectAsset : public UEHCustomAsset
 {
 };
 
-class AEHPlayerController : public ATGPlayerController
-{
-
-    void UpdatePresenceStatus(const FText PresenceStatus);
-    void HandlePlayerStateInitialized();
-};
-
-class AEHGamePlayerController : public AEHPlayerController
-{
-    bool ControlMode;
-    bool BoosterMode;
-    bool IsRefillingOxygen;
-    float Health;
-    float Oxygen;
-    uint8 UniverseIndex;
-    bool IsCharacterFarAway;
-    bool HasOxygen;
-    bool LosingHealth;
-    bool ShouldUpdateWorldOrigin;
-    bool EnableDebugMode;
-    bool HasPlayerVisitedPlanet;
-    EEHDebugMode DebugMode;
-    bool IsDebugTravelUniverse;
-    FEHGamePlayerControllerOnDebugModeChanged OnDebugModeChanged;
-    void OnModeChanged();
-    FEHGamePlayerControllerOnControlModeChanged OnControlModeChanged;
-    void OnModeChanged();
-    FEHGamePlayerControllerOnCharacterPossedChanged OnCharacterPossedChanged;
-    void OnModeChanged();
-    FEHGamePlayerControllerOnCharacterFarAwayChanged OnCharacterFarAwayChanged;
-    void OnModeChanged();
-    FEHGamePlayerControllerOnCharacterRefillingOxygenChanged OnCharacterRefillingOxygenChanged;
-    void OnCharacterRefillingOxygenChanged();
-    FEHGamePlayerControllerOnUniverseChanged OnUniverseChanged;
-    void OnUniverseChanged(uint8 PreviousIndex, uint8 NewIndex);
-    FEHGamePlayerControllerOnPauseStateChanged OnPauseStateChanged;
-    void OnPauseStateChanged(bool IsPaused);
-    FEHGamePlayerControllerOnOxygenReffiled OnOxygenReffiled;
-    void OnOxygenReffiled();
-    FEHGamePlayerControllerOnBarrierOxygenReffiled OnBarrierOxygenReffiled;
-    void OnOxygenReffiled();
-    FEHGamePlayerControllerHasOxygenChanged HasOxygenChanged;
-    void OnOxygenReffiled();
-    FEHGamePlayerControllerLosingHealthChanged LosingHealthChanged;
-    void OnOxygenReffiled();
-    class UEHScenarioComponent* ScenarioManager;
-
-    void TriggerCinematicSequence();
-    void ToggleControlMode(const bool ControlModeEnabled);
-    void ToggleCharacterRefillingOxygen(const bool IsBarrierRefillingOxygen, class UEHBarrierNetwork* BarrierNetwork);
-    bool ShowActors();
-    bool SetVirtualCamera(bool IsActive);
-    void SetGamePaused(bool bPaused);
-    void SetDebugMode(bool IsOn);
-    void Server_PossesPawn(class APawn* InPawn, bool ShouldAttachCharacter);
-    void Server_PossesCharacterAtLocation(const FVector& Location, const bool ShouldTeleportPlayer, bool ShouldDetachCharacter);
-    void Server_PossesCharacter();
-    void OnUniverseChanged__DelegateSignature(uint8 PreviousIndex, uint8 NewIndex);
-    void OnPauseStateChanged__DelegateSignature(bool IsPaused);
-    void OnOxygenReffiled__DelegateSignature();
-    void OnModeChanged__DelegateSignature();
-    void OnCharacterRefillingOxygenChanged__DelegateSignature();
-    bool IsGirdDebugActive();
-    bool IsCharacterPossesed();
-    bool HideActors();
-    void HandlePossessImpossible();
-    void HandlePlayerEnteredGrid(class AEHGrid* Grid);
-    void HandlePlayerAction(FName PlayerActionName);
-    void GoToPreviousUniverse();
-    void GoToNextUniverse();
-    FName GetUniverseSignature();
-    class AEHCharacter* GetEHCharacter();
-    void Client_NotifyPossessImpossible();
-    void Client_BarrierOxygenRefilled();
-};
-
-class AEHGameState : public ATGGameState
-{
-    FEHGameStateOnSciencePointsUpdated OnSciencePointsUpdated;
-    void OnSciencePointsUpdated();
-    int32 NumberOfReplicatedLoadActors;
-    FEHGameStateOnTechnologyChanged OnTechnologyChanged;
-    void OnTechnologyChanged();
-    TArray<int32> GlobalPoints;
-
-    void OnTechnologyChanged__DelegateSignature();
-    void OnSciencePointsUpdated__DelegateSignature();
-    void OnRep_GlobalPoints();
-    int32 GetPointByType(const EGlobalPointType GlobalPointType);
-    void AddGlobalPoints(const TArray<FEHGlobalPointInstance>& GlobalPointInstances);
-    void AddGlobalPoint(const FEHGlobalPointInstance& GlobalPointInstance);
-};
-
-class UEHGameUserSettings : public UTGGameUserSettings
-{
-    bool CinematicAlreadyWatched;
-    FName LastCompletedScenario;
-    bool RestoreOpenWindowState;
-
-    void RunBenchmarkConfigureSettings();
-    bool HasBenchmarkResults();
-    bool GetRestoreOpenWindowState();
-    float GetBenchmarkGPU();
-    float GetBenchmarkCPU();
-};
-
 class UEHGammaStepperViewModel : public UEHViewModel
 {
     FBoolBindable IsPreviousActive;
@@ -2492,15 +3356,6 @@ class UEHGammaStepperViewModel : public UEHViewModel
     void SelectPreviousOption();
     void SelectOption(const int32 OptionID);
     void SelectNextOption();
-};
-
-class UEHOptionWidget : public UTGUserWidget
-{
-
-    void NavigationRight();
-    void NavigationLeft();
-    void NavigationConfirm();
-    FText GetOptionName();
 };
 
 class UEHGammaStepperWidget : public UEHOptionWidget
@@ -2519,150 +3374,6 @@ class UEHGammaStepperWidget : public UEHOptionWidget
 class UEHGlobalPointAsset : public UEHCustomAsset
 {
     EGlobalPointType GlobalPointType;
-
-};
-
-struct FInstancesContainer
-{
-    TArray<class UEHHISMCellComponent*> Instances;
-
-};
-
-struct FEHCellType
-{
-    class UEHItem* Item;
-    class UEHInteractableObject* InteractableObject;
-    FIntVector CellCoords;
-    EEHInstanceRotation CellRotation;
-    FVector InstanceLocation;
-    uint8 CellState;
-
-};
-
-class AEHGrid : public AActor
-{
-    FString GridName;
-    FName GridUniqueID;
-    bool ModifiedByPlayer;
-    bool SaveGridItemsData;
-    bool SaveNavPoints;
-    FVector FloorMiddlePosition;
-    class UEHDevicesComponent* DevicesComponent;
-    class UEHPathfindingComponent* PathfindingComponent;
-    class UEHAIDirectorComponent* AIDirectorComponent;
-    class UEHThrusterNetwork* ThrusterNetwork;
-    TArray<class AEHGrid*> DockedGrids;
-    FEHGridOnDockedGridsChanged OnDockedGridsChanged;
-    void OnDockedGridsChanged();
-    class UHierarchicalInstancedStaticMeshComponent* FloorMiddleEdges;
-    class UHierarchicalInstancedStaticMeshComponent* FloorLeftEdges;
-    class UHierarchicalInstancedStaticMeshComponent* FloorRightEdges;
-    class UHierarchicalInstancedStaticMeshComponent* FloorDiagonalEdges;
-    class UHierarchicalInstancedStaticMeshComponent* FloorCornerEdges;
-    class UInstancedStaticMeshComponent* ValidationBaseConstruction;
-    class UEHBoxComponent* CCWallComponent;
-    class UEHBoxComponent* CCFloorComponent;
-    class UEHBoxComponent* SelectionBoxComponent;
-    TSet<FIntVector> AerialPoints;
-    TSet<FIntVector> FloorPoints;
-    TSet<FIntVector> AIPoints;
-    TSet<FIntVector> BlockPoints;
-    TSet<FIntVector> PlanetoidAerialPoints;
-    TSet<FIntVector> PlanetoidSurfacePoints;
-    TMap<class FIntVector, class EEHInstanceRotation> PlanetoidWalkableRamps;
-    bool IsReplicationReady;
-    TMap<class UEHItem*, class FInstancesContainer> ItemComponents;
-    TMap<class FName, class FInstancesContainer> CustomMeshes;
-    class USceneComponent* SceneRoot;
-    class USceneComponent* ShaderMovementRoot;
-    TMap<class UEHItem*, class UMaterialInstanceDynamic*> DynamicMaterials;
-    TArray<class UStaticMeshComponent*> CustomHighlightMeshes;
-    TMap<class FIntVector, class UEHFlareComponent*> FlaresMap;
-    TMap<class FIntVector, class UEHBillboardsLineComponent*> BillboardsMap;
-    TMap<class FIntVector, class UEHReactiveMeshComponent*> ReactiveMeshMap;
-    TMap<class FIntVector, class FEHCellType> CellEmpty;
-    class AEHBlackHole* ActiveBlackHole;
-    bool ScreenIndicatorActive;
-    class UEHGridDataObject* GridDataObjectCached;
-    TArray<class UEHInteractableObject*> ReplicatedInteractables;
-    TMap<class FEHCellType, class EEHInstanceRotation> PendingAddClientInstances;
-    TMap<class FEHCellType, class EEHInstanceRotation> PendingUpgradeClientInstances;
-
-    void UpdateProfession(const FIntVector& CellCoords, const EAIProfession Profression);
-    void UpdateGridShaderPosition(const FVector& PreviousShaderPosition, const FVector& ShaderPosition);
-    void UpdateCollisions(const bool InCollisionEnabled);
-    void RotateInstance(const FIntVector& CellCoords, const EEHRotationDirection RotationDirection, EInstanceCellType InstanceCellType, const EEHInstanceRotation Rotation);
-    bool RemoveInstance(EInstanceCellType InstanceCellType, const FIntVector& CellCoords, const EEHInstanceRotation Rotation);
-    void OnRep_ThrusterNetwork();
-    void OnRep_ReplicatedDevices();
-    void OnRep_IsReplicationReady();
-    void OnDockedGridsChanged__DelegateSignature();
-    void Multi_UpgradePendingInstance(class UEHItem* Item, const FIntVector& CellCoords, class UEHInteractableObject* InteractableObject, const EEHInstanceRotation Rotation);
-    void Multi_UpgradeInstance(const EInstanceCellType InstanceCellType, const FIntVector& CellCoords, const EEHInstanceRotation Rotation);
-    void Multi_TransferResourceCell(const FIntVector& ResourceCoord, const FIntVector& Direction);
-    void Multi_TransferAICell(const FIntVector& AICoord, const FIntVector& Direction);
-    void Multi_SwapAIChain(const TArray<class UEHAIObject*>& ChainAIs);
-    void Multi_StopAnimationBlending(const FIntVector& CellCoords);
-    void Multi_RotateInstance(const FIntVector& CellCoords, const EEHRotationDirection RotationDirection, EInstanceCellType InstanceCellType, const EEHInstanceRotation Rotation);
-    void Multi_RemoveInstance(const EInstanceCellType InstanceCellType, const FIntVector& CellCoords, const EEHInstanceRotation Rotation);
-    void Multi_PushOutResource(class UEHItemsContainer* PushContainer, class UEHItem* ResourceToPush, const FIntVector& PushCoords, const FIntVector& PushDirection, const FVector& TransferOffset);
-    void Multi_PushOutAI(class UEHItemsContainer* PushContainer, class UEHItem* AIItemToPush, const FIntVector& AISpawnCoord, const FIntVector& PushCoords);
-    void Multi_OnAILeft(class UEHInteractableObject* InteractableObject, class UEHAIObject* AIObject);
-    void Multi_OnAIEntered(class UEHInteractableObject* InteractableObject, class UEHAIObject* AIObject);
-    void Multi_HitExtract(class UEHInventoryComponent* PlayerInventoryComponent, const FIntVector& HitCoord, const FVector& HitLocation);
-    void Multi_ExtractResource(const FIntVector& ResourceCoord);
-    void Multi_AddPendingInstance(class UEHItem* Item, const FIntVector& CellCoords, class UEHInteractableObject* InteractableObject, const EEHInstanceRotation Rotation);
-    void Multi_AddInstance(class UEHItem* Item, const FIntVector& CellCoords, const EEHInstanceRotation Rotation);
-    void HandleRotationChange();
-    void HandleJobModeChange();
-    void HandleItemChange();
-    void HandleGameStarted();
-    void HandleAssetsLoaded();
-    FVector GetWorldPositionFromLocalPosition(const FVector& LocalPosition);
-    FIntVector GetPointForImpact(bool& Found);
-    FVector GetLocalPositionFromWorldPosition(const FVector& WorldPosition);
-    FEHCellType GetInstance(const FIntVector& CellCoords, EInstanceCellType CellType, EEHInstanceRotation InstanceRotation);
-    class UEHHISMComponent* GetHISMComponentBP(class UEHItem* Item, int32 InstanceIndex);
-    FVector GetCubeWorldPosition(const FIntVector& CellCoords);
-    FVector GetCubeBottomWorldPosition(const FIntVector& CellCoords);
-    FIntVector GetCellCoords(const FVector& LocalPosition);
-    void ForceAddInsideGridInstance(class UEHItem* Item, const FIntVector& CellCoords, const FIntVector& ParentDeviceCoord, const EEHInstanceRotation Rotation);
-    class UEHInteractableObject* FindHitInteractable(class UPrimitiveComponent* HitComponent, const int32 HitItem);
-    void FinalizeGridGeneration();
-    TSet<UEHElectricNetwork*> ElectromagneticFieldBlackout(const TSet<FIntVector>& PointsForBlackout);
-    void DebugDestroyInteractable(class UEHInteractableObject* Interactable);
-    void BlackHoleDestroyInstances(class AEHBlackHole* BlackHoleActor, const TSet<FEHInstanceCellDefinition>& InstancesToDestroy);
-    void BeginGridGeneration();
-    void AssetsLoaded();
-    bool AddInstance(class UEHItem* Item, const FIntVector& CellCoords, class UEHInteractableObject* InteractableObjectToRestore, const EEHInstanceRotation Rotation, const uint8 MeshID);
-    void AddGridInstance(class UEHItem* Item, const FIntVector& CellCoords, class UEHInteractableObject* InteractableObjectToRestore, const EEHInstanceRotation Rotation, const uint8 MeshID, const bool ForceRemoveExisting);
-};
-
-struct FEHInterpolateCellParams
-{
-    float AIBlendingInterpolationSpeed;
-    TArray<float> AnimationSpeeds;
-    float InRangeBlendingClampA;
-    float InRangeBlendingClampB;
-    float InterpolationRotateSpeed;
-    float InterpolationAIRotateSpeed;
-    float InterpolationCurveMultiplayer;
-    float InRangeDimensionClampA;
-    float InRangeDimensionClampB;
-    float OutRangeDimensionClampA;
-    float OutRangeDimensionClampB;
-
-};
-
-struct FEHGridCellType : public FEHCellType
-{
-    class AEHGrid* Grid;
-
-};
-
-struct FEHDeviceReplicationData
-{
-    class AActor* ChildActor;
 
 };
 
@@ -2702,7 +3413,6 @@ class UEHGridComponent : public UActorComponent
     FVector PlayerPawnPosition;
     FIntVector PlayerChunkCoords;
     FIntVector ActorCoordinates;
-    class UEHItem* CurrentLookAtItem;
     TArray<FIntVector> ConstructionPreviewCoords;
     TMap<class FIntVector, class AEHChunk*> Chunks;
     TMap<class FIntVector, class AEHChunk*> InactiveU1Chunks;
@@ -2730,6 +3440,7 @@ class UEHGridComponent : public UActorComponent
     float CameraLineTraceLength;
     float UnderLineTraceLength;
     bool IsPlayerReady;
+    float ClientSimulationSyncTime;
     class UMaterialInterface* HighlightPreviewMaterial;
     class UMaterialInterface* ValidConstructPreviewMaterial;
     class UMaterialInterface* InvalidConstructPreviewMaterial;
@@ -2763,6 +3474,8 @@ class UEHGridComponent : public UActorComponent
     void OnAssetsLoaded();
     FEHGridComponentOnGameStarted OnGameStarted;
     void OnGameStarted();
+    FEHGridComponentOnGameSimulationStarted OnGameSimulationStarted;
+    void OnGameStarted();
     FEHGridComponentOnWarehouseItemsChange OnWarehouseItemsChange;
     void OnWarehouseItemsChange();
     FEHGridComponentOnInstanceRotated OnInstanceRotated;
@@ -2787,6 +3500,8 @@ class UEHGridComponent : public UActorComponent
     void OnPlanetoidLoaded(FName PlanetoidName);
     FEHGridComponentOnLastStreamingLevelLoaded OnLastStreamingLevelLoaded;
     void OnLastStreamingLevelLoaded();
+    FEHGridComponentOnMultiplayerRebaseWorldOrigin OnMultiplayerRebaseWorldOrigin;
+    void OnMultiplayerRebaseWorldOrigin();
     TMap<UEHItem*, int32> GlobalWarehouseItemsCounts;
     TSubclassOf<class UEHInstancedStaticMeshComponent> DiagonalWallBoxColliderTemplate;
     TSubclassOf<class UEHInstancedStaticMeshComponent> WallBoxColliderTemplate;
@@ -2805,6 +3520,7 @@ class UEHGridComponent : public UActorComponent
     void Server_TraceHitAsteroid(const FVector& HitLocation, const int32 HitIndex);
     void Server_TraceCatchAsteroid(class UEHAsteroidsCatcher* AsteroidCatcher, const FVector& HitLocation, const int32 HitIndex);
     void Server_StopDocking(class AEHGrid* GridReference);
+    void Server_StartSimulation();
     void Server_SetDesiredMovement(class UEHThrusterNetwork* ThrusterNetwork, const FVector& DesiredMovement);
     void Server_RotateCellObject(const EEHRotationDirection RotationDirection, const TArray<FEHGridCellType>& SelectedCellItems);
     void Server_RequestDeviceData(class UEHDeviceObject* DeviceObject);
@@ -2821,6 +3537,7 @@ class UEHGridComponent : public UActorComponent
     void Server_HitExtract(class AEHGrid* GridReference, const FIntVector& HitCoord, const FVector& HitLocation);
     void Server_DockStation(class AEHGrid* GridReference, class UEHInteractableObject* OriginDockStation);
     void Server_DestructConveyorLine(class UEHConnectorStationObject* ConnectorObject, const uint8 LineNumber);
+    void Server_CreateStationOrigin(FString StationName, const FVector& Location);
     void Server_ConstructItems(class AEHGrid* GridReference, class UEHItem* Item, const TArray<FIntVector>& ConstructCoords, EEHInstanceRotation Rotation);
     void Server_ConstructConveyorLine(class UEHConnectorStationObject* ConnectorObject, const uint8 LineNumber, const bool ConveyorReverseDirection);
     void Server_CellOpened(class UEHInteractableObject* InteractableObject);
@@ -2844,10 +3561,12 @@ class UEHGridComponent : public UActorComponent
     void OnPlayerScannerActiveStateChanged__DelegateSignature(bool ScannerActive);
     void OnPlanetoidLoaded__DelegateSignature(FName PlanetoidName);
     void OnOxygenRefilled(const bool OxygenRefillSuccessful);
+    void OnMultiplayerRebaseWorldOrigin__DelegateSignature();
     void OnMapRadarActiveStateChanged__DelegateSignature();
     void OnLastStreamingLevelLoaded__DelegateSignature();
     void OnItemConstructionPerformed(const bool WasConstructionSuccessful);
     void OnItemConstructed__DelegateSignature(class UEHItem* ConstructedItem, FIntVector Coords);
+    void OnInvalidItemPick();
     void OnInstanceRotated__DelegateSignature();
     void OnGridTransitioned__DelegateSignature(class AEHGrid* Grid);
     void OnGameStarted__DelegateSignature();
@@ -2896,6 +3615,8 @@ class UEHGridComponent : public UActorComponent
     void FirstGridActionPressed(bool& Interrupted);
     void FinishInteractionCellObject();
     void DebugRemoveAllChunks();
+    void ClientCheckSimulationReady();
+    void Client_StartSimulation();
     void Client_Start();
     void Client_PayWarehouseItemCost(const TArray<FEHItemInstance>& Cost, class UEHItem* RecyclableItem);
     void Client_OxygenRefilled(const bool OxygenRefillSuccessful);
@@ -2920,37 +3641,6 @@ class UEHGridComponent : public UActorComponent
     void AddCellObjects();
 };
 
-struct FBinaryDataContainer
-{
-    TArray<uint8> ContainerData;
-
-};
-
-struct FSaveGridItem
-{
-    FIntVector ItemCoord;
-    EEHInstanceRotation Rotation;
-    TArray<uint8> InteractableObjectData;
-    TMap<class FName, class FBinaryDataContainer> AssociatedObjectsData;
-
-};
-
-struct FSaveGridItemContainer
-{
-    class UEHItem* Item;
-    TArray<FSaveGridItem> Instances;
-
-};
-
-struct FSaveTransferCell
-{
-    FIntVector Direction;
-    FVector Destination;
-    bool IsInsideBuilding;
-    TArray<FSaveGridItem> Items;
-
-};
-
 class UEHGridDataObject : public UEHDataObject
 {
     TArray<FSaveGridItemContainer> GridItemsData;
@@ -2969,6 +3659,54 @@ class UEHGridDataObject : public UEHDataObject
 
 class UEHGroomComponent : public UGroomComponent
 {
+};
+
+class UEHHISMCellComponent : public UEHHISMComponent
+{
+};
+
+class UEHHISMComponent : public UHierarchicalInstancedStaticMeshComponent
+{
+    EInstanceCellType InstanceType;
+    class UEHItem* Item;
+
+    void ResetRenderState();
+    void HISMMarkRenderStateDirty();
+};
+
+class UEHHUDIndicatorsWidget : public UUserWidget
+{
+    TSubclassOf<class UEHScreenMarkerWidget> ScreenMarkerWidgetsClasses;
+    FVector2D RadialMarkerOffset;
+    TMap<class UObject*, class UEHScreenMarkerWidget*> IndicatorsMap;
+    class UTGRadialPanel* OffScreenIndicatorsRadial;
+    class UOverlay* OnScreenIndicatorsOverlay;
+
+    void RemoveIndicator(class UObject* IndicatedObject);
+    void AddIndicator(class UObject* IndicatedObject);
+};
+
+class UEHHUDUUIComponent : public UActorComponent
+{
+};
+
+class UEHHUDWidget : public UTGHUDWidget
+{
+    class UEHHUDIndicatorsWidget* HUDIndicators;
+    class UEHScenarioOverlayWidget* ScenarioOverlay;
+    class UEHPhotoModeWidget* PhotoMode;
+    class UCanvasPanel* GameCanvas;
+    class UUserWidget* PausePrompt;
+    class UUserWidget* PlayerActions;
+    class UUserWidget* InteractionCircle;
+    class UUserWidget* HUDCounters;
+    class UUserWidget* PlayerStats;
+    TArray<FName> HandledActions;
+
+    TSubclassOf<class UInteractBaseWidget> RemovePopMenu();
+    TSubclassOf<class UInteractBaseWidget> RemoveMenu();
+    bool AddPopMenu(class UUserWidget* MenuWidget);
+    bool AddMenu(class UUserWidget* MenuWidget);
 };
 
 class UEHHangar : public UEHCraftingObject
@@ -3003,111 +3741,6 @@ class UEHHostGameViewModel : public UEHScreenViewModel
 {
 };
 
-class AEHHUD : public ATGHUD
-{
-    TSubclassOf<class UDraggableItemWidget> DraggableItemWidgetClass;
-    TMap<class FName, class EEHHUDMenuType> MenuTypesForActions;
-    class UEHConfig* EHConfig;
-    TArray<class UTGUIConfigCustom*> CustomConfigs;
-    bool HasBackground;
-    bool ShowFrontendByDefault;
-    EEHUIScreenID FirstScreenToOpen;
-    class UEHCheatComponent* EHCheatComponent;
-    class UEHBackgroundComponent* EHBackgroundComponent;
-    class UTGWidgetPredefinedAnimationsComponent* TGWidgetAnimationsManager;
-
-    void UpdateHUDVisibility(const bool ShowHUDIn);
-    void TriggerAction(const FName ActionName);
-    void OpenPauseScreen();
-    void OpenInGameScreen(const EEHUIScreenID ScreenID);
-    void HoldTimersCleared();
-    void HandleKeyAction(const FKey& InKey);
-    class UEHHUDWidget* GetEHHUDWidget();
-    void CloseInGameScreen();
-};
-
-class AEHHUDGame : public AEHHUD
-{
-    TMap<class UClass*, class EEHPopMenuType> OpenedPopupMenus;
-    FEHHUDGameOnIndicatorStateChanged OnIndicatorStateChanged;
-    void OnIndicatorStateChanged(class UObject* IndicatedObject);
-    class UEHInteractableObject* OpenedMenuInteractable;
-    bool ShowBlackScreen;
-    class UMenuWidget* OpenedMenu;
-    class UUserWidget* OpenedScreen;
-    class UEHMapWidget* MapWidget;
-    class UEHModularVehicleWidget* ModularVehicleWidget;
-    FEHHUDGamePopMenuOpened PopMenuOpened;
-    void PopMenuOpened(EEHPopMenuType Type);
-    FEHHUDGamePopMenuClosed PopMenuClosed;
-    void PopMenuClosed(TSubclassOf<class UInteractBaseWidget> IndicatedObject);
-    FEHHUDGameOnMouseShowStateChanged OnMouseShowStateChanged;
-    void OnMouseShowStateChanged(bool IsMouseShown);
-    FEHHUDGameOnMenuOpenStateChanged OnMenuOpenStateChanged;
-    void OnMenuOpenStateChanged(bool IsOpened);
-    TSoftClassPtr<UEHMapWidget> MapWidgetClass;
-    TSoftClassPtr<UEHModularVehicleWidget> ModularVehicleWidgetClass;
-    class UEHHUDIndicatorsWidget* HUDIndicators;
-    TArray<TSoftClassPtr<UTipWidget>> TipWidgets;
-    TSoftClassPtr<UMenuWidget> PopMenuClasses;
-    TSoftClassPtr<UMenuWidget> HUDMenuClasses;
-
-    void UnregisterScreenIndicator(class UObject* IndicatedObject);
-    class UMenuWidget* ToggleMenuByType(EEHHUDMenuType HUDMenuType);
-    void RegisterScreenIndicator(class UObject* IndicatedObject);
-    void PopMenuOpened__DelegateSignature(EEHPopMenuType Type);
-    void PopMenuClosed__DelegateSignature(TSubclassOf<class UInteractBaseWidget> IndicatedObject);
-    void OpenPauseMenuSafe();
-    class UMenuWidget* OpenMenuByType(EEHHUDMenuType HUDMenuType);
-    void OpenInteractMenu(class UEHInteractableObject* InteractableObject);
-    void OnMouseShowStateChanged__DelegateSignature(bool IsMouseShown);
-    void OnMenuOpenStateChanged__DelegateSignature(bool IsOpened);
-    void OnIndicatorStateChanged__DelegateSignature(class UObject* IndicatedObject);
-    bool IsScreenIndicatorRegistered(class UObject* IndicatedObject);
-    class UCanvasPanel* GetVisibleScreenCanvas();
-    EEHPopMenuType GetPopMenuType(const TSubclassOf<class UMenuWidget> Widget);
-    TSubclassOf<class UMenuWidget> GetPopMenuClass(const EEHPopMenuType Type);
-    void CreateModularVehicleWidget();
-    void CreateMapWidget();
-    void CloseOpenedInteractionMenu();
-};
-
-class UEHHUDIndicatorsWidget : public UUserWidget
-{
-    TSubclassOf<class UEHScreenMarkerWidget> ScreenMarkerWidgetsClasses;
-    FVector2D RadialMarkerOffset;
-    TMap<class UObject*, class UEHScreenMarkerWidget*> IndicatorsMap;
-    class UTGRadialPanel* OffScreenIndicatorsRadial;
-    class UOverlay* OnScreenIndicatorsOverlay;
-
-    void RemoveIndicator(class UObject* IndicatedObject);
-    void AddIndicator(class UObject* IndicatedObject);
-};
-
-class AEHHUDMenu : public AEHHUD
-{
-};
-
-class UEHHUDWidget : public UTGHUDWidget
-{
-    class UEHHUDIndicatorsWidget* HUDIndicators;
-    class UEHScenarioOverlayWidget* ScenarioOverlay;
-    class UEHPhotoModeWidget* PhotoMode;
-    class UCanvasPanel* GameCanvas;
-    class UUserWidget* PausePrompt;
-    class UUserWidget* PlayerActions;
-    class UUserWidget* InteractionCircle;
-    class UUserWidget* HUDCounters;
-    class UUserWidget* PlayerStats;
-    class UUserWidget* MissionsLog;
-    TArray<FName> HandledActions;
-
-    TSubclassOf<class UInteractBaseWidget> RemovePopMenu();
-    TSubclassOf<class UInteractBaseWidget> RemoveMenu();
-    bool AddPopMenu(class UUserWidget* MenuWidget);
-    bool AddMenu(class UUserWidget* MenuWidget);
-};
-
 class UEHHydrogenGenerator : public UEHCraftingObject
 {
 };
@@ -3120,12 +3753,6 @@ class UEHIconBarWidget : public UTGUILayer
 {
 };
 
-class UEHToastViewModel : public UEHViewModel
-{
-    float MaxDurationOnScreen;
-
-};
-
 class UEHImageToastViewModel : public UEHToastViewModel
 {
     FTextBindable ToastTitle;
@@ -3133,32 +3760,6 @@ class UEHImageToastViewModel : public UEHToastViewModel
     FTexture2DBindable ToastImage;
     EEHToastNature ToastNature;
 
-};
-
-struct FEHIndicationConfigData
-{
-    EEHWidgetIndicatorType WidgetIndicatorType;
-    class UTexture2D* Icon;
-    FLinearColor BorderColor;
-    bool ShouldShowOffScreen;
-    bool ShouldHideCloseDistance;
-    float CloseDistance;
-
-};
-
-class IEHIndicationInterface : public IInterface
-{
-
-    bool IsRegisteringForbidden();
-    FText GetIndicationText();
-    FVector GetIndicationPosition();
-    FEHIndicationConfigData GetIndicationConfigData();
-};
-
-class UEHTextOptionViewModel : public UEHOptionViewModel
-{
-
-    void OnBindableChanged(FText NewValue);
 };
 
 class UEHInputBindingDisplayViewModel : public UEHTextOptionViewModel
@@ -3189,14 +3790,69 @@ class UEHInstancedStaticMeshComponent : public UInstancedStaticMeshComponent
 
 };
 
+class UEHInt32OptionViewModel : public UEHOptionViewModel
+{
+
+    void OnBindableChanged(int32 NewValue);
+};
+
 class UEHInteractableFloorItem : public UEHFloorItem
 {
     FIntVector FloorSize;
 
 };
 
-class UEHWallItem : public UEHItem
+class UEHInteractableItem : public UEHBlockItem
 {
+    EEHBillboardTemplateType BillboardTemplateType;
+    FVector BillboardOffset;
+    TSubclassOf<class UEHSSEInitializer> SSEInitializerTemplate;
+    class UEHInteractableObject* InteractableObjectTemplate;
+
+    class UEHInteractableObject* GetInteractableTemplate();
+    class UEHInteractableObject* GetDefaultInteractableObject(class AActor* GridActor);
+};
+
+class UEHInteractableObject : public UObject
+{
+    FIntVector CachedCellCoord;
+    EEHInstanceRotation InstanceRotation;
+    int32 MeshIndex;
+    TArray<FIntVector> OtherDivecesInsideCells;
+    TArray<FName> InstanceTags;
+    FEHInteractableObjectOnInteractableRotationChanged OnInteractableRotationChanged;
+    void OnInteractableRotationChanged(EEHInstanceRotation Rotation);
+    FIntVector CreationCellCoord;
+    class UEHItem* FormerItem;
+    TArray<FGeneratedCustomMesh> CustomMeshes;
+
+    bool SupportsWater();
+    bool SupportsSignal();
+    bool SupportsElectricity();
+    void SetGrid(class AEHGrid* GridIn);
+    void OnInteractableRotationChanged__DelegateSignature(EEHInstanceRotation Rotation);
+    FVector GetWorldLocation();
+    FVector GetWorldFloorLocation();
+    int32 GetSize();
+    class AEHGrid* GetGridReference();
+    class UEHDeviceItem* GetDeviceFormerItem();
+    void DebugDisableBillboard();
+    void AddCustomMesh(const FGeneratedCustomMesh& CustomMesh);
+};
+
+class UEHInteractableServiceContainer : public UEHStorageObject
+{
+    TArray<class UEHAIObject*> AIsInside;
+
+};
+
+class UEHInteractableServiceObject : public UEHInteractableObject
+{
+    FEHInteractableServiceObjectOnAIInsideChanged OnAIInsideChanged;
+    void OnAIInsideChanged();
+    TArray<class UEHAIObject*> AIsInside;
+    uint8 AIInsideCount;
+
 };
 
 class UEHInteractableWallItem : public UEHWallItem
@@ -3205,77 +3861,10 @@ class UEHInteractableWallItem : public UEHWallItem
 
 };
 
-class IEHInteractionInterface : public IInterface
-{
-
-    uint8 GetInteractionCircleStepsNumber();
-    uint8 GetInteractionCircleStep();
-};
-
-class IEHInteractableChildActorInterface : public IInterface
-{
-
-    void OnRotationFinished();
-    void OnRecovered(class UEHDataObject* DataObject);
-    void OnPrepareForSave(class UEHDataObject* DataObject);
-    void OnInteractionStarted();
-    void OnInteractionFinished();
-    void OnActiveStateChanged(const bool IsActive);
-    void Init(class UEHInteractableObject* InInteractableObject);
-};
-
 class UEHInterfaceFunctionLibrary : public UBlueprintFunctionLibrary
 {
 
     class UEHSignalNetwork* Signal_GetNetwork(class UObject* SignalDevice, bool IsIn);
-};
-
-struct FEHPlayerActionSet
-{
-    int32 ActionsBits;
-    class UEHItem* ActionItem;
-    class UEHInteractableObject* InteractableObject;
-    class AActor* WorldInteractiveActor;
-    int32 HitItem;
-
-};
-
-struct FEHPlayerAction
-{
-    FName ActionName;
-    FText ActionDisplayText;
-
-};
-
-struct FContainersMap
-{
-    TMap<class FName, class UEHItemsContainer*> ContainerCategories;
-
-};
-
-struct FItemArray
-{
-    TArray<TSoftObjectPtr<UEHItem>> Items;
-
-};
-
-struct FEHRecipeReplicationData
-{
-    FName Name;
-    int32 AutoDeactivateCounts;
-    bool IsSelected;
-    float ProductionRatio;
-    float CompletedProgress;
-    bool IsRunning;
-
-};
-
-struct FEHProductionReplicationData
-{
-    TArray<FEHRecipeReplicationData> ReplicatedRecipes;
-    uint8 DedicatedSpecialistsNumber;
-    TArray<FEHRecipe> DynamicRecipes;
-
 };
 
 class UEHInventoryComponent : public UActorComponent
@@ -3324,10 +3913,13 @@ class UEHInventoryComponent : public UActorComponent
     void SwapJobMode_SelectOrNone();
     void SetVisibleResourcesCount(const int32 VisibleResourcesCountIn);
     void SetDefaultNoInteractionPlayerActions(const FEHPlayerActionSet PlayerActionsIn);
+    void Server_UpdateMathCondition(class UEHDeciderCombinatorObject* DeciderObject, uint8 MathConditionIndex);
+    void Server_UpdateConditionValue(class UEHDeciderCombinatorObject* DeciderObject, int32 ConditionValue);
     void Server_UpdateAutoDeactivateCounts(class UEHProductionObject* ProductionObject, const FName Name, const int32 Counts);
     void Server_TransferSlot(class UEHItemsContainer* ContainerFrom, const uint8 IndexFrom, class UEHItemsContainer* ContainerTo, const uint8 IndexTo);
     void Server_TransferItemsForRecipe(class UEHItemsContainer* ContainerTo, const FEHRecipe& Recipe, int32 DesiredCount);
     void Server_TransferItem(class UEHItemsContainer* ContainerFrom, const uint8 IndexFrom, class UEHItemsContainer* ContainerTo, const bool IsEntireStack);
+    void Server_TransferAllRecyclablesToInventory(class UEHItemsContainer* ContainerFrom);
     void Server_TransferAllRecyclables(class UEHItemsContainer* ContainerTo);
     void Server_TransferAllItems(class UEHItemsContainer* ContainerFrom);
     void Server_TrainSpecialist(class UEHSchoolObject* SchoolObject, EAIProfession Specialization);
@@ -3335,11 +3927,14 @@ class UEHInventoryComponent : public UActorComponent
     void Server_TakeSingleItem(class UEHItemsContainer* Container, const class UEHItem* Item);
     void Server_TakeItems(class UEHItemsContainer* Container, const TArray<FEHItemInstance>& ItemInstances);
     void Server_SwapContainerItems(class UEHItemsContainer* Container, const uint8 IndexFrom, const uint8 IndexTo);
+    void Server_SplitterUpdateSplittingRatios(class UEHLogicSplitterObject* SplitterObject, const TArray<int32>& SplittingRatios);
     void Server_SplitContainerItem(class UEHItemsContainer* Container, const uint8 ItemIndex, const int32 Quantity);
     void Server_SetThrustPowerManual(class UEHThrusterObject* ThrusterObject, const float Power);
     void Server_SetThrustDirectionManual(class UEHThrusterObject* ThrusterObject, const float AngleYAxis, const float AngleZAxis);
     void Server_SetItem(class UEHItemsContainer* Container, const uint8 ItemIndex, const FEHItemInstance& ItemInstance);
+    void Server_ResetRequestedItems(class UEHItemsContainer* Container);
     void Server_RemoveSelectedRecipe(class UEHProductionObject* ProductionObject, const FName Name);
+    void Server_RemoveRequestedItem(class UEHItemsContainer* Container, class UEHItem* Item);
     void Server_ProduceItems(class UEHProductionObject* ProductionObject, const TArray<FEHItemInstance>& ProducedItems);
     void Server_PickWorldItem(const FEHItemInstance& ItemInstance);
     void Server_PickTransferredItem(class UEHItemsContainer* Container, class UEHItem* Item);
@@ -3358,6 +3953,7 @@ class UEHInventoryComponent : public UActorComponent
     void Server_IncreaseDedicatedWorkplaceAI(class UEHProductionObject* ProductionObject);
     void Server_DecreaseDedicatedWorkplaceAI(class UEHProductionObject* ProductionObject);
     void Server_ChangeSelectedRecipe(class UEHProductionObject* ProductionObject, const FName Name, const bool ShouldSelect);
+    void Server_ChangeResource(class UEHAsteroidsCatcher* AsteroidCatcher, class UEHResourceItem* Item);
     void Server_ChangePlant(class UEHFarmObject* FarmObject, const EHHarvestPlantTypes Plant);
     void Server_ChangeMiningResource(class UEHMineObject* MineObject, EEHMiningResourceType MiningResource);
     void Server_ChangeJobMode(const EHJobModeType JobModeType);
@@ -3366,10 +3962,13 @@ class UEHInventoryComponent : public UActorComponent
     void Server_CancelTrainedSpecialist(class UEHSchoolObject* SchoolObject, const uint8 AwaitingSpecialistIndex);
     void Server_ApplyThrusterSetupToConnected(class UEHThrusterObject* ThrusterObject);
     void Server_AddSelectedRecipe(class UEHProductionObject* ProductionObject, const FName& Name, const FEHRecipe& Recipe);
+    void Server_AddRequestedItem(class UEHItemsContainer* Container, class UEHItem* Item, const uint8 MaxWorkersAssigned, const int32 MaxResources);
+    void Server_AddItems(class UEHItemsContainer* Container, const TArray<FEHItemInstance>& Items);
     void SelectSlot(int32 IndexToSelect);
     void SelectCategory(const int32 InventoryID);
     void RemovePlayerAction(const EPlayerActionType PlayerAction, const bool AddToNoInteractionSet);
     void PreviousSelectedItem();
+    void PickTracedItem();
     void OnVisibleResourcesCountChanged__DelegateSignature();
     void OnResourceItemPicked__DelegateSignature(FEHItemInstance PickedItem);
     void OnRep_CurrentJobMode();
@@ -3377,26 +3976,33 @@ class UEHInventoryComponent : public UActorComponent
     void OnLogicAddSelectedResource(const bool Successful);
     void OnInventoryItemChange__DelegateSignature();
     void OnGlobalPointPicked__DelegateSignature(FEHGlobalPointInstance PickedPoint);
+    void OnContainerAddRequestedResource(const bool Successful);
     void NoItemsLeft();
     void NextSelectedItem();
+    void Multi_UpdateMathCondition(class UEHDeciderCombinatorObject* DeciderObject, uint8 MathConditionIndex);
+    void Multi_UpdateConditionValue(class UEHDeciderCombinatorObject* DeciderObject, int32 ConditionValue);
     void Multi_TrainSpecialist(class UEHSchoolObject* SchoolObject, EAIProfession Specialization);
     void Multi_ToggleSwitchState(class UEHDeviceObject* DeviceObject);
     void Multi_TakePoints(class UEHProductionObject* ProductionObject, const TArray<FEHGlobalPointInstance>& PointInstances);
+    void Multi_SplitterUpdateSplittingRatios(class UEHLogicSplitterObject* SplitterObject, const TArray<int32>& SplittingRatios);
     void Multi_SetThrustPowerManual(class UEHThrusterObject* ThrusterObject, const float Power);
     void Multi_SetThrustDirectionManual(class UEHThrusterObject* ThrusterObject, const float AngleYAxis, const float AngleZAxis);
+    void Multi_ResetRequestedItems(class UEHItemsContainer* Container);
+    void Multi_RemoveRequestedItem(class UEHItemsContainer* Container, class UEHItem* Item);
     void Multi_ProduceGlobalPoints(class UEHProductionObject* ProductionObject, const TArray<FEHGlobalPointInstance>& GeneratedPoints);
     void Multi_NotifyTrancheChanged(class UEHAsteroidsCatcher* AsteroidCatcher);
-    void Multi_NotifyProductionStateChanged(class UEHProductionObject* ProductionObject, const bool IsProducing);
     void Multi_LogicSelectDevice(class UEHSignalObject* SignalObject, class UEHDeviceObject* Device);
     void Multi_LogicRemoveSelectedResource(class UEHLogicObject* LogicObject, class UEHItem* Item);
     void Multi_LogicClearSelectedResources(class UEHLogicObject* LogicObject);
     void Multi_LogicAddSelectedResource(class UEHLogicObject* LogicObject, class UEHItem* Item);
     void Multi_InvertPushDefinitions(class UEHItemsContainer* Container);
+    void Multi_ChangeResource(class UEHAsteroidsCatcher* AsteroidCatcher, class UEHResourceItem* Item);
     void Multi_ChangePlant(class UEHFarmObject* FarmObject, const EHHarvestPlantTypes Plant);
     void Multi_ChangeMiningResource(class UEHMineObject* MineObject, EEHMiningResourceType MiningResource);
     void Multi_ChangeAnimal(class UEHBarnObject* BarnObject, const EHBreedAnimalTypes Animal);
     void Multi_CancelTrainedSpecialist(class UEHSchoolObject* SchoolObject, const uint8 AwaitingSpecialistIndex);
     void Multi_ApplyThrusterSetupToConnected(class UEHThrusterObject* ThrusterObject);
+    void Multi_AddRequestedItem(class UEHItemsContainer* Container, class UEHItem* Item, const uint8 MaxWorkersAssigned, const int32 MaxResources);
     void InitStartingTool();
     int32 GetSlotsCount();
     int32 GetRecyclablesCount(class UEHItem* Item);
@@ -3419,7 +4025,7 @@ class UEHInventoryComponent : public UActorComponent
     void Client_TransferSlot(class UEHItemsContainer* ContainerFrom, const uint8 IndexFrom, class UEHItemsContainer* ContainerTo, const uint8 IndexTo);
     void Client_TransferItemsForRecipe(class UEHItemsContainer* PlayerContainerFrom, class UEHItemsContainer* ContainerTo, const FEHRecipe& Recipe, int32 DesiredCount);
     void Client_TransferItem(class UEHItemsContainer* ContainerFrom, const uint8 IndexFrom, class UEHItemsContainer* ContainerTo, const bool IsEntireStack);
-    void Client_TransferAllItems(class UEHItemsContainer* ContainerFrom, class UEHItemsContainer* ContainerTo);
+    void Client_TransferAllItems(class UEHItemsContainer* ContainerFrom, class UEHItemsContainer* ContainerTo, const TArray<FEHItemInstance>& Items);
     void Client_TakeSingleItem(class UEHItemsContainer* Container, const class UEHItem* Item);
     void Client_TakeItems(class UEHItemsContainer* Container, const TArray<FEHItemInstance>& ItemInstances);
     void Client_SwapContainerItems(class UEHItemsContainer* Container, const uint8 IndexFrom, const uint8 IndexTo);
@@ -3427,6 +4033,7 @@ class UEHInventoryComponent : public UActorComponent
     void Client_RemoveSelectedRecipe(class UEHProductionObject* ProductionObject, const FName Name);
     void Client_ProduceItems(class UEHProductionObject* ProductionObject, const TArray<FEHItemInstance>& ProducedItems);
     void Client_PickTransferredItem(class UEHItemsContainer* Container, class UEHItem* Item);
+    void Client_PickSingleItemBulk(const TArray<class UEHItem*>& Items);
     void Client_PickSingleItem(class UEHItem* Item);
     void Client_PickItems(class UEHItemsContainer* Container, const TArray<FEHItemInstance>& PickedItems);
     void Client_PickItemInstance(class UEHItemsContainer* Container, const FEHItemInstance& PickedItem);
@@ -3443,6 +4050,7 @@ class UEHInventoryComponent : public UActorComponent
     void Client_GlobalPointPicked(const FEHGlobalPointInstance& PointInstance);
     void Client_DecreaseDedicatedWorkplaceAI(class UEHProductionObject* ProductionObject);
     void Client_AddSelectedRecipe(class UEHProductionObject* ProductionObject, const FName& Name, const FEHRecipe& Recipe);
+    void Client_AddItems(class UEHItemsContainer* Container, const TArray<FEHItemInstance>& Items);
     void ClickTransferItem(class UEHItemsContainer* ContainerFrom, const uint8 IndexFrom, class UEHItemsContainer* ContainerTo);
     void ClearToolbarItem();
     void ClearPlayerActions();
@@ -3453,6 +4061,64 @@ class UEHInventoryComponent : public UActorComponent
     void ChangeInventoryItem();
     void ButtonItemPressed(const int32 Index, class UEHItemsContainer* PressedContainer);
     void AddPlayerAction(const EPlayerActionType PlayerAction, const bool AddToNoInteractionSet);
+};
+
+class UEHItem : public UEHAsset
+{
+    FString ItemSuffix;
+    FPrimaryAssetType ItemType;
+    EInstanceCellType InstanceCellType;
+    EHConstructionType InventoryMode;
+    FName InventorySubcategoryName;
+    TArray<FEHItemSlotMesh> SlotMeshes;
+    EHConstructParticleType ConstructParticleType;
+    EHCollectiveConstructionType CollectiveConstructionType;
+    bool ShouldAddModeItem;
+    TSoftClassPtr<UEHInstancedStaticMeshComponent> CustomConstructionCollider;
+    bool BlockVisibilityCollision;
+    float ZOffset;
+    FVector Scale;
+    FVector Dimensions;
+    FVector2D DimensionConveyScale;
+    bool UsesBlendingAnimations;
+    int32 DynamicMaterialInstanceID;
+    int32 NumCustomDataFloats;
+    int32 CustomDepthStencilValue;
+    TArray<class UEHItem*> VariantItems;
+    TArray<class UEHItem*> RelatedItems;
+    TSoftObjectPtr<UStaticMesh> PreviewMesh;
+    bool ShowInDetailedList;
+    TMap<class EPlayerActionType, class EHJobModeType> ActonJobModes;
+    EHConstructRotationType ConstructRotationType;
+    bool CanSelect;
+    bool CanOpen;
+    bool CanRemove;
+    bool CanInteract;
+    bool CanUpgrade;
+    bool CanExtract;
+    bool CanFly;
+    bool CanPick;
+    bool IgnoredWhenSaving;
+    FText InteractText;
+    TSoftClassPtr<UInteractBaseWidget> InteractWidgetClass;
+    bool RequiresFloorForConstruction;
+    bool IsBlockingCoord;
+    bool RandomizeYaw;
+    bool RandomItemMesh;
+    float RandomScaleFactor;
+    float RandomInclinationFactor;
+    bool ReceiveDecals;
+    bool AffectDistanceFieldLighting;
+    TArray<FEHItemInstance> Cost;
+    float ConstrcutionBasicScienceReceiveChance;
+    int32 MaxStackSize;
+    class UEHItem* UpgradeItem;
+    bool UsePreviewMeshForEditor;
+
+    bool HasVariants();
+    FString GetIdentifierString();
+    FText GetFullName();
+    bool CanRotate();
 };
 
 class UEHItemTooltipWidget : public UUserWidget
@@ -3475,6 +4141,48 @@ class UEHItemViewModel : public UEHViewModel
 {
 };
 
+class UEHItemsContainer : public UEHDeviceObject
+{
+    TArray<FEHItemInstance> Items;
+    bool IsPreviewContainer;
+    bool IsRemovable;
+    EEHSlotDragType SlotDragType;
+    TMap<UEHItem*, int32> ItemsLookupCounts;
+    bool HasInvertedPushDefinitions;
+    TArray<FEHRequestedResource> RequestedResources;
+    FEHItemsContainerOnItemsChange OnItemsChange;
+    void OnItemsChange();
+    FEHItemsContainerOnRequestedResourcesChanged OnRequestedResourcesChanged;
+    void OnItemsChange();
+    FEHItemsContainerOnItemSet OnItemSet;
+    void OnItemSet(const int32 Index);
+    FEHItemsContainerOnItemsPushedOut OnItemsPushedOut;
+    void OnItemsPushed(class UEHItem* Item, const FIntVector PushCoord);
+    FEHItemsContainerOnItemsPushedIn OnItemsPushedIn;
+    void OnItemsPushed(class UEHItem* Item, const FIntVector PushCoord);
+    FEHItemsContainerOnItemsDelivered OnItemsDelivered;
+    void OnItemsDelivered(FEHItemInstance DeliveredItems);
+    FEHItemsContainerOnTransferedItemsForRecipe OnTransferedItemsForRecipe;
+    void OnTransferedItemsForRecipe(FEHRecipe Recipe, const int32 Count);
+
+    void PickItem(class UEHItem* Item);
+    void OnTransferedItemsForRecipe__DelegateSignature(FEHRecipe Recipe, const int32 Count);
+    void OnItemsPushed__DelegateSignature(class UEHItem* Item, const FIntVector PushCoord);
+    void OnItemSet__DelegateSignature(const int32 Index);
+    void OnItemsDelivered__DelegateSignature(FEHItemInstance DeliveredItems);
+    void OnItemsChange__DelegateSignature();
+    void NotifyItemsChanged();
+    void Multi_TakeSingleItem(const class UEHItem* Item);
+    void MoveSingleItemToInventory(class UEHItem* Item);
+    void InvertPushDefinitions();
+    bool HasPushDefinitions();
+    bool HasItem(const FEHItemInstance& ItemInstance);
+    bool HasAnyValidItem();
+    bool CheckTakingItems(const TArray<FEHItemInstance>& ItemInstances);
+    void AddItems(const TArray<FEHItemInstance>& ItemInstences);
+    void AddItem(const FEHItemInstance& ItemInstance);
+};
+
 class UEHJobModeAsset : public UEHCustomAsset
 {
     EHJobModeType JobModeType;
@@ -3482,10 +4190,6 @@ class UEHJobModeAsset : public UEHCustomAsset
     TSoftObjectPtr<UStaticMesh> MP_ToolMesh;
     FText ShortcutText;
 
-};
-
-class UEHSpecialisticCraftingObject : public UEHCraftingObject
-{
 };
 
 class UEHKitchenObject : public UEHSpecialisticCraftingObject
@@ -3534,6 +4238,7 @@ class UEHLayerManager : public UTGUILayerManager
     TSoftObjectPtr<USoundBase> ToastSounds;
     TSoftObjectPtr<USoundBase> TechnologyToastSound;
     class UEHToastContainerViewModel* ToastContainerViewModel;
+    class UEHModsListViewModel* ModsListViewModel;
 
     void SetDataContextForOpenUnderlay(const EEHUIUnderlayID UnderlayID, class UTGViewModel* ViewModel);
     void SetDataContextForOpenOverlay(const EEHUIOverlayID OverlayID, class UTGViewModel* ViewModel);
@@ -3541,9 +4246,12 @@ class UEHLayerManager : public UTGUILayerManager
     void QueueImageToast(const FText& InToastTitle, const FText& InToastDescription, class UTexture2D* InIcon, const EEHToastNature Nature, const float ToastDuration, const bool PlaySound);
     class UTGUILayer* OpenUnderlay(const EEHUIUnderlayID UnderlayID, class UTGViewModel* ViewModel);
     class UTGUILayer* OpenOverlay(const EEHUIOverlayID OverlayID, class UTGViewModel* ViewModel);
+    class UTGUILayer* OpenModsHUBWidget(FString ModToNavigate);
     void OpenAllAvailableLayers();
+    bool IsOverlayOpen(const EEHUIOverlayID OverlayID);
     void CloseUnderlay(const EEHUIUnderlayID UnderlayID, bool bRelease);
     void CloseOverlay(const EEHUIOverlayID OverlayID, bool bRelease);
+    void CloseModsHUBWidget();
 };
 
 class UEHLightBlockItem : public UEHDeviceItem
@@ -3571,46 +4279,6 @@ class UEHLoadScreen : public UEHUIScreen
     void HandleBack();
 };
 
-struct FEHMPScenarioParams
-{
-    int32 SeedNumber;
-    bool PlayerConsumesOxygen;
-    bool StartCampaign;
-    bool SharedTechnologyPoints;
-    bool SharedTechnologies;
-
-};
-
-class AEHLobbyGameState : public AGameStateBase
-{
-    class UEHTcpSocketConnection* TcpSocketConnection;
-    FEHLobbyGameStateMSScenarioParamsChanged MSScenarioParamsChanged;
-    void OnLobbyStateChanged();
-    FEHLobbyGameStateMaxLobbyPlayersChanged MaxLobbyPlayersChanged;
-    void OnLobbyStateChanged();
-    int32 MaxLobbyPlayers;
-    FEHMPScenarioParams MPScenarioParams;
-    int32 connectionIdGameServer;
-
-    void Send(const TArray<uint8>& Data);
-    void OnRep_MPScenarioParams();
-    void OnRep_MaxLobbyPlayers();
-    void OnMessageReceived(int32 ConId, TArray<uint8>& Message);
-    void OnLobbyStateChanged__DelegateSignature();
-    void OnDisconnected(int32 ConId);
-    void OnConnected(int32 ConnectionId);
-    void ClientSavegameLoaded(int32 SavegameSize);
-};
-
-class AEHLobbyPlayerController : public AEHPlayerController
-{
-
-    void StartSavegameReplication();
-    void LobbyLoadSavegame();
-    void Client_SendPackage(const TArray<uint8>& PackageData);
-    void Client_NotifySavegameReplicationStarted(const int32 SavegameSizeIn);
-};
-
 class UEHLogicBlockerObject : public UEHLogicObject
 {
 };
@@ -3621,6 +4289,14 @@ class UEHLogicFilterObject : public UEHLogicObject
 
 class UEHLogicItem : public UEHDeviceItem
 {
+};
+
+class UEHLogicObject : public UEHDeviceObject
+{
+    TArray<class UEHItem*> SelectedResources;
+    FEHLogicObjectOnSelectedResourcesChanged OnSelectedResourcesChanged;
+    void OnSelectedResourcesChanged();
+
 };
 
 class UEHLogicPusherObject : public UEHLogicObject
@@ -3657,23 +4333,6 @@ class UEHMainMenuViewModel : public UEHScreenViewModel
 
 class UEHManufacturer : public UEHCraftingObject
 {
-};
-
-class IEHMapTrackableInterface : public IInterface
-{
-
-    void SetDisplayName(const FText& DisplayName);
-    bool IsVisibleOnMap(const bool RadarActive);
-    bool IsKnown();
-    EEHTrackableType GetTrackableType();
-    EVoxelTerrainType GetTerrainType();
-    FVector GetScale();
-    float GetRotation();
-    TArray<int32> GetResourceCounts();
-    FVector GetMiddleOffset();
-    FText GetDisplayName();
-    FLinearColor GetColor();
-    EVoxelShapeType GeShapeType();
 };
 
 class UEHMapWidget : public UUserWidget
@@ -3752,27 +4411,10 @@ class UEHMenuWidget : public UTGUserWidget
     void Back();
 };
 
-struct FCellTransformation
-{
-    FTransform Transform;
-    int32 MeshID;
-
-};
-
 class UEHMetamorphosisDeviceItem : public UEHDeviceItem
 {
     TArray<FCellTransformation> CellTransformations;
     EEHMetamorphosisType MetamorphosisType;
-
-};
-
-class IEHMetamorphosisInterface : public IInterface
-{
-};
-
-class AEHMeteorRain : public AEHCelestialBodyActor
-{
-    class UProjectileMovementComponent* ProjectileMovementComponent;
 
 };
 
@@ -3788,13 +4430,6 @@ class UEHMineObject : public UEHSpecialisticProductionObject
     bool ChangeMiningResource(const EEHMiningResourceType InMiningResource);
 };
 
-class UEHMissionsComponent : public UMOMissionsManager
-{
-
-    void FailCurrentScenario(const EEHScenarioFailureReason ScenarioFailureReason);
-    void CompleteCurrentScenario();
-};
-
 class UEHMissionSelectionScreen : public UEHUIScreen
 {
     class UEHMissionSelectionViewModel* MissionSelectionViewModel;
@@ -3803,6 +4438,13 @@ class UEHMissionSelectionScreen : public UEHUIScreen
 
 class UEHMissionSelectionViewModel : public UEHScreenViewModel
 {
+};
+
+class UEHMissionsComponent : public UMOMissionsManager
+{
+
+    void FailCurrentScenario(const EEHScenarioFailureReason ScenarioFailureReason);
+    void CompleteCurrentScenario();
 };
 
 class UEHModsBrowsedListViewModel : public UEHViewModel
@@ -3869,6 +4511,18 @@ class UEHModsBrowsedWidget : public UTGUserWidget
     void HandleModsSearchCompleted();
 };
 
+class UEHModsHUBWidget : public UTGUILayer
+{
+    TSubclassOf<class UUserWidget> ModsOptionWidgetClass;
+    class UVerticalBox* VerticalModsHUB;
+    class UScrollBox* ScrollBox;
+    class UEHModsListViewModel* ModsListViewModel;
+    EDescendantScrollDestination DescendantScrollDestination;
+
+    void SelectTabByName(FString TabName);
+    void OnModsHUBOptionSelected(const FUGCPackage& Package, class UACModConfig* ModConfig);
+};
+
 class UEHModsListViewModel : public UEHViewModel
 {
     FTextBindable CategoryName;
@@ -3904,12 +4558,12 @@ class UEHModsOptionViewModel : public UEHViewModel
     TArray<class TSubclassOf<AActor>> ActorReplacements;
     TArray<class UClass*> Classes;
     TArray<FName> Maps;
+    class UACModConfig* ModConfig;
 
 };
 
 class UEHModsOptionWidget : public UTGUserWidget
 {
-    TMap<class ESettingWidgetType, class TSubclassOf<UEHOptionWidget>> SettingsWidgetMap;
     class UTGWidget* InteractiveArea;
     class UEHModsOptionViewModel* ModsOptionViewModel;
 
@@ -3931,8 +4585,10 @@ class UEHModsScreen : public UEHUIScreen
     class UEHModsBrowsedWidget* BrowseModsList;
     class UEHBaseButtonWidget* InstalModButton;
     class UEHBaseButtonWidget* RemoveModButton;
+    class UEHBaseButtonWidget* OpenModButton;
 
     void HandleRemoveModClicked(class UEHBaseButtonWidget* ButtonWidget);
+    void HandleOpenModClicked(class UEHBaseButtonWidget* ButtonWidget);
     void HandleInstallModButtonClicked(class UEHBaseButtonWidget* ButtonWidget);
     void HandleBack();
 };
@@ -3947,108 +4603,9 @@ class UEHModsViewModel : public UEHScreenViewModel
     void HandleModInstalled();
 };
 
-class IEHSceneInteractionInterface : public IInterface
+class UEHModularVehicleWidget : public UUserWidget
 {
-
-    bool HasClickInteraction();
-    class USceneComponent* GetSetupComponent();
-    class UPrimitiveComponent* GetPrimitiveComponent();
-};
-
-class IEHModularPartInterface : public IEHSceneInteractionInterface
-{
-
-    void SetVehiclePartType(const EEHVehiclePartType VehiclePartType);
-    void SetPartMaterials(const TArray<class UMaterialInterface*>& Materials);
-    EEHVehiclePartType GetVehiclePartType();
-    TArray<class UMaterialInterface*> GetPartMaterials();
-    void ApplyTransform(const FTransform& Transform);
-    void ApplyStaticMesh(const class UStaticMesh* StaticMesh);
-    void ApplyMaterials(const TArray<TSoftObjectPtr<UMaterialInterface>>& Materials);
-    void ApplyMaterial(const class UMaterialInterface* Material);
-    void ApplyColors(const TArray<FLinearColor>& Colors, const TArray<FName>& Names);
-};
-
-struct FEHVehiclePart
-{
-    EEHVehiclePartType PartType;
-    FTransform Transform;
-    FName PartID;
-    uint8 SchemeID;
-    TArray<FLinearColor> Colors;
-
-};
-
-struct FEHVehicleDefinition
-{
-    FString VehicleName;
-    EEHVehicleType VehicleType;
-    TArray<FEHVehiclePart> Parts;
-    TMap<class EEHVehiclePartType, class EEHVehiclePartMirrorType> SizeMirrorModes;
-    TMap<class EEHVehiclePartType, class EEHVehiclePartMirrorType> OffsetMirrorModes;
-    int32 UniqueID;
-
-};
-
-class IEHModularVehicleInterface : public IInterface
-{
-
-    void RemoveVehiclePart(class UActorComponent* ActorComponent);
-    void OnGridVehicleSpawn(class AEHGrid* Grid);
-    void OnDesignerVehiclePreviewSpawn();
-    void InitVehicle(const FEHVehicleDefinition& VehicleDefinition);
-    FEHVehicleDefinition GetVehicleDetails();
-    int32 GetPossibleVehicleActions();
-    bool CanExecuteAction(EEHVehicleAction VehicleAction);
-};
-
-struct FEHVehicleTypeData
-{
-    FText Name;
-    TSoftObjectPtr<UTexture2D> Icon;
-    TSoftClassPtr<APawn> Pawn;
-    float SpawnHeightOffset;
-    TArray<EEHVehiclePartType> CompatibleParts;
-    int32 PossibleActions;
-    FEHItemInstance OutputItem;
-
-};
-
-struct FEHVehiclePartTypeData
-{
-    FText Name;
-    FText Description;
-    class UTexture2D* Icon;
-    TArray<FEHItemInstance> Cost;
-    float ProductionTime;
-    TArray<FName> ColorNames;
-    TArray<FEHPartScheme> Schemes;
-    FIntPoint SizeXMinMax;
-    FIntPoint SizeYMinMax;
-    FIntPoint SizeZMinMax;
-    EEHVehiclePartScale UseXforMultipleScales;
-    FIntPoint OffsetXMinMax;
-    FIntPoint OffsetYMinMax;
-    FIntPoint OffsetZMinMax;
-    bool CanBeRemoved;
-    TSoftClassPtr<USceneComponent> PredefinedComponent;
-    TSoftObjectPtr<UStaticMesh> PredefinedMesh;
-    TArray<FVector> PredefinedLocation;
-    uint8 NumberOfUses;
-
-};
-
-struct FEHPartSuffix
-{
-    FText Name;
-    FName MirrorLeftRightID;
-    FName MirrorRearFrontID;
-
-};
-
-struct FEHPawns
-{
-    TArray<class APawn*> Pawns;
+    class UCanvasPanel* RootCanvas;
 
 };
 
@@ -4110,46 +4667,6 @@ class UEHModularVehicles : public UActorComponent
     void AddPart(const FTransform& Transform, const EEHVehiclePartType VehiclePartType);
 };
 
-class UEHModularVehicleWidget : public UUserWidget
-{
-    class UCanvasPanel* RootCanvas;
-
-};
-
-class AEHMovableSpaceActor : public AActor
-{
-    FVector SpaceVelocity;
-    FEHMovableSpaceActorOnMovingToDestinationChanged OnMovingToDestinationChanged;
-    void OnMovingToDestinationChanged(const bool IsMovingToDestination);
-    FEHMovableSpaceActorOnMovableSpaceActorLocationChanged OnMovableSpaceActorLocationChanged;
-    void OnMovableSpaceActorLocationChanged();
-    class UStaticMeshComponent* DockingPreview;
-    bool MovementDisabled;
-    float RealPositionUpdateTime;
-    FVector DestinationDirectionOffset;
-    FVector DockingStationOffset;
-    class UEHPrimitiveComponent* SceneRoot;
-    FVector CachedTickWorldOffset;
-    float SpaceSpeed;
-    bool IsMovingToDestination;
-    FVector MovementShaderOffset;
-    FVector PreviousMovementShaderOffset;
-    FVector DestinationPosition;
-
-    void StopMovement();
-    void SetVelocity(const FVector Velocity);
-    void OnShaderMovementUpdate();
-    void OnRealMovementUpdate();
-    void OnMovingToDestinationChanged__DelegateSignature(const bool IsMovingToDestination);
-    void OnMovableSpaceActorLocationChanged__DelegateSignature();
-    void Multi_VelocityChanged(const FVector& NewSpaceVelocity);
-    void Multi_AttachActor(class AActor* ChildActor);
-    void MoveToDestination(const FVector& InDestinationPosition);
-    FVector GetSpaceVelocity();
-    FVector CalculateVelocityForPoints(const FVector& StartPosition, const FVector& EndPosition);
-    void AddVelocity(const FVector VelocityChange);
-};
-
 class UEHMultiplayerScreen : public UEHUIScreen
 {
     class UEHMultiplayerViewModel* MultiplayerViewModel;
@@ -4164,14 +4681,11 @@ class UEHMultiplayerScreen : public UEHUIScreen
     FString GetSelectedSavegameName();
 };
 
-class UEHSaveLoadViewModel : public UEHScreenViewModel
+class UEHMultiplayerViewModel : public UEHSaveLoadViewModel
 {
-    class UEHSaveLoadListViewModel* SaveLoadListViewModel;
-
-    void HandlePopupAction(FName Action);
 };
 
-class UEHMultiplayerViewModel : public UEHSaveLoadViewModel
+class UEHNetwork : public UObject
 {
 };
 
@@ -4188,10 +4702,6 @@ class UEHNotificationDialogWidget : public UTGUILayer
     class UEHNotificationDialogViewModel* NotificationDialogViewModel;
     class UTGWidget* MouseBlocker;
 
-};
-
-class IEHObjectLoaderInterface : public IInterface
-{
 };
 
 class UEHOptionButtonWidget : public UEHOptionWidget
@@ -4268,22 +4778,17 @@ class UEHOptionToggleWidget : public UEHOptionWidget
     void HandleToggleStateChanged(bool bIsToggled);
 };
 
-class UEHStringOptionViewModel : public UEHOptionViewModel
+class UEHOptionViewModel : public UEHViewModel
 {
-
-    void OnBindableChanged(FString NewValue);
 };
 
-class UEHFloatOptionViewModel : public UEHOptionViewModel
+class UEHOptionWidget : public UTGUserWidget
 {
 
-    void OnBindableChanged(float NewValue);
-};
-
-class UEHBoolOptionViewModel : public UEHOptionViewModel
-{
-
-    void OnBindableChanged(bool NewValue);
+    void NavigationRight();
+    void NavigationLeft();
+    void NavigationConfirm();
+    FText GetOptionName();
 };
 
 class UEHOxygenGenerator : public UEHCraftingObject
@@ -4306,16 +4811,6 @@ class UEHParticleSystemComponent : public UParticleSystemComponent
 {
 
     void ForceResetParticle();
-};
-
-struct FPathFindRequest
-{
-    class UEHAIObject* AIObject;
-    FIntVector StartPosition;
-    FIntVector EndPosition;
-    bool AerialRequest;
-    bool IgnoreAI;
-
 };
 
 class UEHPathfindingComponent : public UActorComponent
@@ -4365,6 +4860,10 @@ class UEHPillarObject : public UEHInteractableObject
 
 };
 
+class UEHPipeObject : public UEHInteractableObject
+{
+};
+
 class UEHPlanetoidDestructibleItem : public UEHDeviceItem
 {
     TSoftObjectPtr<UMaterialInterface> DestructibleMaterial;
@@ -4380,68 +4879,6 @@ class UEHPlanetoidDestructibleItem : public UEHDeviceItem
 };
 
 class UEHPlanetoidGenerationObject : public UEHCelestialGenerationObject
-{
-};
-
-class AEHPlanetoidGrid : public AEHGrid
-{
-    bool IsPlanet;
-    int32 PrimarySeed;
-    int32 SecondarySeed;
-    int32 GroundSpawnDepth;
-    float GroundSpawnChance;
-    float GroundSpawnFrequency;
-    float GroundTypeFrequency;
-    float GenerationDensity;
-    float GenerateTracePointsTime;
-    bool SpawnSurfaceDestructibles;
-    bool SpawnSurfaceVisuals;
-    bool SpawnGroundResources;
-    int32 ResourcesGenerationSize;
-    float Frequency;
-    float HigherNoise;
-    float LowerNoise;
-    TArray<uint8> PlanetoidDetailSpawnChanceIndexes;
-    float PlanetoidSurfaceDetailSpawnChanceSum;
-    FIntVector PlanetoidSize;
-    float PlanetoidMapRotation;
-    class UEHBlockItem* PlanetoidDepositItem;
-    FEHPlanetoidGridOnPlanetoidGenerated OnPlanetoidGenerated;
-    void OnPlanetoidGenerated();
-    bool PlanetoidGeneratorCompleted;
-    class AEHVoxelWorld* VoxelWorld;
-    uint8 PlanetIndex;
-    TMap<class EEHMiningResourceType, class FVector2D> SpawnRatioForGroundResource;
-
-    void TraceHeightFound(const FVector& ImpactPoint);
-    void TestingValue(const FIntVector& Coord);
-    void SpawnDestructible(const FVector& position, const FVoxelTerrainDigData& DigData);
-    void SetSeed(int32 SeedLow);
-    void SetInterpolation(EVoxelNoiseInterpolation Interp);
-    void RemoveBox(const FIntVector& Coord);
-    void OnRep_VoxelWorld();
-    void OnPlanetoidGenerated__DelegateSignature();
-    void OnDebugPlanetoidGenerate();
-    void OnDebugPlanetoidCoordGenerate(const FIntVector& Coord);
-    void NotifyStreamingPlanetoidLoaded();
-    void Multi_RemoveBox(const FIntVector& Coord);
-    void ModifyBox(const FIntVector BoxMin, const FIntVector BoxMax, bool IsAdding);
-    bool IsProcedurallyGenerated();
-    void HadleCollectiveColliderStateChanged(bool ColliderActive);
-    FInteractableObjectArray GetWorldItems(const EEHMiningResourceType ResrouceType);
-    class AEHVoxelWorld* GetVoxelWorld();
-    float GetTestNoiseValue(float X, float Y, float NoiseFrequency, bool UseSimplexNoise);
-    FVector GetPlanetoidSize();
-    TArray<FIntVector> GetForbiddenVoxelCoordsForBox(const FVoxelIntBox& Box);
-    TArray<FIntVector> GetCoordsFromTraceImpactPoints();
-    bool DoesVoxelContainRock(const FIntVector& Coord);
-    void DebugRegenerateForSeed(const int32 NewPrimarySeed);
-    void DebugGeneratePlanetoid(const FIntPoint& Size);
-    void AsyncTraceTest();
-    void AddBox(const FIntVector& Coord);
-};
-
-class UEHVisualItem : public UEHItem
 {
 };
 
@@ -4466,43 +4903,17 @@ class UEHPlantMeshAsset : public UEHVisualMeshAsset
 
 };
 
-class AEHPlayerState : public APlayerState
+class UEHPopupViewModel : public UTGPopupViewModel
 {
-    FEHPlayerStateOnPlayerInfoChanged OnPlayerInfoChanged;
-    void OnPlayerInfoChanged();
-    FString Name;
-    bool Ready;
+    class UEHButtonBarViewModel* ButtonBarViewModel;
 
-    void UpdateReady(const bool ReadyIn);
-    void OnRep_Ready();
-    void OnRep_Name();
-    void OnPlayerInfoChanged__DelegateSignature();
-};
-
-class IEHPlayerWorldInteractionInterface : public IEHInteractionInterface
-{
-
-    void OnWorldActorSpawned(bool ShouldMoveToDestination, FVector DestinationOffset);
-    void OnWorldActorRotate();
-    void OnWorldActorRemove();
-    void OnWorldActorOpen();
-    void OnWorldActorInteract();
-    void OnWorldActorHit();
-    void OnWorldActorClick();
-    bool HasExplicitInteractions();
-    TSubclassOf<class UWorldInteractiveInfoWidget> GetWorldInteractiveInfoWidgetClass();
-    FText GetInteractionDisplayName();
-    int32 GetAvailableActionsBits();
-    TMap<class EPlayerActionType, class EHJobModeType> GetActionTypeJobModes();
-    TMap<class EPlayerActionType, class FText> GetActionNames();
-    class UTexture2D* GetActionIcon();
 };
 
 class UEHPreviewISM : public UInstancedStaticMeshComponent
 {
 };
 
-class UEHPreviewISMCell : public UEHPreviewISM
+class UEHPreviewISMCell : public UHierarchicalInstancedStaticMeshComponent
 {
 };
 
@@ -4526,6 +4937,54 @@ class UEHProductionDeviceItem : public UEHDeviceItem
     TArray<class UEHItem*> GetOutputItemsFromRecipes();
     TSet<EGlobalPointType> GetOutputGeneratedPointsFromRecipes();
     TArray<class UEHItem*> GetInputItemsFromRecipes();
+};
+
+class UEHProductionObject : public UEHItemsContainer
+{
+    bool ShowProductionItemsContainer;
+    EAIProfession RequiredJobProfession;
+    uint8 MaximumSpecialistsNumber;
+    uint8 DedicatedSpecialistsNumber;
+    TArray<class UEHAIObject*> AssignedWorkplaceAIs;
+    FEHProductionObjectOnSelectedRecipesChanged OnSelectedRecipesChanged;
+    void OnSelectedRecipesChanged();
+    FEHProductionObjectOnAutoDeactivateCountsChanged OnAutoDeactivateCountsChanged;
+    void OnAutoDeactivateCountsChanged();
+    FEHProductionObjectOnItemProduced OnItemProduced;
+    void OnItemProduced(FEHItemInstance ProducedItem);
+    FEHProductionObjectOnGlobalPointProduced OnGlobalPointProduced;
+    void OnGlobalPointProduced(FEHGlobalPointInstance ProducedGlobalPoint);
+    FEHProductionObjectOnAssignedAIWorkersChanged OnAssignedAIWorkersChanged;
+    void OnAssignedAIWorkersChanged(uint8 AICount);
+    FEHProductionObjectDedicatedSpecialistsNumberChanged DedicatedSpecialistsNumberChanged;
+    void OnAssignedAIWorkersChanged(uint8 AICount);
+    FEHProductionObjectOnCraftingStateChanged OnCraftingStateChanged;
+    void OnCraftingStateChanged(FName RecipeName);
+    TSet<UEHItem*> ProducedItemsCached;
+    TArray<class UEHAIObject*> AIsInside;
+    uint8 AIInsideCount;
+    TMap<class FName, class FEHProductionProgress> RecipesProgresses;
+    TMap<class FName, class FEHRecipe> SelectedRecipes;
+    TMap<FName, int32> RecipesAutoDeactivateCounts;
+
+    bool UsesRecipesForProduction();
+    void OnSelectedRecipesChanged__DelegateSignature();
+    void OnItemProduced__DelegateSignature(FEHItemInstance ProducedItem);
+    void OnGlobalPointProduced__DelegateSignature(FEHGlobalPointInstance ProducedGlobalPoint);
+    void OnCraftingStateChanged__DelegateSignature(FName RecipeName);
+    void OnAutoDeactivateCountsChanged__DelegateSignature();
+    void OnAssignedAIWorkersChanged__DelegateSignature(uint8 AICount);
+    void Multi_ProductionStateChanged_Inactive();
+    void Multi_ProductionStateChanged_Active();
+    bool IsWorkplaceForAI();
+    bool IncreaseDedicatedWorkplaceAI();
+    bool HasProducingRecipe();
+    void HandleLoadGameFinished(bool IsLoadedFromSavegame);
+    float GetSpecialistRatio();
+    TArray<FEHRecipe> GetRecipes();
+    FEHProductionProgress GetRecipeProgress(const FName& RecipeName);
+    float GetProductionRatio(bool RequireSpecialist);
+    bool DecreaseDedicatedWorkplaceAI();
 };
 
 class UEHProfessionMeshAsset : public UEHCustomAsset
@@ -4579,16 +5038,6 @@ class UEHReactiveMeshComponent : public UStaticMeshComponent
     void Init(class UEHInteractableObject* InteractableObject, const FIntVector MeshCoord);
 };
 
-class AEHRealTimeDilationActor : public AActor
-{
-    FEHRealTimeDilationActorOnTimeDilationChanged OnTimeDilationChanged;
-    void OnTimeDilationChanged();
-
-    void SetGlobalTimeDilation(float GlobalTimeDilation);
-    void OnTimeDilationChanged__DelegateSignature();
-    void ChangeTimeDilation(float TimeDilationChange);
-};
-
 class UEHRecyclingMachine : public UEHCraftingObject
 {
     class UEHItemsContainer* GarbageContainer;
@@ -4611,37 +5060,6 @@ class UEHReferencedMissionObject : public UReferencedMissionObject
     void CompleteObjective(const bool Condition, const FName ObjectiveName, uint8 RepetitionsCount);
 };
 
-class IEHRemoteConstructionInterface : public IEHInteractionInterface
-{
-
-    int32 TotalExpeditionsCount();
-    void StartRemoteConstruction(class UEHRemoteFabricatorObject* RemoteFabricatorObject);
-    void OnExpeditionConstruct();
-    bool IsConstructionDone();
-    FName GetUniqueID();
-    uint8 GetPhasesCount();
-    FText GetName();
-    class UTexture2D* GetIcon();
-    TArray<FEHItemInstance> GetExpeditionCost();
-    int32 CompletedExpeditions();
-    void CancelRemoteConstruction(class UEHRemoteFabricatorObject* RemoteFabricatorObject);
-};
-
-class IEHRemoteEnergyInterface : public IEHInteractionInterface
-{
-
-    void RemoveEnergyTransmitter(class UEHEnergyTransmitterObject* EnergyTransmitter);
-    void OnEnergyProvided(float Energy, class UEHEnergyTransmitterObject* EnergyTransmitter);
-    bool IsPowerActivated();
-    FName GetUniqueID();
-    FText GetName();
-    class UTexture2D* GetIcon();
-    float EnergyRequired();
-    bool CanReceiveEnergy();
-    void AddEnergyTransmitter(class UEHEnergyTransmitterObject* EnergyTransmitter);
-    float AccumulatedEnergy();
-};
-
 class UEHRemoteFabricatorObject : public UEHSpecialisticProductionObject
 {
     class UEHDeviceItem* FabricatorDroneItem;
@@ -4655,13 +5073,19 @@ class UEHRemoteFabricatorObject : public UEHSpecialisticProductionObject
     void CancelRemoteConstruction();
 };
 
-class AEHRemoteFabricatorPawn : public AEHInteractivePawn
+class UEHResourceItem : public UEHItem
 {
-    class UEHHierarchicalInstancedStaticMeshComponent* HISMExpeditionDrones;
-    class UEHHierarchicalInstancedStaticMeshComponent* HISMComingBackDrones;
-    class AActor* RemotlyConstructedActor;
-    class UEHRemoteFabricatorObject* RemoteFabricatorObject;
-    class USceneComponent* SceneRoot;
+    EEHMiningResourceType MiningResourceType;
+    TArray<FTransform> BoxInsideInstances;
+    bool ImportInsideInstances;
+    FRotator RotateFactor;
+    bool RotateInsideInstances;
+    float ScaleFactor;
+    bool ScaleInsideInstances;
+    int32 WarehouseSortPriority;
+    FLinearColor ResourceColor;
+    uint8 HitNumberToExtract;
+    TSoftObjectPtr<UNiagaraSystem> ExtractionVFX;
 
 };
 
@@ -4692,6 +5116,12 @@ class UEHRockObject : public UEHInteractableObject
     bool CanHit();
 };
 
+class UEHSSEInitializer : public UObject
+{
+
+    void InitializerApllied(class UEHInteractableObject* Interactable, class AEHGrid* Grid);
+};
+
 class UEHSandboxScreen : public UEHUIScreen
 {
     class UEHSandboxViewModel* SandboxViewModel;
@@ -4704,23 +5134,6 @@ class UEHSandboxScreen : public UEHUIScreen
 
 class UEHSandboxViewModel : public UEHScreenViewModel
 {
-};
-
-struct FSaveMultiplayerPlayer
-{
-    uint8 PlayerId;
-    FTransform Transform;
-    FRotator ControlRotation;
-    bool JetpackOn;
-    TArray<FBinaryDataContainer> InventoryContainersData;
-
-};
-
-struct FSaveSpawnActor
-{
-    FTransform Transform;
-    UClass* Class;
-
 };
 
 class UEHSaveGame : public UTechnologySaveGame
@@ -4737,8 +5150,10 @@ class UEHSaveGame : public UTechnologySaveGame
     bool JetpackOn;
     FTransform PlayerTransform;
     FRotator ControlRotation;
+    FName PlayerGridName;
     TArray<FBinaryDataContainer> InventoryContainersData;
     TArray<FSaveMultiplayerPlayer> MultiplayerPlayers;
+    FEHMPScenarioParams MPScenarioParams;
     TMap<class UClass*, class FBinaryDataContainer> SerializedUniqueClassObjectData;
     TMap<class FName, class FSaveSpawnActor> SerializedActorSpawnData;
     TMap<class FName, class FBinaryDataContainer> SerializedActorData;
@@ -4751,31 +5166,6 @@ class UEHSaveGame : public UTechnologySaveGame
     TArray<FIntVector> InactiveU4ChunkCoords;
     TMap<class FName, class FBinaryDataContainer> GridDataSaves;
     TMap<class FName, class FVoxelCompressedWorldSave> VoxelCompressedWorldSaves;
-
-};
-
-class IEHSaveGameInterface : public IInterface
-{
-
-    bool ShouldSerializeUniqueClassSavegameData();
-    bool ShouldSerializeNamedActorSavegameSpawn();
-    bool ShouldSerializeNamedActorSavegameData();
-    void SetSerializedActorUniqueName(const FName UniqueName);
-    void SavingGameData(class UEHSaveGame* SaveGame);
-    void SavegameObjectSerializeDataLoaded();
-    void LoadingGameData(class UEHSaveGame* SaveGame);
-    FName GetSerializedActorUniqueName();
-};
-
-struct FEHScenarioDetails
-{
-    bool IsScenarioSuccessful;
-    EEHScenarioFailureReason ScenarioFailureReason;
-    FString DisplayName;
-    FString TimeToDisplay;
-    class UTexture2D* Icon;
-    FString Version;
-    FEHScenarioParams ScenarioParams;
 
 };
 
@@ -4833,6 +5223,13 @@ class UEHSaveLoadOptionWidget : public UTGUserWidget
     void HandleClicked();
 };
 
+class UEHSaveLoadViewModel : public UEHScreenViewModel
+{
+    class UEHSaveLoadListViewModel* SaveLoadListViewModel;
+
+    void HandlePopupAction(FName Action);
+};
+
 class UEHSaveScreen : public UEHUIScreen
 {
     class UEHSaveLoadViewModel* SaveViewModel;
@@ -4847,19 +5244,6 @@ class UEHSaveScreen : public UEHUIScreen
     void HandleRemoveAllClicked(class UEHBaseButtonWidget* ButtonWidget);
     void HandleBack();
     void FileSavedEvent(FString Filename);
-};
-
-struct FCampaignData : public FTableRowBase
-{
-    FName ScenarioLevelName;
-    FString DisplayName;
-    FText Description;
-    TSoftObjectPtr<UTexture2D> Icon;
-    bool IsEnabledByDefault;
-    bool IsConstructed;
-    TSoftClassPtr<UEHScenarioComponent> ScenarioManagerTemplate;
-    FEHScenarioParams ScenarioParams;
-
 };
 
 class UEHScenarioComponent : public UActorComponent
@@ -4880,18 +5264,6 @@ class UEHScenarioOverlayWidget : public UUserWidget
     void ChangeWidetMarkerVisibility(const FName& Name, const bool IsVisible);
 };
 
-class UEHTrainingObject : public UEHInteractableServiceObject
-{
-    FEHTrainingObjectOnTrainedProductionChanged OnTrainedProductionChanged;
-    void OnTrainedChanged(EAIProfession Profession);
-    FEHTrainingObjectOnTrainedCompleted OnTrainedCompleted;
-    void OnTrainedChanged(EAIProfession Profession);
-    FEHProgress progress;
-    float ProductionAITime;
-    class UEHAIItem* AIToSpawn;
-
-};
-
 class UEHSchoolObject : public UEHTrainingObject
 {
     FEHSchoolObjectOnAwaitingSpecialistTrainingsChange OnAwaitingSpecialistTrainingsChange;
@@ -4899,13 +5271,6 @@ class UEHSchoolObject : public UEHTrainingObject
     TArray<EAIProfession> AwaitingSpecialistTrainings;
     EAIProfession OngoingSpecialistTraining;
     class UEHAIHumanObject* StudyingHuman;
-
-};
-
-struct FScreenDefinition
-{
-    TSoftClassPtr<UTGUIScreen> ScreenTemplate;
-    TSoftClassPtr<UEHScreenViewModel> ViewModelTemplate;
 
 };
 
@@ -4932,6 +5297,13 @@ class UEHScreenMarkerWidget : public UUserWidget
     class UTextBlock* MarkerText;
     class USizeBox* TextSizeBox;
     class UOverlay* PivotOverlay;
+
+};
+
+class UEHScreenViewModel : public UEHViewModel
+{
+    class UEHButtonBarViewModel* ButtonBarViewModel;
+    class UEHDataProvider* DataProvider;
 
 };
 
@@ -5056,18 +5428,6 @@ class UEHSettingsOptionWidget : public UTGUserWidget
     void HandleClicked();
 };
 
-struct FEHPreviewKeyPreset
-{
-    TMap<class FKey, class ESettingsControllerActions> ActionsKeys;
-
-};
-
-struct FEHThumbstickPreviewKeyLayout
-{
-    TMap<class ESettingsThumbstickActions, class ESettingsControllerActions> ActionsKeys;
-
-};
-
 class UEHSettingsPreviewPresetsData : public UDataAsset
 {
     TMap<class FName, class FEHPreviewKeyPreset> SettingPreviewPresets;
@@ -5158,15 +5518,23 @@ class UEHSignalCable : public UEHPipeObject
 {
 };
 
-class IEHSignalDeviceInterface : public IInterface
-{
-};
-
 class UEHSignalNetwork : public UEHNetwork
 {
     FEHSignalNetworkOnSignalChanged OnSignalChanged;
     void OnSignalChanged();
     TMap<UEHItem*, int32> TotalSignal;
+
+};
+
+class UEHSignalObject : public UEHLogicObject
+{
+    class UEHSignalNetwork* SignalNetworkIn;
+    class UEHSignalNetwork* SignalNetworkOut;
+    TArray<FEHItemInstance> ResourcesSignalOut;
+    FEHSignalObjectOnResourcesSignalOutChanged OnResourcesSignalOutChanged;
+    void OnResourcesSignalOutChanged();
+    FEHSignalObjectOnSelectedDeviceChanged OnSelectedDeviceChanged;
+    void OnSelectedDeviceChanged();
 
 };
 
@@ -5176,18 +5544,6 @@ class UEHSignalReceiver : public UEHDeviceObject
     TArray<FEHItemInstance> SignalCached;
     FEHSignalReceiverOnSignalSendChanged OnSignalSendChanged;
     void OnSignalSendChanged();
-
-};
-
-struct FSettingsSlidersData : public FTableRowBase
-{
-    ESettingOptionType SettingOptionType;
-    ESliderStepType SliderStepType;
-    float GamepadKeyboardStepValue;
-    float StepRound;
-    float MouseWidgetStep;
-    int32 MinimumFractionalDigits;
-    int32 MaximumFractionalDigits;
 
 };
 
@@ -5237,15 +5593,15 @@ class UEHSpaceCarryComponent : public UActorComponent
     void Client_AstronautsArrived();
 };
 
-class AEHSpaceShuttleActor : public AActor
+class UEHSpeakerObject : public UEHInteractableObject
 {
-
-    void OnSpaceShuttleUndocked();
-    void OnSpaceShuttleDocked();
-    class UEHSpaceCarryComponent* GetSpaceCarryComponent();
 };
 
-class UEHSpeakerObject : public UEHInteractableObject
+class UEHSpecialisticCraftingObject : public UEHCraftingObject
+{
+};
+
+class UEHSpecialisticProductionObject : public UEHCraftingObject
 {
 };
 
@@ -5253,19 +5609,6 @@ class UEHSplitterWidget : public UTGUserWidget
 {
     class UTextBlock* SplitterText;
 
-};
-
-class UEHSSEInitializer : public UObject
-{
-
-    void InitializerApllied(class UEHInteractableObject* Interactable, class AEHGrid* Grid);
-};
-
-class AEHSSEItemBase : public AActor
-{
-    class UEHSSEInitializer* SSEInitializer;
-
-    class UEHItem* GetItem();
 };
 
 class UEHStaticMeshChildComponent : public UStaticMeshComponent
@@ -5289,6 +5632,16 @@ class UEHStepperViewModel : public UEHInt32OptionViewModel
     void SelectOption(const int32 OptionID);
     void SelectNextOption();
     FString GetSelectedOptionName();
+};
+
+class UEHStorageObject : public UEHItemsContainer
+{
+};
+
+class UEHStringOptionViewModel : public UEHOptionViewModel
+{
+
+    void OnBindableChanged(FString NewValue);
 };
 
 class UEHStudyPointObject : public UEHTrainingObject
@@ -5370,14 +5723,26 @@ class UEHTabWidget : public UEHBaseButtonWidget
     void HandleTabSelected(const bool IsSelected);
 };
 
-class UEHTechnologyAsset : public UTechnologyAsset
+class UEHTcpSocketConnection : public UObject
 {
-    FText Name;
-    class UTexture2D* Texture;
-    float ReasearchTime;
-    TArray<FEHGlobalPointInstance> ReasearchCost;
-    TArray<FDataTableRowHandle> GameplayAspectUnlocks;
+    int32 SendBufferSize;
+    int32 ReceiveBufferSize;
+    float TimeBetweenTicks;
 
+    bool SendData(int32 ConnectionId, TArray<uint8> DataToSend);
+    FString Message_ReadString(TArray<uint8>& Message, int32 StringLength);
+    int32 Message_ReadInt(TArray<uint8>& Message);
+    float Message_ReadFloat(TArray<uint8>& Message);
+    bool Message_ReadBytes(int32 NumBytes, TArray<uint8>& Message, TArray<uint8>& ReturnArray);
+    uint8 Message_ReadByte(TArray<uint8>& Message);
+    bool isConnected(int32 ConnectionId);
+    void Disconnect(int32 ConnectionId);
+    TArray<uint8> Conv_StringToBytes(FString InStr);
+    TArray<uint8> Conv_IntToBytes(int32 inInt);
+    TArray<uint8> Conv_FloatToBytes(float InFloat);
+    TArray<uint8> Conv_ByteToBytes(uint8 InByte);
+    void Connect(FString ipAddress, int32 Port, const FConnectOnDisconnected& OnDisconnected, const FConnectOnConnected& OnConnected, const FConnectOnMessageReceived& OnMessageReceived, int32& ConnectionId);
+    TArray<uint8> Concat_BytesBytes(TArray<uint8> A, TArray<uint8> B);
 };
 
 class UEHTechToastViewModel : public UEHToastViewModel
@@ -5414,7 +5779,9 @@ class UEHTechTreeComponent : public UTechTreeManager
 
     void UpdateTechPointsDocked(const bool ArePointsDocked);
     void TechnologyUnlockFeedback(class UEHAsset* Item, bool UnlockSuccess);
+    void Server_UpdateTechNotificationsAllPlayers(const bool EnableTechNotificationsIn);
     void Server_TryUnlockTechnology();
+    void Server_DebugUnlockTechnologyAllPlayers(class UTechnologyAsset* Technology);
     void Server_ChangeResearchedTechnology(class UEHTechnologyAsset* TechnologyToResearch);
     void OnTechnologyChanged__DelegateSignature(class UEHTechnologyAsset* PreviousTechnology, class UEHTechnologyAsset* CurrentTechnology);
     void OnTechGameplayUnlocked__DelegateSignature();
@@ -5429,6 +5796,23 @@ class UEHTechTreeComponent : public UTechTreeManager
     bool IsGameplayEffectUnlocked(class UEHAsset* GameplayEffect);
     bool IsAnimalUnlocked(class UEHAsset* Animal);
     class UEHTechnologyAsset* GetTechnologyToUnlock(class UEHAsset* Asset);
+    void Client_UpdateTechNotifications(const bool EnableTechNotificationsIn);
+};
+
+class UEHTechnologyAsset : public UTechnologyAsset
+{
+    FText Name;
+    class UTexture2D* Texture;
+    float ReasearchTime;
+    TArray<FEHGlobalPointInstance> ReasearchCost;
+    TArray<FDataTableRowHandle> GameplayAspectUnlocks;
+
+};
+
+class UEHTextOptionViewModel : public UEHOptionViewModel
+{
+
+    void OnBindableChanged(FText NewValue);
 };
 
 class UEHThrusterNetwork : public UObject
@@ -5525,6 +5909,12 @@ class UEHToastContainerWidget : public UTGUILayer
     void OnToastDismissed(class UEHToastWidget* FinishedWidget);
 };
 
+class UEHToastViewModel : public UEHViewModel
+{
+    float MaxDurationOnScreen;
+
+};
+
 class UEHToastWidget : public UTGUserWidget
 {
     class UWidgetAnimation* SlideDownAnimation;
@@ -5556,12 +5946,16 @@ class UEHTooltipWidget : public UTGUILayer
 
 };
 
-class IEHTraceInterface : public IInterface
+class UEHTrainingObject : public UEHInteractableServiceObject
 {
+    FEHTrainingObjectOnTrainedProductionChanged OnTrainedProductionChanged;
+    void OnTrainedChanged(EAIProfession Profession);
+    FEHTrainingObjectOnTrainedCompleted OnTrainedCompleted;
+    void OnTrainedChanged(EAIProfession Profession);
+    FEHProgress progress;
+    float ProductionAITime;
+    class UEHAIItem* AIToSpawn;
 
-    bool ShouldTraceObject(class UObject* TracedObject);
-    int32 GetTraceOverrideActions(class UObject* TracedObject);
-    TMap<class EPlayerActionType, class FText> GetTraceActionNames();
 };
 
 class UEHTubeObject : public UEHConveyorObject
@@ -5590,55 +5984,45 @@ class UEHUIPopupManager : public UTGUIPopupManager
 
 };
 
+class UEHUIScreen : public UTGUIScreen
+{
+    TSoftObjectPtr<USoundBase> MenuEnterAudio;
+    TSoftObjectPtr<USoundBase> MenuExitAudio;
+    class UEHScreenViewModel* ScreenViewModel;
+
+};
+
 class UEHUISystem : public UTGUISystem
 {
 };
 
-class AEHVehiclePawn : public AVehiclePhysicsActor
+class UEHUserWidget : public UTGUserWidget
 {
-    class AEHGamePlayerController* GamePlayerController;
-    FName SerializedActorUniqueName;
 
-    bool IsPossesed();
-    void HandlePlayerLeftGrid(class AEHGrid* Grid);
-    void HandlePlayerEnteredGrid(class AEHGrid* Grid);
+    void OnEnterEvent();
 };
 
-class IEHVisitedByAIInterface : public IInterface
+class UEHViewModel : public UTGViewModel
+{
+    FTextBindable ToolTipText;
+
+};
+
+class UEHVisualItem : public UEHItem
 {
 };
 
-class AEHVoxelWorld : public AVoxelWorld
+class UEHVisualMeshAsset : public UEHCustomAsset
 {
-    FName VoxelWorldUniqueID;
-    FRandomStream RandomStream;
-    FVoxelTerrainDigData VoxelTerrainDigData;
-    FVoxelShapeData VoxelShapeData;
-    EVoxelTerrainType VoxelTerrainType;
-    EVoxelShapeType VoxelShapeType;
-    FIntVector VoxelWorldSize;
-    float SteepStep;
-    bool IsRemovingVoxel;
-    class AEHColliderWorld* ColliderWorld;
-    class AEHPlanetoidGrid* PlanetoidGrid;
-    float HigherNoise;
-    float LowerNoise;
+    FText ItemDescription;
+    FName AssetName;
+    TArray<TSoftObjectPtr<UStaticMesh>> StaticMeshes;
+    uint8 NumCustomDataFloats;
 
-    void VoxelRemoved(const FIntVector& Coord, const int32 VoxelType);
-    void VoxelDiggingFinished(const FIntVector& Coord);
-    void SetGeneratorParams();
-    void RemoveVoxelOld(const FIntVector& Coord);
-    void RemoveBox(const FVoxelIntBox& BoxBounds, class AEHCharacter* Character);
-    void OnValuesModified(const TArray<FModifiedVoxelValue>& ModifiedValues, class AEHCharacter* Character);
-    void Multi_RemoveBox(const FVoxelIntBox& BoxBounds, class AEHCharacter* Character);
-    void Multi_AddVoxel(const FIntVector& Coord);
-    void LoadVoxelWorld();
-    bool HasParam(const FName ParamName);
-    void HandleVoxelWorldLoaded(class AVoxelWorld* VoxelWorld);
-    EVoxelTerrainType GetVoxelTypeFromLayer(const int32 LayerIndex);
-    FIntVector GetPlanetoidSize();
-    void DestroySaveState();
-    void AddVoxel(const FIntVector& Coord);
+};
+
+class UEHWallItem : public UEHItem
+{
 };
 
 class UEHWallObject : public UEHInteractableObject
@@ -5646,10 +6030,6 @@ class UEHWallObject : public UEHInteractableObject
 };
 
 class UEHWaterCellObject : public UEHCraftingObject
-{
-};
-
-class IEHWaterDeviceInterface : public IInterface
 {
 };
 
@@ -5665,21 +6045,6 @@ class UEHWaterNetwork : public UEHNetwork
 };
 
 class UEHWaterPipe : public UEHPipeObject
-{
-};
-
-class AEHWorldInteractivePawn : public APawn
-{
-    class UTexture2D* InteractionIcon;
-    FText InteractionDisplayName;
-    TMap<class EPlayerActionType, class EHJobModeType> ActionTypeJobModes;
-    int32 UnpossesedFlags;
-    int32 PossesedFlags;
-    FName SerializedActorUniqueName;
-
-};
-
-class AEHWorldInteractiveVehicle : public AEHWorldInteractivePawn
 {
 };
 
@@ -5726,6 +6091,20 @@ class UGammaSettings : public UDataAsset
 
 };
 
+class UInteractBaseWidget : public UUserWidget
+{
+    class UEHInteractableObject* InteractableObject;
+
+    void OnContextChanged();
+    void Init(class UEHInteractableObject* InInteractableObject);
+};
+
+class UInteractMenuWidget : public UMenuWidget
+{
+    TMap<class TSubclassOf<UEHInteractableObject>, class TSubclassOf<UInteractBaseWidget>> InteractableObjectWidgetMap;
+
+};
+
 class UMenuWidget : public UInteractBaseWidget
 {
     FText MenuName;
@@ -5733,10 +6112,10 @@ class UMenuWidget : public UInteractBaseWidget
 
 };
 
-class UInteractMenuWidget : public UMenuWidget
+class UModTabUserWidget : public UUserWidget
 {
-    TMap<class TSubclassOf<UEHInteractableObject>, class TSubclassOf<UInteractBaseWidget>> InteractableObjectWidgetMap;
 
+    void OnInit(const FHUBModDefinition& ModDefinition);
 };
 
 class UPlanetoidElipsoidRange : public UVoxelGraphGeneratorHelper
@@ -5753,6 +6132,36 @@ class UPlanetoidGenerator : public UVoxelGraphGeneratorHelper
     float MainBlendMax;
     float MainBlendMin;
     float PrimaryResourceTH;
+    float SecondaryResourceTH;
+    float StepSteep;
+    int32 WavenessSeed;
+    float RadiusX;
+    float RadiusY;
+    float RadiusZ;
+
+};
+
+class UPlanetoidGeneratorOld : public UVoxelGraphGeneratorHelper
+{
+    int32 GroundSeed;
+    int32 PrimaryResourceIndex;
+    float PrimaryResourceTH;
+    int32 SecondaryResourceIndex;
+    float SecondaryResourceTH;
+    float StepSteep;
+    int32 WavenessSeed;
+    float RadiusX;
+    float RadiusY;
+    float RadiusZ;
+
+};
+
+class UPlanetoidGeneratorOld2 : public UVoxelGraphGeneratorHelper
+{
+    int32 GroundSeed;
+    int32 PrimaryResourceIndex;
+    float PrimaryResourceTH;
+    int32 SecondaryResourceIndex;
     float SecondaryResourceTH;
     float StepSteep;
     int32 WavenessSeed;
@@ -5860,36 +6269,6 @@ class UPlanetoidGenerator_Spike : public UVoxelGraphGeneratorHelper
 
 };
 
-class UPlanetoidGeneratorOld : public UVoxelGraphGeneratorHelper
-{
-    int32 GroundSeed;
-    int32 PrimaryResourceIndex;
-    float PrimaryResourceTH;
-    int32 SecondaryResourceIndex;
-    float SecondaryResourceTH;
-    float StepSteep;
-    int32 WavenessSeed;
-    float RadiusX;
-    float RadiusY;
-    float RadiusZ;
-
-};
-
-class UPlanetoidGeneratorOld2 : public UVoxelGraphGeneratorHelper
-{
-    int32 GroundSeed;
-    int32 PrimaryResourceIndex;
-    float PrimaryResourceTH;
-    int32 SecondaryResourceIndex;
-    float SecondaryResourceTH;
-    float StepSteep;
-    int32 WavenessSeed;
-    float RadiusX;
-    float RadiusY;
-    float RadiusZ;
-
-};
-
 class USimplexNoiseLibrary : public UBlueprintFunctionLibrary
 {
 
@@ -5908,68 +6287,20 @@ class USimplexNoiseLibrary : public UBlueprintFunctionLibrary
     void setNoiseSeed(const int32& newSeed);
 };
 
-class UEHTcpSocketConnection : public UObject
-{
-    int32 SendBufferSize;
-    int32 ReceiveBufferSize;
-    float TimeBetweenTicks;
-
-    bool SendData(int32 ConnectionId, TArray<uint8> DataToSend);
-    FString Message_ReadString(TArray<uint8>& Message, int32 StringLength);
-    int32 Message_ReadInt(TArray<uint8>& Message);
-    float Message_ReadFloat(TArray<uint8>& Message);
-    bool Message_ReadBytes(int32 NumBytes, TArray<uint8>& Message, TArray<uint8>& ReturnArray);
-    uint8 Message_ReadByte(TArray<uint8>& Message);
-    bool isConnected(int32 ConnectionId);
-    void Disconnect(int32 ConnectionId);
-    TArray<uint8> Conv_StringToBytes(FString InStr);
-    TArray<uint8> Conv_IntToBytes(int32 inInt);
-    TArray<uint8> Conv_FloatToBytes(float InFloat);
-    TArray<uint8> Conv_ByteToBytes(uint8 InByte);
-    void Connect(FString ipAddress, int32 Port, const FConnectOnDisconnected& OnDisconnected, const FConnectOnConnected& OnConnected, const FConnectOnMessageReceived& OnMessageReceived, int32& ConnectionId);
-    TArray<uint8> Concat_BytesBytes(TArray<uint8> A, TArray<uint8> B);
-};
-
-class UTestFocusUserWidget : public UUserWidget
-{
-};
-
-class ATGCodingStandardExampleActor : public ACharacter
-{
-    class USkeletalMeshComponent* MyMesh;
-    bool WantsToSprint;
-
-    void OnRep_WantsToSprint();
-};
-
-struct FTGCodingStandardBlueprintVarGroup
-{
-    TArray<int32> WidgetCameraLevels;
-    float CameraTraceVolumeWidth;
-    float CameraTraceVolumeHeight;
-    bool ShowCameraWidget;
-    bool ShowWeaponWidget;
-
-};
-
 class UTGCodingStandardExampleComponent : public USceneComponent
 {
     FTGCodingStandardBlueprintVarGroup BlueprintGroup;
 
 };
 
+class UTestFocusUserWidget : public UUserWidget
+{
+};
+
 class UTipWidget : public UUserWidget
 {
     int32 TipIndex;
     FText TipDisplayName;
-
-};
-
-struct FMeshPivotInfo
-{
-    FString Filename;
-    TArray<FString> TransformNames;
-    TArray<FTransform> MeshInstanceTransforms;
 
 };
 
@@ -5994,6 +6325,7 @@ class UUtilityBlueprintFunctionLibrary : public UBlueprintFunctionLibrary
     class ULevel* GetActorLevel(class AActor* Actor);
     void GenerateMissingDatatableRows(const TArray<FName> Names, class UDataTable* DataTable);
     class AEHGrid* FindGrid(const class UObject* WorldContextObject, const FName GridUniqueID);
+    void CopyToClipboard(FString StringToCopy);
     void CopyPropertiesFromOneObjectToAnother(class UObject* SourceObject, class UObject* TargetObject);
     float CalculateRemainingTime(class UObject* WorldContextObject, const FTimerHandle& TimerHandle);
     float CalculateProgress(class UObject* WorldContextObject, float PreviouslyCompletedProgress, float RemainingTime);
@@ -6006,184 +6338,6 @@ class UUtilityBlueprintFunctionLibrary : public UBlueprintFunctionLibrary
 class UWorldInteractiveInfoWidget : public UUserWidget
 {
     class AActor* WorldInteractiveActor;
-
-};
-
-struct FEHInstanceCellDefinition
-{
-    EInstanceCellType InstanceCellType;
-    FIntVector CellCoords;
-    EEHInstanceRotation Rotation;
-
-};
-
-struct FEHActors
-{
-    TArray<class AActor*> Actors;
-
-};
-
-struct FEHMaterials
-{
-    TArray<class UMaterialInterface*> Materials;
-
-};
-
-struct FEHVectors
-{
-    TArray<FVector> Vectors;
-
-};
-
-struct FEHConstructSubcategory
-{
-    FName ID;
-    FText Name;
-
-};
-
-struct FEHConstructCategory : public FTableRowBase
-{
-    FText Name;
-    TArray<FEHConstructSubcategory> Subcategories;
-    class UTexture2D* Texture;
-
-};
-
-struct FSAVE
-{
-    FString saveName;
-    FDateTime DateTime;
-
-};
-
-struct FCallAction
-{
-    class UEHInteractableObject* InteractableObject;
-
-};
-
-struct FEHSignalNetworks
-{
-    TArray<class UEHSignalNetwork*> SignalNetworks;
-
-};
-
-struct FEHItemMesh
-{
-    class UEHItem* Item;
-    class UStaticMesh* Mesh;
-
-};
-
-struct FEHHumanNeedData : public FTableRowBase
-{
-    bool IsEnabled;
-    FText Name;
-    class UTexture2D* Texture;
-    float DefaultValue;
-    float ChangeOverTime;
-    float CriticalLevel;
-
-};
-
-struct FEHItemsTranche
-{
-    TArray<FEHItemInstance> ItemTranches;
-
-};
-
-struct FPushContainerCoord
-{
-    bool IsPushingOut;
-    FIntVector Coord;
-    FTransform GateTransform;
-
-};
-
-struct FEHItemStats : public FTableRowBase
-{
-    uint8 MaxStackSize;
-    uint8 BuyCost;
-    uint8 SellCost;
-    float PickupTime;
-    float PickupRange;
-
-};
-
-struct FOverlayInfo
-{
-    EEHUIOverlayID OverlayID;
-    bool ShouldOpen;
-
-};
-
-struct FUIActionMapping : public FTableRowBase
-{
-    EButtonBarAction ButtonBarAction;
-    FName InputAction;
-    FText DisplayText;
-    uint8 Priority;
-    EButtonBarItemVisibility VisibilityWithControllers;
-
-};
-
-struct FVehicleArray
-{
-    TArray<class UEHAIObject*> AIObjects;
-
-};
-
-struct FMenuData : public FTableRowBase
-{
-    EMenuType ParentMenuType;
-    EMenuType MenuType;
-    FText CategoryName;
-    FText MenuName;
-    FText Title;
-    FText Description;
-    FText ToolTip;
-    TArray<EButtonBarAction> Options;
-    FText NarratedText;
-    bool IsEnabledByDefault;
-    EEHMenuPlatformVisibility PlatformVisibility;
-
-};
-
-struct FSettingResolutionData : public FTableRowBase
-{
-    FVector2D AspectRatio;
-    TArray<FIntPoint> Resolutions;
-
-};
-
-struct FSettingsCategoryData : public FTableRowBase
-{
-    ESettingsCategoryType SettingsCategoryType;
-    ESettingsCategoryType ParentCategoryType;
-    FText CategoryName;
-    TArray<FName> MouseKeyboardOnlySubcategories;
-    TArray<FName> ControllerOnlySubcategories;
-
-};
-
-struct FSettingsOptionData : public FTableRowBase
-{
-    ESettingsCategoryType ParentCategoryType;
-    ESettingOptionType SettingOptionType;
-    FText SettingOptionName;
-    TArray<FString> Options;
-    TArray<class UTexture2D*> PreviewImageRef;
-    TArray<FText> PreviewDescriptions;
-    ESettingWidgetType WidgetType;
-    FString DefaultOption;
-    FName Annotation;
-    bool HasExtraIndent;
-    bool IsEnabled;
-    bool ShouldBeConstructed;
-    bool HasDynamicOptions;
-    FText TooltipDescription;
-    ESettingPreviewType PreviewType;
 
 };
 

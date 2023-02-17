@@ -29,6 +29,7 @@ class ABP_RoverPawn_C : public ABP_VehiclePawn_C
     TArray<class ABP_Thruster_C*> Boosters;
     float LastBoostTime;
 
+    void StartSimulatePhysics();
     void UpdateAction(bool Value, EEHVehicleAction Enum);
     void InitDynamicComponents();
     void ControlManipulator(bool Active);

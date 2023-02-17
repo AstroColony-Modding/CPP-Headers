@@ -1,3 +1,18 @@
+enum class ECFCoreApiStatus {
+    None = 0,
+    Private = 1,
+    Public = 2,
+    ECFCoreApiStatus_MAX = 3,
+};
+
+enum class ECFCoreChangelogMarkupType {
+    PlaceHolderDoNotUse = 0,
+    Text = 1,
+    HTML = 2,
+    Markdown = 3,
+    ECFCoreChangelogMarkupType_MAX = 4,
+};
+
 enum class ECFCoreErrorCodes {
     None = 0,
     ApiError = 1,
@@ -19,42 +34,15 @@ enum class ECFCoreErrorCodes {
     FailedDeletingOutputDirectory = 17,
     FailedToMoveModDirectory = 18,
     FailedSettingAuthToken = 19,
-    ECFCoreErrorCodes_MAX = 20,
+    UserNotAuthenticated = 20,
+    FailedToCancelAction = 21,
+    ECFCoreErrorCodes_MAX = 22,
 };
 
-enum class ECFCoreApiStatus {
+enum class ECFCoreExternalAuthProvider {
     None = 0,
-    Private = 1,
-    Public = 2,
-    ECFCoreApiStatus_MAX = 3,
-};
-
-enum class ECFCoreStatus {
-    None = 0,
-    Draft = 1,
-    Test = 2,
-    PendingReview = 3,
-    Rejected = 4,
-    Approved = 5,
-    Live = 6,
-    ECFCoreStatus_MAX = 7,
-};
-
-enum class ECFCoreModLoaderType {
-    Any = 0,
-    Forge = 1,
-    Cauldron = 2,
-    LiteLoader = 3,
-    Fabric = 4,
-    ECFCoreModLoaderType_MAX = 5,
-};
-
-enum class ECFCoreFileReleaseType {
-    None = 0,
-    Release = 1,
-    Beta = 2,
-    Alpha = 3,
-    ECFCoreFileReleaseType_MAX = 4,
+    Steam = 1,
+    ECFCoreExternalAuthProvider_MAX = 2,
 };
 
 enum class ECFCoreFileRelationType {
@@ -68,11 +56,12 @@ enum class ECFCoreFileRelationType {
     ECFCoreFileRelationType_MAX = 7,
 };
 
-enum class ECFCoreHashAlgo {
+enum class ECFCoreFileReleaseType {
     None = 0,
-    Sha1 = 1,
-    Md5 = 2,
-    ECFCoreHashAlgo_MAX = 3,
+    Release = 1,
+    Beta = 2,
+    Alpha = 3,
+    ECFCoreFileReleaseType_MAX = 4,
 };
 
 enum class ECFCoreFileStatus {
@@ -95,6 +84,35 @@ enum class ECFCoreFileStatus {
     ECFCoreFileStatus_MAX = 16,
 };
 
+enum class ECFCoreHashAlgo {
+    None = 0,
+    Sha1 = 1,
+    Md5 = 2,
+    ECFCoreHashAlgo_MAX = 3,
+};
+
+enum class ECFCoreMakrupType {
+    PlaceHolderDoNotUse = 0,
+    WysiwygHtml = 1,
+    PlainText = 2,
+    BBCode = 3,
+    Creole = 4,
+    Markdown = 5,
+    RawHtml = 6,
+    StandardBBCode = 8,
+    RawCSS = 9,
+    ECFCoreMakrupType_MAX = 10,
+};
+
+enum class ECFCoreModLoaderType {
+    Any = 0,
+    Forge = 1,
+    Cauldron = 2,
+    LiteLoader = 3,
+    Fabric = 4,
+    ECFCoreModLoaderType_MAX = 5,
+};
+
 enum class ECFCoreModStatus {
     None = 0,
     New = 1,
@@ -110,13 +128,6 @@ enum class ECFCoreModStatus {
     ECFCoreModStatus_MAX = 11,
 };
 
-enum class ECFCoreSortOrder {
-    None = 0,
-    Asc = 1,
-    Desc = 2,
-    ECFCoreSortOrder_MAX = 3,
-};
-
 enum class ECFCoreModsSearchSortField {
     None = 0,
     Featured = 1,
@@ -130,43 +141,29 @@ enum class ECFCoreModsSearchSortField {
     ECFCoreModsSearchSortField_MAX = 9,
 };
 
+enum class ECFCoreSortOrder {
+    None = 0,
+    Asc = 1,
+    Desc = 2,
+    ECFCoreSortOrder_MAX = 3,
+};
+
+enum class ECFCoreStatus {
+    None = 0,
+    Draft = 1,
+    Test = 2,
+    PendingReview = 3,
+    Rejected = 4,
+    Approved = 5,
+    Live = 6,
+    ECFCoreStatus_MAX = 7,
+};
+
 enum class ECFCoreThumbsUpDirection {
     None = 0,
     Up = 1,
     Down = 2,
     ECFCoreThumbsUpDirection_MAX = 3,
-};
-
-enum class EInstalledModStatus {
-    Pending = 0,
-    OutOfDate = 1,
-    Normal = 2,
-    Invalid = 3,
-    WorkingCopy = 4,
-    Uploading = 5,
-    EInstalledModStatus_MAX = 6,
-};
-
-enum class ELibraryProgressState {
-    Pending = 0,
-    Downloading = 1,
-    Uploading = 2,
-    Validating = 3,
-    Unzipping = 4,
-    Zipping = 5,
-    Copying = 6,
-    CleaningUp = 7,
-    Cancelling = 8,
-    SuccessfullyCompleted = 9,
-    FailedToComplete = 10,
-    ELibraryProgressState_MAX = 11,
-};
-
-enum class EModsDirectoryMode {
-    None = 0,
-    CFCore = 1,
-    Flat = 2,
-    EModsDirectoryMode_MAX = 3,
 };
 
 enum class ECompressionError {
@@ -184,5 +181,39 @@ enum class EFileSystemError {
     FailedToSaveToDisk = 3,
     FailedToOpenFileForWrite = 4,
     EFileSystemError_MAX = 5,
+};
+
+enum class EInstalledModStatus {
+    Pending = 0,
+    OutOfDate = 1,
+    Normal = 2,
+    Invalid = 3,
+    WorkingCopy = 4,
+    Uploading = 5,
+    EInstalledModStatus_MAX = 6,
+};
+
+enum class ELibraryProgressState {
+    Pending = 0,
+    Downloading = 1,
+    Uploading = 2,
+    Validating = 3,
+    PendingUnzipping = 4,
+    Unzipping = 5,
+    PendingZipping = 6,
+    Zipping = 7,
+    Copying = 8,
+    CleaningUp = 9,
+    Cancelling = 10,
+    SuccessfullyCompleted = 11,
+    FailedToComplete = 12,
+    ELibraryProgressState_MAX = 13,
+};
+
+enum class EModsDirectoryMode {
+    None = 0,
+    CFCore = 1,
+    Flat = 2,
+    EModsDirectoryMode_MAX = 3,
 };
 

@@ -8,7 +8,9 @@ class UWBP_MenuButton_C : public UEHBaseButtonWidget
     class UWidgetAnimation* SelectAnimation;
     class UWidgetAnimation* GlowAnimation;
     class UImage* BackgroundImage;
+    class UOverlay* MainOverlay;
 
+    void AddDemoPadlock();
     void ToggleFocusedImageFocus(ESlateVisibility Visibility);
     FText GetAccessibleText_0();
     void OnContextChanged();

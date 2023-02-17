@@ -20,6 +20,7 @@ class UWBP_Multiplayer_C : public UEHMultiplayerScreen
     class UWBP_PrimaryButton_C* RefreshServers;
     class UBorder* SavegameBorder;
     class UTGConfigurableTextBlock* ScenarioDescription;
+    class UTGConfigurableTextBlock* ScenarioDescription_1;
     class UTGConfigurableTextBlock* ScenarioName_1;
     class UTGWideScreenLayoutContainer* SDWideScreenLayoutContainer_0;
     class UWBP_PrimaryButton_C* SelectButton;

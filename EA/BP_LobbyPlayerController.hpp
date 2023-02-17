@@ -27,6 +27,8 @@ class ABP_LobbyPlayerController_C : public AEHLobbyPlayerController
     void TryInit();
     void OnFailure_B326C4CF41DF832EEE270B88D536FDB1();
     void OnSuccess_B326C4CF41DF832EEE270B88D536FDB1();
+    void OnFailure_1794609C4AD060189B317CA1B0B5C1CC();
+    void OnSuccess_1794609C4AD060189B317CA1B0B5C1CC();
     void AddPlayerLobby(class APlayerState* PlayerState);
     void RemovePlayerLobby(const class APlayerState* PlayerState);
     void Server_SendLobbyMsg(class APlayerState* PlayerState, const FString& Msg);
@@ -41,7 +43,7 @@ class ABP_LobbyPlayerController_C : public AEHLobbyPlayerController
     void Client_InitServerParams(FEHServerParams ServerParams);
     void ReceiveEndPlay(TEnumAsByte<EEndPlayReason::Type> EndPlayReason);
     void Server_StartCounter();
-    void Client_StartCounter(const FString& SaveGame, const FEHScenarioParams& ScenarioParams, uint8 UniquePlayerNetID);
+    void Client_StartCounter(const FString& SaveGame, const FEHScenarioParams& ScenarioParams, uint8 UniquePlayerNetID, bool SharedTechnologies);
     void ExecuteUbergraph_BP_LobbyPlayerController(int32 EntryPoint);
     void OnLobbyDetailsChanged__DelegateSignature();
     void OnPlayersChanged__DelegateSignature();

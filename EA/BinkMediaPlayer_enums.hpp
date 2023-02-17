@@ -1,3 +1,10 @@
+enum EBinkMediaPlayerBinkBufferModes {
+    BMASM_Bink_Stream = 0,
+    BMASM_Bink_PreloadAll = 1,
+    BMASM_Bink_StreamUntilResident = 2,
+    BMASM_Bink_MAX = 3,
+};
+
 enum EBinkMediaPlayerBinkDrawStyle {
     BMASM_Bink_DS_RenderToTexture = 0,
     BMASM_Bink_DS_OverlayFillScreenWithAspectRatio = 1,
@@ -18,11 +25,11 @@ enum EBinkMediaPlayerBinkSoundTrack {
     BMASM_Bink_Sound_MAX = 7,
 };
 
-enum EBinkMediaPlayerBinkBufferModes {
-    BMASM_Bink_Stream = 0,
-    BMASM_Bink_PreloadAll = 1,
-    BMASM_Bink_StreamUntilResident = 2,
-    BMASM_Bink_MAX = 3,
+enum EBinkMoviePlayerBinkBufferModes {
+    MP_Bink_Stream = 0,
+    MP_Bink_PreloadAll = 1,
+    MP_Bink_StreamUntilResident = 2,
+    MP_Bink_MAX = 3,
 };
 
 enum EBinkMoviePlayerBinkSoundTrack {
@@ -34,12 +41,5 @@ enum EBinkMoviePlayerBinkSoundTrack {
     MP_Bink_Sound_71 = 5,
     MP_Bink_Sound_71LanguageOverride = 6,
     MP_Bink_Sound_MAX = 7,
-};
-
-enum EBinkMoviePlayerBinkBufferModes {
-    MP_Bink_Stream = 0,
-    MP_Bink_PreloadAll = 1,
-    MP_Bink_StreamUntilResident = 2,
-    MP_Bink_MAX = 3,
 };
 

@@ -8,7 +8,7 @@ class UWBP_IconBar_C : public UEHIconBarWidget
     class UWBP_IcoButton_C* KickstarterButton;
     class UWBP_IcoButton_C* SteamButton;
     class UImage* UserAvatar;
-    class UTGConfigurableTextBlock* UserName;
+    class UTGConfigurableTextBlock* username;
 
     void BndEvt__ChangeRecipesButton_K2Node_ComponentBoundEvent_0_ButtonClicked__DelegateSignature();
     void BndEvt__ChangeRecipesButton_1_K2Node_ComponentBoundEvent_1_ButtonClicked__DelegateSignature();

@@ -4,6 +4,8 @@
 class UWBP_MainInventory_C : public UUserWidget
 {
     FPointerToUberGraphFrame UberGraphFrame;
+    class UBorder* DragTipBorder;
+    class UTGConfigurableTextBlock* DragTooltipText;
     class UHorizontalBox* HorizontalBoxCategories;
     class UHorizontalBox* HorizontalBoxItems;
     class URetainerBox* RetainerBox_2;
@@ -12,6 +14,7 @@ class UWBP_MainInventory_C : public UUserWidget
     class UWBP_ItemSlotHex_C* WBP_ItemSlotHex;
     FMargin SlotPadding;
 
+    void UpdateDragTooltipText();
     void RefreshSlotsActionBindings();
     void RefreshCategoriesActionBindings();
     void CategoryPressed(int32 ID);

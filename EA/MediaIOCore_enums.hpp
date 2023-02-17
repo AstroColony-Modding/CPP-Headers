@@ -21,11 +21,10 @@ enum class EMediaCaptureState {
     EMediaCaptureState_MAX = 5,
 };
 
-enum class EMediaIOReferenceType {
-    FreeRun = 0,
-    External = 1,
-    Input = 2,
-    EMediaIOReferenceType_MAX = 3,
+enum class EMediaIOInputType {
+    Fill = 0,
+    FillAndKey = 1,
+    EMediaIOInputType_MAX = 2,
 };
 
 enum class EMediaIOOutputType {
@@ -34,17 +33,17 @@ enum class EMediaIOOutputType {
     EMediaIOOutputType_MAX = 2,
 };
 
-enum class EMediaIOInputType {
-    Fill = 0,
-    FillAndKey = 1,
-    EMediaIOInputType_MAX = 2,
+enum class EMediaIOQuadLinkTransportType {
+    SquareDivision = 0,
+    TwoSampleInterleave = 1,
+    EMediaIOQuadLinkTransportType_MAX = 2,
 };
 
-enum class EMediaIOTimecodeFormat {
-    None = 0,
-    LTC = 1,
-    VITC = 2,
-    EMediaIOTimecodeFormat_MAX = 3,
+enum class EMediaIOReferenceType {
+    FreeRun = 0,
+    External = 1,
+    Input = 2,
+    EMediaIOReferenceType_MAX = 3,
 };
 
 enum class EMediaIOStandardType {
@@ -54,10 +53,11 @@ enum class EMediaIOStandardType {
     EMediaIOStandardType_MAX = 3,
 };
 
-enum class EMediaIOQuadLinkTransportType {
-    SquareDivision = 0,
-    TwoSampleInterleave = 1,
-    EMediaIOQuadLinkTransportType_MAX = 2,
+enum class EMediaIOTimecodeFormat {
+    None = 0,
+    LTC = 1,
+    VITC = 2,
+    EMediaIOTimecodeFormat_MAX = 3,
 };
 
 enum class EMediaIOTransportType {

@@ -13,7 +13,7 @@ class ABP_MenuNebulas_C : public AActor
     FEHNebulaGeneration NebulaGeneration;
     FEHNebulaGeneration NebulaGeneration2;
     FVector2D LightIntensity;
-    TArray<TSoftObjectPtr<UObject>> NebulaUltraMaterials;
+    TArray<TSoftObjectPtr<UObject>> NebulaMedium;
 
     void UpdateNebula(class UPrimitiveComponent* self2, FEHNebulaGeneration& NebulaGenerations);
     void UpdateMaterialSettings(class UMaterialInstanceDynamic* MatInstance, FEHNebulaGeneration& NebulaGenerations);

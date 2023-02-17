@@ -16,7 +16,6 @@ class UWBP_ConstructionScreen_C : public UMenuWidget
     FString PhraseToFilter;
 
     void HandleContainerSlotClicked(class UEHItemsContainer* Container, class UEHItem* Item, uint8 Index);
-    void HandleContainerSlotClickedOld(class UEHItem* Item, int32 Index);
     void InitContainer(const int32 ModeID, const FName& Subcategory);
     void InitContainerForCurrentMode();
     void SelectCategory(int32 ID);

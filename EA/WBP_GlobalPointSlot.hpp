@@ -12,7 +12,6 @@ class UWBP_GlobalPointSlot_C : public UUserWidget
     EGlobalPointType GlobalPointType;
     int32 Points;
     bool HideBackground;
-    bool HideNumberBackground;
     bool HideNumber;
 
     void Init(EGlobalPointType GlobalPoint, int32 Points);

@@ -4,13 +4,12 @@
 class ABP_MovableSpaceActor_C : public AEHMovableSpaceActor
 {
     FPointerToUberGraphFrame UberGraphFrame;
-    class UProjectileMovementComponent* ProjectileMovement;
     class UStaticMeshComponent* DebugPilar;
 
-    void ReceiveTick(float DeltaSeconds);
-    void OnRealMovementBeforeUpdate();
     void OnRealMovementUpdate();
     void OnShaderMovementUpdate();
+    void ReceiveTick(float DeltaSeconds);
+    void OnRealMovementBeforeUpdate();
     void ReceiveBeginPlay();
     void OnMovingToDestinationChangedEvent(const bool IsMovingToDestination);
     void ExecuteUbergraph_BP_MovableSpaceActor(int32 EntryPoint);

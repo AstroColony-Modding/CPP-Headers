@@ -5,7 +5,6 @@ class UBP_SaveGame_C : public UEHSaveGame
 {
     bool JetpackOn_0;
     EHJobModeType JobMode;
-    FEHItemInstance ItemInstance;
 
 };
 

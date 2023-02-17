@@ -3,6 +3,39 @@
 
 #include "TechTree_enums.hpp"
 
+struct FTechNodeLink
+{
+    class UTechnologyAsset* ParentTechnology;
+    class UTechnologyAsset* ChildTechnology;
+    FVector2D LinkFromPostion;
+    FVector2D LinkToPostion;
+
+};
+
+struct FUnlockedTechnologiesData
+{
+    TArray<class UTechnologyAsset*> UnlockedTechnologies;
+
+};
+
+class UTTBaseNode : public UObject
+{
+    int32 NodePosX;
+    int32 NodePosY;
+    TArray<class UTTBaseNode*> ParentNodes;
+    TArray<class UTTBaseNode*> ChildNodes;
+    uint32 UniqueID;
+
+};
+
+class UTTTechNode : public UTTBaseNode
+{
+    class UTechnologyAsset* TechnologyAsset;
+    bool IsUnlockedByDefault;
+    bool IsDisabled;
+
+};
+
 class UTechNodeArrowWidget : public UUserWidget
 {
     ETechNodePinType PinType;
@@ -19,62 +52,6 @@ class UTechNodeWidget : public UUserWidget
 
     void OnTechNodeInitialized();
     void Init(class UTechnologyAsset* InTechnologyAsset);
-};
-
-class UTechnologyAsset : public UPrimaryDataAsset
-{
-};
-
-struct FUnlockedTechnologiesData
-{
-    TArray<class UTechnologyAsset*> UnlockedTechnologies;
-
-};
-
-class UTechnologySaveGame : public UMissionSaveGame
-{
-    TArray<class UTechnologyAsset*> UnlockedTechnologies;
-    TArray<FUnlockedTechnologiesData> MultiplayerUnlockedTechnologies;
-
-};
-
-class UTechnologyTree : public UObject
-{
-    FVector2D TreeSize;
-    ETechTreeOrientation Orientation;
-    FSlateBrush BackgroundImage;
-    float ConnectionLineThickness;
-    FLinearColor ConnectionLineColor;
-    TSubclassOf<class UTechNodeWidget> SlotTemplate;
-    FVector2D SlotSize;
-    TSubclassOf<class UTechNodeArrowWidget> ArrowTemplate;
-    FVector2D ArrowSize;
-    int32 GridSnapSize;
-    bool ShowBoundaries;
-    FLinearColor BoundariesColor;
-    float BoundariesThickness;
-    bool ShowPinArrows;
-    bool ShowAlignmentGrid;
-    FVector2D AlignmentGridSize;
-    FVector2D AlignmentGridOffset;
-    FLinearColor AlignmentGridColor;
-    float AlignmentGridThickness;
-    TArray<class UTTTechNode*> TechNodes;
-    TMap<class UTechnologyAsset*, class UTTTechNode*> TechnologiesMap;
-    class UEdGraph* UpdateGraph;
-    int32 UniqueID;
-    FTechnologyTreeOnTechnologyUnlockStateChanged OnTechnologyUnlockStateChanged;
-    void OnTechnologyUnlockStateChanged(class UTTTechNode* TechNode, bool IsUnlocked);
-    TMap<class UTechnologyAsset*, class UTTTechNode*> UnlockedTechnologies;
-    TMap<class UTechnologyAsset*, class UTTTechNode*> DisabledTechnologies;
-    TArray<class UTTTechNode*> CurrentlyActiveNodes;
-    class UTechnologyTree* TechTreeTemplate;
-
-    void OnTechnologyUnlockStateChanged__DelegateSignature(class UTTTechNode* TechNode, bool IsUnlocked);
-    bool IsTechnologyUnlocked(class UTechnologyAsset* Technology);
-    bool IsTechnologyDisabled(class UTechnologyAsset* Technology);
-    bool HasUnlockedParents(class UTechnologyAsset* Technology);
-    FString GetTechAssetName();
 };
 
 class UTechTreeManager : public UActorComponent
@@ -121,31 +98,54 @@ class UTechTreeWidget : public UWidget
     TArray<class UTechNodeArrowWidget*> GetArrowWidgets();
 };
 
-class UTTBaseNode : public UObject
+class UTechnologyAsset : public UPrimaryDataAsset
 {
-    int32 NodePosX;
-    int32 NodePosY;
-    TArray<class UTTBaseNode*> ParentNodes;
-    TArray<class UTTBaseNode*> ChildNodes;
-    uint32 UniqueID;
+};
+
+class UTechnologySaveGame : public UMissionSaveGame
+{
+    TArray<class UTechnologyAsset*> UnlockedTechnologies;
+    TArray<FUnlockedTechnologiesData> MultiplayerUnlockedTechnologies;
 
 };
 
-class UTTTechNode : public UTTBaseNode
+class UTechnologyTree : public UObject
 {
-    class UTechnologyAsset* TechnologyAsset;
-    bool IsUnlockedByDefault;
-    bool IsDisabled;
+    FVector2D TreeSize;
+    ETechTreeOrientation Orientation;
+    FSlateBrush BackgroundImage;
+    float ConnectionLineThickness;
+    FLinearColor ConnectionLineColor;
+    TSubclassOf<class UTechNodeWidget> SlotTemplate;
+    FVector2D SlotSize;
+    TSubclassOf<class UTechNodeArrowWidget> ArrowTemplate;
+    FVector2D ArrowSize;
+    int32 GridSnapSize;
+    bool ShowBoundaries;
+    FLinearColor BoundariesColor;
+    float BoundariesThickness;
+    bool ShowPinArrows;
+    bool ShowAlignmentGrid;
+    FVector2D AlignmentGridSize;
+    FVector2D AlignmentGridOffset;
+    FLinearColor AlignmentGridColor;
+    float AlignmentGridThickness;
+    TArray<class UTTTechNode*> TechNodes;
+    TMap<class UTechnologyAsset*, class UTTTechNode*> TechnologiesMap;
+    class UEdGraph* UpdateGraph;
+    int32 UniqueID;
+    FTechnologyTreeOnTechnologyUnlockStateChanged OnTechnologyUnlockStateChanged;
+    void OnTechnologyUnlockStateChanged(class UTTTechNode* TechNode, bool IsUnlocked);
+    TMap<class UTechnologyAsset*, class UTTTechNode*> UnlockedTechnologies;
+    TMap<class UTechnologyAsset*, class UTTTechNode*> DisabledTechnologies;
+    TArray<class UTTTechNode*> CurrentlyActiveNodes;
+    class UTechnologyTree* TechTreeTemplate;
 
-};
-
-struct FTechNodeLink
-{
-    class UTechnologyAsset* ParentTechnology;
-    class UTechnologyAsset* ChildTechnology;
-    FVector2D LinkFromPostion;
-    FVector2D LinkToPostion;
-
+    void OnTechnologyUnlockStateChanged__DelegateSignature(class UTTTechNode* TechNode, bool IsUnlocked);
+    bool IsTechnologyUnlocked(class UTechnologyAsset* Technology);
+    bool IsTechnologyDisabled(class UTechnologyAsset* Technology);
+    bool HasUnlockedParents(class UTechnologyAsset* Technology);
+    FString GetTechAssetName();
 };
 
 #endif

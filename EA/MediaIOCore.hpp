@@ -3,14 +3,6 @@
 
 #include "MediaIOCore_enums.hpp"
 
-class UMediaOutput : public UObject
-{
-    int32 NumberOfTextureBuffers;
-
-    bool Validate(FString& OutFailureReason);
-    class UMediaCapture* CreateMediaCapture();
-};
-
 struct FMediaCaptureOptions
 {
     EMediaCaptureCroppingType Crop;
@@ -19,6 +11,74 @@ struct FMediaCaptureOptions
     bool bSkipFrameWhenRunningExpensiveTasks;
     bool bConvertToDesiredPixelFormat;
     bool bForceAlphaToOneOnConversion;
+
+};
+
+struct FMediaIOConfiguration
+{
+    bool bIsInput;
+    FMediaIOConnection MediaConnection;
+    FMediaIOMode MediaMode;
+
+};
+
+struct FMediaIOConnection
+{
+    FMediaIODevice Device;
+    FName protocol;
+    EMediaIOTransportType TransportType;
+    EMediaIOQuadLinkTransportType QuadTransportType;
+    int32 PortIdentifier;
+
+};
+
+struct FMediaIODevice
+{
+    FName DeviceName;
+    int32 DeviceIdentifier;
+
+};
+
+struct FMediaIOInputConfiguration
+{
+    FMediaIOConfiguration MediaConfiguration;
+    EMediaIOInputType InputType;
+    int32 KeyPortIdentifier;
+
+};
+
+struct FMediaIOMode
+{
+    FFrameRate FrameRate;
+    FIntPoint Resolution;
+    EMediaIOStandardType Standard;
+    int32 DeviceModeIdentifier;
+
+};
+
+struct FMediaIOOutputConfiguration
+{
+    FMediaIOConfiguration MediaConfiguration;
+    EMediaIOOutputType OutputType;
+    int32 KeyPortIdentifier;
+    EMediaIOReferenceType OutputReference;
+    int32 ReferencePortIdentifier;
+
+};
+
+class UFileMediaCapture : public UMediaCapture
+{
+};
+
+class UFileMediaOutput : public UMediaOutput
+{
+    FImageWriteOptions WriteOptions;
+    FDirectoryPath FilePath;
+    FString BaseFileName;
+    bool bOverrideDesiredSize;
+    FIntPoint DesiredSize;
+    bool bOverridePixelFormat;
+    EFileMediaOutputPixelFormat DesiredPixelFormat;
 
 };
 
@@ -39,72 +99,12 @@ class UMediaCapture : public UObject
     bool CaptureActiveSceneViewport(FMediaCaptureOptions CaptureOptions);
 };
 
-class UFileMediaCapture : public UMediaCapture
+class UMediaOutput : public UObject
 {
-};
+    int32 NumberOfTextureBuffers;
 
-class UFileMediaOutput : public UMediaOutput
-{
-    FImageWriteOptions WriteOptions;
-    FDirectoryPath FilePath;
-    FString BaseFileName;
-    bool bOverrideDesiredSize;
-    FIntPoint DesiredSize;
-    bool bOverridePixelFormat;
-    EFileMediaOutputPixelFormat DesiredPixelFormat;
-
-};
-
-struct FMediaIODevice
-{
-    FName DeviceName;
-    int32 DeviceIdentifier;
-
-};
-
-struct FMediaIOConnection
-{
-    FMediaIODevice Device;
-    FName protocol;
-    EMediaIOTransportType TransportType;
-    EMediaIOQuadLinkTransportType QuadTransportType;
-    int32 PortIdentifier;
-
-};
-
-struct FMediaIOMode
-{
-    FFrameRate FrameRate;
-    FIntPoint Resolution;
-    EMediaIOStandardType Standard;
-    int32 DeviceModeIdentifier;
-
-};
-
-struct FMediaIOConfiguration
-{
-    bool bIsInput;
-    FMediaIOConnection MediaConnection;
-    FMediaIOMode MediaMode;
-
-};
-
-struct FMediaIOOutputConfiguration
-{
-    FMediaIOConfiguration MediaConfiguration;
-    EMediaIOOutputType OutputType;
-    int32 KeyPortIdentifier;
-    EMediaIOReferenceType OutputReference;
-    int32 ReferencePortIdentifier;
-
-};
-
-struct FMediaIOInputConfiguration
-{
-    FMediaIOConfiguration MediaConfiguration;
-    EMediaIOInputType InputType;
-    int32 KeyPortIdentifier;
-
+    bool Validate(FString& OutFailureReason);
+    class UMediaCapture* CreateMediaCapture();
 };
 
 #endif

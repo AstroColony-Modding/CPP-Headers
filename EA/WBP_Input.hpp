@@ -16,6 +16,7 @@ class UWBP_Input_C : public UUserWidget
     bool IsSmall;
     bool IsCentered;
 
+    FEventReply OnFocusReceived(FGeometry MyGeometry, FFocusEvent InFocusEvent);
     void SetInputText(FText Name);
     void GetInputValue(int32& Value);
     void GetInputText(FText& Name);

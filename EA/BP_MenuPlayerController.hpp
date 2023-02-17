@@ -11,8 +11,8 @@ class ABP_MenuPlayerController_C : public AEHGamePlayerController
 
     void UpdateMenuVisuals();
     void UpdateMainMenuPresence();
-    void ReceiveEndPlay(TEnumAsByte<EEndPlayReason::Type> EndPlayReason);
     void ReceiveBeginPlay();
+    void ReceiveEndPlay(TEnumAsByte<EEndPlayReason::Type> EndPlayReason);
     void ExecuteUbergraph_BP_MenuPlayerController(int32 EntryPoint);
 };
 

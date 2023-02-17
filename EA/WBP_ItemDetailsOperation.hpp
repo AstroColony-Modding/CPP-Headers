@@ -54,6 +54,7 @@ class UWBP_ItemDetailsOperation_C : public UUserWidget
     FEHItemInstance ItemInstance;
     TArray<class UPanelWidget*> ItemContainers;
 
+    void UpdateTechnology();
     void UpdateUsedToConstruct();
     void UpdateUsedBy();
     void UpdateProducedBy();
@@ -66,8 +67,8 @@ class UWBP_ItemDetailsOperation_C : public UUserWidget
     void UpdateUtilities(class UEHInteractableObject* Interactable);
     void CreateItems(class UPanelWidget* Panel, TArray<class UEHItem*>& Item, int32 ContainerID);
     void Clear();
-    void Construct();
     void Init(const FEHItemInstance& ItemInstance);
+    void Construct();
     void OnRemovedFromFocusPath(FFocusEvent InFocusEvent);
     void BndEvt__WBP_CloseBox_K2Node_ComponentBoundEvent_0_Clicked__DelegateSignature();
     void BndEvt__WBP_ItemDetailsOperation_WBP_ItemConstructionCost_K2Node_ComponentBoundEvent_1_OnSlotClicked__DelegateSignature(FEHItemInstance Item);

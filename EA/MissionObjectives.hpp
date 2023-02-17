@@ -3,38 +3,10 @@
 
 #include "MissionObjectives_enums.hpp"
 
-class UMission : public UObject
+struct FMOMission
 {
-    FName AssetName;
-    bool bUseAssetNameAsMissionName;
-    FText MissionName;
-    FText MissionCongratulateText;
-    class UTexture2D* MissionIcon;
-    FText MissionDescription;
-    uint8 ChangeLastActiveReasons;
-    class UReferencedMissionObject* ReferencedMissionObject;
-    EMissionState MissionState;
-    class UMOTextNode* MissionObjectivesRoot;
-    class UEdGraph* UpdateGraph;
-    int32 UniqueID;
-    TMap<class FName, class UMOObjectiveNode*> RegisteredObjectives;
-    TArray<class UMOTextNode*> CurrentlyActiveNodes;
-    TArray<class UMOTextNode*> NodesHistory;
-    class UMission* MissionTemplate;
+    class UMission* Mission;
     FName MissionID;
-
-    void NotifyNodeActivated(class UMOTextNode* ActivatedNode);
-    bool IsObjectiveCompleted(const FName ObjectiveName);
-    bool IsObjectiveActive(const FName ObjectiveName);
-    class UMOObjectiveNode* GetObjectiveByName(const FName ObjectiveName);
-    class UMOTextNode* GetLastNodeWithBotText();
-    TArray<class UMOBaseNode*> FindAllTreeTextNodes();
-};
-
-struct FNodeSaveData
-{
-    FName NodeName;
-    TArray<uint8> NodeData;
 
 };
 
@@ -52,13 +24,6 @@ struct FMissionData
 
 };
 
-struct FMOMission
-{
-    class UMission* Mission;
-    FName MissionID;
-
-};
-
 struct FMissionSavegameData
 {
     TArray<FMissionData> MissionDatas;
@@ -69,11 +34,10 @@ struct FMissionSavegameData
 
 };
 
-class UMissionSaveGame : public USaveGame
+struct FNodeSaveData
 {
-    FMissionSavegameData SaveData;
-    TArray<FMissionSavegameData> MultiplayerSaveData;
-    float PreviousSessionTime;
+    FName NodeName;
+    TArray<uint8> NodeData;
 
 };
 
@@ -86,22 +50,6 @@ class UMOBaseNode : public UObject
 
     bool K2_IsActive();
     class UMission* GetMission();
-};
-
-class UMOTextNode : public UMOBaseNode
-{
-    FName Title;
-    FText Text;
-    FText BotText;
-    bool ShowNext;
-    class UTexture2D* Icon;
-    ENodeCharacter NodeCharacter;
-    FTimespan ActivationTime;
-    TArray<class UScriptedAction*> Activation_Actions;
-    bool DebugForceToActivate;
-    bool bShowNarration;
-    bool bActivateWhenAllParentsDone;
-
 };
 
 class UMOMissionNode : public UMOTextNode
@@ -148,7 +96,6 @@ class UMOMissionsManager : public UActorComponent
     void OnLastActiveMissionChanged__DelegateSignature(class UMission* Mission);
     void NotifyLastMissionNodeActivated(class UMission* Mission);
     void MultiStartMission(class UMission* Mission, const FName MissionID, class UReferencedMissionObject* ReferencedMissionObject);
-    void MultiCompleteObjective(FName ObjectiveName, class UMission* Mission, uint8 RepetitionsCount);
     void LoadMissionsFromSlot(FString SlotName, const int32 UserIndex);
     void LoadMissionsFromObject(const uint8 PlayerNetworkIndex, class USaveGame* SaveGameObject);
     bool IsMissionObjectiveInProgress(class UMission* Mission, const FName MissionID, const FName ObjectiveName);
@@ -164,6 +111,7 @@ class UMOMissionsManager : public UActorComponent
     void CompleteObjectiveByAsset(class UObjectiveAsset* ObjectiveAsset, class UMission* Mission, uint8 RepetitionsCount);
     void CompleteObjective(FName ObjectiveName, class UMission* Mission, uint8 RepetitionsCount);
     void ClientRecovery(const FMissionSavegameData& MissionSavegameData);
+    void Client_CompleteObjective(FName ObjectiveName, class UMission* Mission, uint8 RepetitionsCount);
 };
 
 class UMOObjectiveNode : public UMOTextNode
@@ -176,6 +124,58 @@ class UMOObjectiveNode : public UMOTextNode
     TArray<class UScriptedAction*> ObjectiveDone_Actions;
     uint8 CurrentRepetitionsCount;
     uint8 RepetitionsCount;
+
+};
+
+class UMOTextNode : public UMOBaseNode
+{
+    FName Title;
+    FText Text;
+    FText BotText;
+    bool ShowNext;
+    class UTexture2D* Icon;
+    ENodeCharacter NodeCharacter;
+    FTimespan ActivationTime;
+    TArray<class UScriptedAction*> Activation_Actions;
+    bool DebugForceToActivate;
+    bool bShowNarration;
+    bool bActivateWhenAllParentsDone;
+
+};
+
+class UMission : public UObject
+{
+    FName AssetName;
+    bool bUseAssetNameAsMissionName;
+    FText MissionName;
+    FText MissionCongratulateText;
+    class UTexture2D* MissionIcon;
+    FText MissionDescription;
+    uint8 ChangeLastActiveReasons;
+    class UReferencedMissionObject* ReferencedMissionObject;
+    EMissionState MissionState;
+    class UMOTextNode* MissionObjectivesRoot;
+    class UEdGraph* UpdateGraph;
+    int32 UniqueID;
+    TMap<class FName, class UMOObjectiveNode*> RegisteredObjectives;
+    TArray<class UMOTextNode*> CurrentlyActiveNodes;
+    TArray<class UMOTextNode*> NodesHistory;
+    class UMission* MissionTemplate;
+    FName MissionID;
+
+    void NotifyNodeActivated(class UMOTextNode* ActivatedNode);
+    bool IsObjectiveCompleted(const FName ObjectiveName);
+    bool IsObjectiveActive(const FName ObjectiveName);
+    class UMOObjectiveNode* GetObjectiveByName(const FName ObjectiveName);
+    class UMOTextNode* GetLastNodeWithBotText();
+    TArray<class UMOBaseNode*> FindAllTreeTextNodes();
+};
+
+class UMissionSaveGame : public USaveGame
+{
+    FMissionSavegameData SaveData;
+    TArray<FMissionSavegameData> MultiplayerSaveData;
+    float PreviousSessionTime;
 
 };
 

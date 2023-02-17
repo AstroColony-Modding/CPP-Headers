@@ -21,6 +21,7 @@ class ABP_HUD_C : public AEHHUDGame
     class UMenuWidget* OpenMenu(TSubclassOf<class UMenuWidget> MenuWidget, class UObject* PayloadObject);
     bool CloseCurrentMenu();
     bool TogglePopMenu(TSubclassOf<class UInteractBaseWidget> MenuWidget, class UEHInteractableObject* InteractableObject);
+    void ToggleHostPlayerLeft(class AEHGamePlayerController* GamePlayerController);
     bool IsPhotoModeActive();
     void RestorePopMenu(class UObject* Object, TSubclassOf<class UInteractBaseWidget> Class);
     void TogglePhotoMode();
@@ -37,15 +38,15 @@ class ABP_HUD_C : public AEHHUDGame
     void OpenPopMenu(TSubclassOf<class UInteractBaseWidget> MenuWidget, class UEHInteractableObject* InteractableObject);
     void RegisterCachedMenuWidget(class UMenuWidget* MenuWidget);
     class UMenuWidget* GetOrCreateMenuWidget(TSubclassOf<class UMenuWidget> MenuWidgetClass, class UObject* PayloadObject);
-    void ReceiveBeginPlay();
     void TriggerAction(const FName ActionName);
     void HoldTimersCleared();
     void OnPlayerActionsChanged();
-    void ApplicationActivationStateChanged(bool IsActive);
     void ReceiveDrawHUD(int32 SizeX, int32 SizeY);
+    void ApplicationActivationStateChanged(bool IsActive);
     void CloseOpenedInteractionMenu();
     void OpenPauseMenuSafe();
     void OpenInteractMenu(class UEHInteractableObject* InteractableObject);
+    void OnGameStarted();
     void ExecuteUbergraph_BP_HUD(int32 EntryPoint);
 };
 

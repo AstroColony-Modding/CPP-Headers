@@ -3,13 +3,8 @@
 
 #include "PhysXVehicles_enums.hpp"
 
-struct FWheelSetup
+struct FAnimNode_WheelHandler : public FAnimNode_SkeletalControlBase
 {
-    TSubclassOf<class UVehicleWheel> WheelClass;
-    FName BoneName;
-    FVector AdditionalOffset;
-    bool bDisableSteering;
-
 };
 
 struct FReplicatedVehicleState
@@ -22,11 +17,147 @@ struct FReplicatedVehicleState
 
 };
 
+struct FTireConfigMaterialFriction
+{
+    class UPhysicalMaterial* PhysicalMaterial;
+    float FrictionScale;
+
+};
+
+struct FVehicleAnimInstanceProxy : public FAnimInstanceProxy
+{
+};
+
+struct FVehicleDifferential4WData
+{
+    TEnumAsByte<EVehicleDifferential4W::Type> DifferentialType;
+    float FrontRearSplit;
+    float FrontLeftRightSplit;
+    float RearLeftRightSplit;
+    float CentreBias;
+    float FrontBias;
+    float RearBias;
+
+};
+
+struct FVehicleEngineData
+{
+    FRuntimeFloatCurve TorqueCurve;
+    float MaxRPM;
+    float MOI;
+    float DampingRateFullThrottle;
+    float DampingRateZeroThrottleClutchEngaged;
+    float DampingRateZeroThrottleClutchDisengaged;
+
+};
+
+struct FVehicleGearData
+{
+    float Ratio;
+    float DownRatio;
+    float UpRatio;
+
+};
+
 struct FVehicleInputRate
 {
     float RiseRate;
     float FallRate;
 
+};
+
+struct FVehicleTransmissionData
+{
+    bool bUseGearAutoBox;
+    float GearSwitchTime;
+    float GearAutoBoxLatency;
+    float FinalRatio;
+    TArray<FVehicleGearData> ForwardGears;
+    float ReverseGearRatio;
+    float NeutralGearUpRatio;
+    float ClutchStrength;
+
+};
+
+struct FWheelSetup
+{
+    TSubclassOf<class UVehicleWheel> WheelClass;
+    FName BoneName;
+    FVector AdditionalOffset;
+    bool bDisableSteering;
+
+};
+
+class AWheeledVehicle : public APawn
+{
+    class USkeletalMeshComponent* Mesh;
+    class UWheeledVehicleMovementComponent* VehicleMovement;
+
+};
+
+class USimpleWheeledVehicleMovementComponent : public UWheeledVehicleMovementComponent
+{
+
+    void SetSteerAngle(float SteerAngle, int32 WheelIndex);
+    void SetDriveTorque(float DriveTorque, int32 WheelIndex);
+    void SetBrakeTorque(float BrakeTorque, int32 WheelIndex);
+};
+
+class UTireConfig : public UDataAsset
+{
+    float FrictionScale;
+    TArray<FTireConfigMaterialFriction> TireFrictionScales;
+
+};
+
+class UVehicleAnimInstance : public UAnimInstance
+{
+    class UWheeledVehicleMovementComponent* WheeledVehicleMovementComponent;
+
+    class AWheeledVehicle* GetVehicle();
+};
+
+class UVehicleWheel : public UObject
+{
+    class UStaticMesh* CollisionMesh;
+    bool bDontCreateShape;
+    bool bAutoAdjustCollisionSize;
+    FVector Offset;
+    float ShapeRadius;
+    float ShapeWidth;
+    float Mass;
+    float DampingRate;
+    float SteerAngle;
+    bool bAffectedByHandbrake;
+    class UTireType* TireType;
+    class UTireConfig* TireConfig;
+    float LatStiffMaxLoad;
+    float LatStiffValue;
+    float LongStiffValue;
+    float SuspensionForceOffset;
+    float SuspensionMaxRaise;
+    float SuspensionMaxDrop;
+    float SuspensionNaturalFrequency;
+    float SuspensionDampingRatio;
+    TEnumAsByte<EWheelSweepType> SweepType;
+    float MaxBrakeTorque;
+    float MaxHandBrakeTorque;
+    class UWheeledVehicleMovementComponent* VehicleSim;
+    int32 WheelIndex;
+    float DebugLongSlip;
+    float DebugLatSlip;
+    float DebugNormalizedTireLoad;
+    float DebugWheelTorque;
+    float DebugLongForce;
+    float DebugLatForce;
+    FVector Location;
+    FVector OldLocation;
+    FVector Velocity;
+
+    bool IsInAir();
+    float GetSuspensionOffset();
+    float GetSteerAngle();
+    float GetRotationAngle();
 };
 
 class UWheeledVehicleMovementComponent : public UPawnMovementComponent
@@ -108,129 +239,6 @@ class UWheeledVehicleMovementComponent : public UPawnMovementComponent
     int32 GetCurrentGear();
 };
 
-class USimpleWheeledVehicleMovementComponent : public UWheeledVehicleMovementComponent
-{
-
-    void SetSteerAngle(float SteerAngle, int32 WheelIndex);
-    void SetDriveTorque(float DriveTorque, int32 WheelIndex);
-    void SetBrakeTorque(float BrakeTorque, int32 WheelIndex);
-};
-
-struct FTireConfigMaterialFriction
-{
-    class UPhysicalMaterial* PhysicalMaterial;
-    float FrictionScale;
-
-};
-
-class UTireConfig : public UDataAsset
-{
-    float FrictionScale;
-    TArray<FTireConfigMaterialFriction> TireFrictionScales;
-
-};
-
-class UVehicleAnimInstance : public UAnimInstance
-{
-    class UWheeledVehicleMovementComponent* WheeledVehicleMovementComponent;
-
-    class AWheeledVehicle* GetVehicle();
-};
-
-class UVehicleWheel : public UObject
-{
-    class UStaticMesh* CollisionMesh;
-    bool bDontCreateShape;
-    bool bAutoAdjustCollisionSize;
-    FVector Offset;
-    float ShapeRadius;
-    float ShapeWidth;
-    float Mass;
-    float DampingRate;
-    float SteerAngle;
-    bool bAffectedByHandbrake;
-    class UTireType* TireType;
-    class UTireConfig* TireConfig;
-    float LatStiffMaxLoad;
-    float LatStiffValue;
-    float LongStiffValue;
-    float SuspensionForceOffset;
-    float SuspensionMaxRaise;
-    float SuspensionMaxDrop;
-    float SuspensionNaturalFrequency;
-    float SuspensionDampingRatio;
-    TEnumAsByte<EWheelSweepType> SweepType;
-    float MaxBrakeTorque;
-    float MaxHandBrakeTorque;
-    class UWheeledVehicleMovementComponent* VehicleSim;
-    int32 WheelIndex;
-    float DebugLongSlip;
-    float DebugLatSlip;
-    float DebugNormalizedTireLoad;
-    float DebugWheelTorque;
-    float DebugLongForce;
-    float DebugLatForce;
-    FVector Location;
-    FVector OldLocation;
-    FVector Velocity;
-
-    bool IsInAir();
-    float GetSuspensionOffset();
-    float GetSteerAngle();
-    float GetRotationAngle();
-};
-
-class AWheeledVehicle : public APawn
-{
-    class USkeletalMeshComponent* Mesh;
-    class UWheeledVehicleMovementComponent* VehicleMovement;
-
-};
-
-struct FVehicleEngineData
-{
-    FRuntimeFloatCurve TorqueCurve;
-    float MaxRPM;
-    float MOI;
-    float DampingRateFullThrottle;
-    float DampingRateZeroThrottleClutchEngaged;
-    float DampingRateZeroThrottleClutchDisengaged;
-
-};
-
-struct FVehicleDifferential4WData
-{
-    TEnumAsByte<EVehicleDifferential4W::Type> DifferentialType;
-    float FrontRearSplit;
-    float FrontLeftRightSplit;
-    float RearLeftRightSplit;
-    float CentreBias;
-    float FrontBias;
-    float RearBias;
-
-};
-
-struct FVehicleGearData
-{
-    float Ratio;
-    float DownRatio;
-    float UpRatio;
-
-};
-
-struct FVehicleTransmissionData
-{
-    bool bUseGearAutoBox;
-    float GearSwitchTime;
-    float GearAutoBoxLatency;
-    float FinalRatio;
-    TArray<FVehicleGearData> ForwardGears;
-    float ReverseGearRatio;
-    float NeutralGearUpRatio;
-    float ClutchStrength;
-
-};
-
 class UWheeledVehicleMovementComponent4W : public UWheeledVehicleMovementComponent
 {
     FVehicleEngineData EngineSetup;
@@ -239,14 +247,6 @@ class UWheeledVehicleMovementComponent4W : public UWheeledVehicleMovementCompone
     FVehicleTransmissionData TransmissionSetup;
     FRuntimeFloatCurve SteeringCurve;
 
-};
-
-struct FAnimNode_WheelHandler : public FAnimNode_SkeletalControlBase
-{
-};
-
-struct FVehicleAnimInstanceProxy : public FAnimInstanceProxy
-{
 };
 
 #endif

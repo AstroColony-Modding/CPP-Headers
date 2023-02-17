@@ -3,12 +3,6 @@
 
 #include "DataRegistry_enums.hpp"
 
-struct FDataRegistryIdFormat
-{
-    FGameplayTag BaseGameplayTag;
-
-};
-
 struct FDataRegistryCachePolicy
 {
     bool bCacheIsAlwaysVolatile;
@@ -17,6 +11,40 @@ struct FDataRegistryCachePolicy
     int32 MaxNumberKept;
     float ForceKeepSeconds;
     float ForceReleaseSeconds;
+
+};
+
+struct FDataRegistryId
+{
+    FDataRegistryType RegistryType;
+    FName ItemName;
+
+};
+
+struct FDataRegistryIdFormat
+{
+    FGameplayTag BaseGameplayTag;
+
+};
+
+struct FDataRegistryLookup
+{
+};
+
+struct FDataRegistrySourceItemId
+{
+};
+
+struct FDataRegistrySource_DataTableRules
+{
+    bool bPrecacheTable;
+    float CachedTableKeepSeconds;
+
+};
+
+struct FDataRegistryType
+{
+    FName Name;
 
 };
 
@@ -46,34 +74,12 @@ class UDataRegistrySource : public UObject
 
 };
 
-class UMetaDataRegistrySource : public UDataRegistrySource
-{
-    EMetaDataRegistrySourceAssetUsage AssetUsage;
-    FAssetManagerSearchRules SearchRules;
-    TMap<class FName, class UDataRegistrySource*> RuntimeChildren;
-
-};
-
-struct FDataRegistrySource_DataTableRules
-{
-    bool bPrecacheTable;
-    float CachedTableKeepSeconds;
-
-};
-
 class UDataRegistrySource_CurveTable : public UDataRegistrySource
 {
     TSoftObjectPtr<UCurveTable> SourceTable;
     FDataRegistrySource_DataTableRules TableRules;
     class UCurveTable* CachedTable;
     class UCurveTable* PreloadTable;
-
-};
-
-class UMetaDataRegistrySource_CurveTable : public UMetaDataRegistrySource
-{
-    TSubclassOf<class UDataRegistrySource_CurveTable> CreatedSource;
-    FDataRegistrySource_DataTableRules TableRules;
 
 };
 
@@ -84,30 +90,6 @@ class UDataRegistrySource_DataTable : public UDataRegistrySource
     class UDataTable* CachedTable;
     class UDataTable* PreloadTable;
 
-};
-
-class UMetaDataRegistrySource_DataTable : public UMetaDataRegistrySource
-{
-    TSubclassOf<class UDataRegistrySource_DataTable> CreatedSource;
-    FDataRegistrySource_DataTableRules TableRules;
-
-};
-
-struct FDataRegistryType
-{
-    FName Name;
-
-};
-
-struct FDataRegistryId
-{
-    FDataRegistryType RegistryType;
-    FName ItemName;
-
-};
-
-struct FDataRegistryLookup
-{
 };
 
 class UDataRegistrySubsystem : public UEngineSubsystem
@@ -128,8 +110,26 @@ class UDataRegistrySubsystem : public UEngineSubsystem
     bool AcquireItemBP(FDataRegistryId ItemId, FAcquireItemBPAcquireCallback AcquireCallback);
 };
 
-struct FDataRegistrySourceItemId
+class UMetaDataRegistrySource : public UDataRegistrySource
 {
+    EMetaDataRegistrySourceAssetUsage AssetUsage;
+    FAssetManagerSearchRules SearchRules;
+    TMap<class FName, class UDataRegistrySource*> RuntimeChildren;
+
+};
+
+class UMetaDataRegistrySource_CurveTable : public UMetaDataRegistrySource
+{
+    TSubclassOf<class UDataRegistrySource_CurveTable> CreatedSource;
+    FDataRegistrySource_DataTableRules TableRules;
+
+};
+
+class UMetaDataRegistrySource_DataTable : public UMetaDataRegistrySource
+{
+    TSubclassOf<class UDataRegistrySource_DataTable> CreatedSource;
+    FDataRegistrySource_DataTableRules TableRules;
+
 };
 
 #endif

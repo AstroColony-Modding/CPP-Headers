@@ -24,6 +24,8 @@ class UWBP_Slider_C : public UUserWidget
     bool HideMiddleIndicator;
     bool HideDetails;
 
+    void SetFocusOnText();
+    void UpdateBarMaterial();
     class UWidget* GetToolTipWidget();
     FEventReply OnKeyUp(FGeometry MyGeometry, FKeyEvent InKeyEvent);
     void ResetValue();

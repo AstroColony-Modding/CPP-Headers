@@ -21,6 +21,7 @@ class UWBP_gameHUD_C : public UEHHUDWidget
     bool TabKeyDown;
     bool IsCheckingWindowFocus;
     int32 CharacterNumTest;
+    class UWBP_Syncing_C* Syncing;
 
     TSubclassOf<class UInteractBaseWidget> RemovePopMenu();
     TSubclassOf<class UInteractBaseWidget> RemoveMenu();
@@ -39,6 +40,7 @@ class UWBP_gameHUD_C : public UEHHUDWidget
     FEventReply OnKeyUp(FGeometry MyGeometry, FKeyEvent InKeyEvent);
     void Construct();
     void OnTechnologyPointsDockChanged();
+    void OnGameSimulationStarted();
     void ExecuteUbergraph_WBP_gameHUD(int32 EntryPoint);
 };
 

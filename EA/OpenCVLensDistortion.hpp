@@ -1,6 +1,14 @@
 #ifndef UE4SS_SDK_OpenCVLensDistortion_HPP
 #define UE4SS_SDK_OpenCVLensDistortion_HPP
 
+struct FOpenCVCameraViewInfo
+{
+    float HorizontalFOV;
+    float VerticalFOV;
+    float FocalLengthRatio;
+
+};
+
 struct FOpenCVLensDistortionParameters
 {
     float K1;
@@ -14,14 +22,6 @@ struct FOpenCVLensDistortionParameters
     FVector2D F;
     FVector2D C;
     bool bUseFisheyeModel;
-
-};
-
-struct FOpenCVCameraViewInfo
-{
-    float HorizontalFOV;
-    float VerticalFOV;
-    float FocalLengthRatio;
 
 };
 

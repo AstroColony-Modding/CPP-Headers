@@ -5,7 +5,6 @@ class UWBP_TechnologyPoints_C : public UUserWidget
 {
     FPointerToUberGraphFrame UberGraphFrame;
     class UHorizontalBox* SciencePointsHorizontal;
-    bool HideNumberBackground;
 
     void UpdateGlobalSciencePoints();
     void Construct();

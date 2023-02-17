@@ -1,6 +1,23 @@
 #ifndef UE4SS_SDK_MediaFrameworkUtilities_HPP
 #define UE4SS_SDK_MediaFrameworkUtilities_HPP
 
+class AMediaBundleActorBase : public AActor
+{
+    class UTextureRenderTarget2D* GarbageMatteMask;
+    class UMediaBundle* MediaBundle;
+    bool bAutoPlay;
+    bool bPlayWhileEditing;
+    class UPrimitiveComponent* PrimitiveCmp;
+    class UMediaSoundComponent* MediaSoundCmp;
+    class UMaterialInstanceDynamic* Material;
+    int32 PrimitiveMaterialIndex;
+
+    void SetComponent(class UPrimitiveComponent* InPrimitive, class UMediaSoundComponent* InMediaSound);
+    bool RequestOpenMediaSource();
+    void RequestCloseMediaSource();
+    class UMediaBundle* GetMediaBundle();
+};
+
 class UMediaBundle : public UObject
 {
     class UMediaSource* MediaSource;
@@ -24,23 +41,6 @@ class UMediaBundle : public UObject
     class UMediaPlayer* GetMediaPlayer();
     class UMaterialInterface* GetMaterial();
     class UTextureRenderTarget2D* GetLensDisplacementTexture();
-};
-
-class AMediaBundleActorBase : public AActor
-{
-    class UTextureRenderTarget2D* GarbageMatteMask;
-    class UMediaBundle* MediaBundle;
-    bool bAutoPlay;
-    bool bPlayWhileEditing;
-    class UPrimitiveComponent* PrimitiveCmp;
-    class UMediaSoundComponent* MediaSoundCmp;
-    class UMaterialInstanceDynamic* Material;
-    int32 PrimitiveMaterialIndex;
-
-    void SetComponent(class UPrimitiveComponent* InPrimitive, class UMediaSoundComponent* InMediaSound);
-    bool RequestOpenMediaSource();
-    void RequestCloseMediaSource();
-    class UMediaBundle* GetMediaBundle();
 };
 
 class UMediaBundleTimeSynchronizationSource : public UTimeSynchronizationSource
@@ -80,6 +80,10 @@ class UMediaProfileBlueprintLibrary : public UBlueprintFunctionLibrary
     TArray<class UProxyMediaOutput*> GetAllMediaOutputProxy();
 };
 
+class UMediaProfileEditorSettings : public UObject
+{
+};
+
 class UMediaProfileSettings : public UObject
 {
     bool bApplyInCommandlet;
@@ -87,10 +91,6 @@ class UMediaProfileSettings : public UObject
     TArray<TSoftObjectPtr<UProxyMediaOutput>> MediaOutputProxy;
     TSoftObjectPtr<UMediaProfile> StartupMediaProfile;
 
-};
-
-class UMediaProfileEditorSettings : public UObject
-{
 };
 
 class UProxyMediaOutput : public UMediaOutput

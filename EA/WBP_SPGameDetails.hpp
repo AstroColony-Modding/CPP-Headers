@@ -5,6 +5,7 @@ class UWBP_SPGameDetails_C : public UUserWidget
 {
     FPointerToUberGraphFrame UberGraphFrame;
     class UTGCheckBox* BoosterToggle;
+    class UBorder* Border_4;
     class UTGCheckBox* EnableBotToggle;
     class UTGCheckBox* FreeConstructionToggle;
     class UTGCheckBox* OxygenToggle;

@@ -12,7 +12,7 @@ class UBP_GridComponent_C : public UEHGridComponent
     TArray<class UEHInteractableObject*> Interactable Object to Restore;
     EVoxelTerrainType GenerateTerrainType;
 
-    void AddPEVoxel(class UObject*& PEVoxel, class ABP_PlanetoidGrid_C*& PlanetoidGrid);
+    void AddPEVoxel(class APE_Voxel_C*& PEVoxel, class ABP_PlanetoidGrid_C*& PlanetoidGrid);
     void AddPEVoxels(class AEHGrid*& Grid);
     void AddSSEItemInstance(class ASSE_ItemBase_C*& SSEItem, class AEHGrid*& Grid);
     void AddSSEInstances(class AEHGrid*& Grid);
@@ -37,6 +37,7 @@ class UBP_GridComponent_C : public UEHGridComponent
     void OnOxygenRefilled(const bool OxygenRefillSuccessful);
     void OnCellsRemoved(const bool RemoveSuccessful);
     void LoadStreamingLevel(class AEHGrid* StreamingGrid, const FName StreamingGridName);
+    void OnInvalidItemPick();
     void ExecuteUbergraph_BP_GridComponent(int32 EntryPoint);
 };
 

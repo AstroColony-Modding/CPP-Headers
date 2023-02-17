@@ -1,6 +1,53 @@
 #ifndef UE4SS_SDK_TGCoreUtility_HPP
 #define UE4SS_SDK_TGCoreUtility_HPP
 
+struct FActorsInSphereParams
+{
+    class UObject* WorldContextObject;
+    FVector Center;
+    float Radius;
+    class AActor* ActorToIgnore;
+    TSubclassOf<class AActor> ActorClassFilter;
+
+};
+
+struct FAttachedActorSpawnParams
+{
+    TSubclassOf<class AActor> ActorClassToSpawn;
+    class APawn* PawnToAttachTo;
+    FVector LocationOffset;
+    FVector SpawnDirection;
+    class APawn* Instigator;
+
+};
+
+struct FTGDualRefcount
+{
+    int32 ActivationRefcount;
+    int32 DisabledRefcount;
+
+};
+
+struct FTGTimestamp
+{
+    float Value;
+
+};
+
+class ATGEmptyActor : public AActor
+{
+    class USceneComponent* Scene;
+
+};
+
+class ATGEmptyBillboardActor : public ATGEmptyActor
+{
+};
+
+class ATGInstancedStaticMeshActor : public AStaticMeshActor
+{
+};
+
 class ATGPlayerController : public APlayerController
 {
     bool EnableRenderFocusRule;
@@ -20,6 +67,7 @@ class UTGGameUserSettings : public UGameUserSettings
     bool MouseHorizontalInverted;
     float AutosaveInterval;
     int32 AutosaveMaxCount;
+    int32 RecoverysaveMaxCount;
     float MasterVolume;
     float EffectsVolume;
     float GameMusicVolume;
@@ -28,20 +76,6 @@ class UTGGameUserSettings : public UGameUserSettings
     TArray<FInputActionKeyMapping> UserActionMappings;
     TArray<FInputAxisKeyMapping> UserAxisMappings;
 
-};
-
-class ATGEmptyActor : public AActor
-{
-    class USceneComponent* Scene;
-
-};
-
-class ATGEmptyBillboardActor : public ATGEmptyActor
-{
-};
-
-class ATGInstancedStaticMeshActor : public AStaticMeshActor
-{
 };
 
 class UTGLifecycleComponent : public UActorComponent
@@ -56,26 +90,6 @@ class UTGTickableObject : public UObject
 {
 };
 
-struct FAttachedActorSpawnParams
-{
-    TSubclassOf<class AActor> ActorClassToSpawn;
-    class APawn* PawnToAttachTo;
-    FVector LocationOffset;
-    FVector SpawnDirection;
-    class APawn* Instigator;
-
-};
-
-struct FActorsInSphereParams
-{
-    class UObject* WorldContextObject;
-    FVector Center;
-    float Radius;
-    class AActor* ActorToIgnore;
-    TSubclassOf<class AActor> ActorClassFilter;
-
-};
-
 class UTGUtilityFunctionLibrary : public UBlueprintFunctionLibrary
 {
 
@@ -85,19 +99,6 @@ class UTGUtilityFunctionLibrary : public UBlueprintFunctionLibrary
     class AActor* GetClosestActorToScreenCentre(const class APlayerController* PlayerController, const TArray<class AActor*>& ActorCandidates, float MaxScreenHeightFractionFromCentre);
     TArray<class AActor*> FindAllActorsInSphere(const FActorsInSphereParams& Params);
     class UActorComponent* AddComponentToActor(class AActor* Actor, TSubclassOf<class UActorComponent> ActorComponentClass);
-};
-
-struct FTGDualRefcount
-{
-    int32 ActivationRefcount;
-    int32 DisabledRefcount;
-
-};
-
-struct FTGTimestamp
-{
-    float Value;
-
 };
 
 #endif

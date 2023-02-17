@@ -19,6 +19,7 @@ class ABP_Chunk_C : public AEHChunk
     void HandleSettingsApplied();
     void ReceiveBeginPlay();
     void OnPlanetoidGenerated();
+    void HandleUniverseChanged();
     void ExecuteUbergraph_BP_Chunk(int32 EntryPoint);
 };
 

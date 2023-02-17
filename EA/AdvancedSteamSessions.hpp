@@ -14,35 +14,6 @@ struct FBPSteamGroupInfo
 
 };
 
-class UAdvancedSteamFriendsLibrary : public UBlueprintFunctionLibrary
-{
-
-    bool RequestSteamFriendInfo(const FBPUniqueNetId UniqueNetId, bool bRequireNameOnly);
-    bool OpenSteamUserOverlay(const FBPUniqueNetId UniqueNetId, ESteamUserOverlayType DialogType);
-    bool IsSteamInBigPictureMode();
-    bool IsOverlayEnabled();
-    bool InitTextFiltering();
-    FString GetSteamPersonaName(const FBPUniqueNetId UniqueNetId);
-    void GetSteamGroups(TArray<FBPSteamGroupInfo>& SteamGroups);
-    void GetSteamFriendGamePlayed(const FBPUniqueNetId UniqueNetId, EBlueprintResultSwitch& Result, int32& AppId);
-    class UTexture2D* GetSteamFriendAvatar(const FBPUniqueNetId UniqueNetId, EBlueprintAsyncResultSwitch& Result, SteamAvatarSize AvatarSize);
-    FBPUniqueNetId GetLocalSteamIDFromSteam();
-    int32 GetFriendSteamLevel(const FBPUniqueNetId UniqueNetId);
-    bool FilterText(FString TextToFilter, EBPTextFilteringContext Context, const FBPUniqueNetId TextSourceID, FString& FilteredText);
-    FBPUniqueNetId CreateSteamIDFromString(const FString SteamID64);
-};
-
-struct FBPSteamWorkshopID
-{
-};
-
-class UAdvancedSteamWorkshopLibrary : public UBlueprintFunctionLibrary
-{
-
-    TArray<FBPSteamWorkshopID> GetSubscribedWorkshopItems(int32& NumberOfItems);
-    void GetNumSubscribedWorkshopItems(int32& NumberOfItems);
-};
-
 struct FBPSteamGroupOfficer
 {
     FBPUniqueNetId OfficerUniqueNetID;
@@ -50,14 +21,8 @@ struct FBPSteamGroupOfficer
 
 };
 
-class USteamRequestGroupOfficersCallbackProxy : public UOnlineBlueprintCallProxyBase
+struct FBPSteamWorkshopID
 {
-    FSteamRequestGroupOfficersCallbackProxyOnSuccess OnSuccess;
-    void BlueprintGroupOfficerDetailsDelegate(const TArray<FBPSteamGroupOfficer>& OfficerList);
-    FSteamRequestGroupOfficersCallbackProxyOnFailure OnFailure;
-    void BlueprintGroupOfficerDetailsDelegate(const TArray<FBPSteamGroupOfficer>& OfficerList);
-
-    class USteamRequestGroupOfficersCallbackProxy* GetSteamGroupOfficerList(class UObject* WorldContextObject, FBPUniqueNetId GroupUniqueNetID);
 };
 
 struct FBPSteamWorkshopItemDetails
@@ -77,6 +42,41 @@ struct FBPSteamWorkshopItemDetails
     bool bTagsTruncated;
     FString CreatorSteamID;
 
+};
+
+class UAdvancedSteamFriendsLibrary : public UBlueprintFunctionLibrary
+{
+
+    bool RequestSteamFriendInfo(const FBPUniqueNetId UniqueNetId, bool bRequireNameOnly);
+    bool OpenSteamUserOverlay(const FBPUniqueNetId UniqueNetId, ESteamUserOverlayType DialogType);
+    bool IsSteamInBigPictureMode();
+    bool IsOverlayEnabled();
+    bool InitTextFiltering();
+    FString GetSteamPersonaName(const FBPUniqueNetId UniqueNetId);
+    void GetSteamGroups(TArray<FBPSteamGroupInfo>& SteamGroups);
+    void GetSteamFriendGamePlayed(const FBPUniqueNetId UniqueNetId, EBlueprintResultSwitch& Result, int32& AppId);
+    class UTexture2D* GetSteamFriendAvatar(const FBPUniqueNetId UniqueNetId, EBlueprintAsyncResultSwitch& Result, SteamAvatarSize AvatarSize);
+    FBPUniqueNetId GetLocalSteamIDFromSteam();
+    int32 GetFriendSteamLevel(const FBPUniqueNetId UniqueNetId);
+    bool FilterText(FString TextToFilter, EBPTextFilteringContext Context, const FBPUniqueNetId TextSourceID, FString& FilteredText);
+    FBPUniqueNetId CreateSteamIDFromString(const FString SteamID64);
+};
+
+class UAdvancedSteamWorkshopLibrary : public UBlueprintFunctionLibrary
+{
+
+    TArray<FBPSteamWorkshopID> GetSubscribedWorkshopItems(int32& NumberOfItems);
+    void GetNumSubscribedWorkshopItems(int32& NumberOfItems);
+};
+
+class USteamRequestGroupOfficersCallbackProxy : public UOnlineBlueprintCallProxyBase
+{
+    FSteamRequestGroupOfficersCallbackProxyOnSuccess OnSuccess;
+    void BlueprintGroupOfficerDetailsDelegate(const TArray<FBPSteamGroupOfficer>& OfficerList);
+    FSteamRequestGroupOfficersCallbackProxyOnFailure OnFailure;
+    void BlueprintGroupOfficerDetailsDelegate(const TArray<FBPSteamGroupOfficer>& OfficerList);
+
+    class USteamRequestGroupOfficersCallbackProxy* GetSteamGroupOfficerList(class UObject* WorldContextObject, FBPUniqueNetId GroupUniqueNetID);
 };
 
 class USteamWSRequestUGCDetailsCallbackProxy : public UOnlineBlueprintCallProxyBase

@@ -1,6 +1,10 @@
 #ifndef UE4SS_SDK_TGEvent_HPP
 #define UE4SS_SDK_TGEvent_HPP
 
+class ITGEventStreamOwner : public IInterface
+{
+};
+
 class UTGEventListener : public UObject
 {
 };
@@ -14,10 +18,6 @@ class UTGEventListenerComponent : public UActorComponent
 };
 
 class UTGEventStreamComponent : public UActorComponent
-{
-};
-
-class ITGEventStreamOwner : public IInterface
 {
 };
 

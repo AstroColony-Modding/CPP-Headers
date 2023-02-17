@@ -14,6 +14,7 @@ class UWBP_MainMenu_C : public UEHMainMenuScreen
     int32 SeedIndex;
     bool CtrlPressed;
 
+    void UnmountPakTest();
     FText GetFPSCounter();
     void ToggleFPSCounter();
     FEventReply OnKeyDown(FGeometry MyGeometry, FKeyEvent InKeyEvent);

@@ -4,7 +4,11 @@
 class UWBP_SaveLoadList_C : public UEHSaveLoadListWidget
 {
     FPointerToUberGraphFrame UberGraphFrame;
+    class UHorizontalBox* MultiplayerHorizontalBox;
     class UTGConfigurableTextBlock* Name;
+    class UTGConfigurableTextBlock* PlaeyersSavedText;
+    class UWBP_IcoMarker_C* PlayerWarning;
+    class UTGConfigurableTextBlock* SavedPlayers;
     class UTGConfigurableTextBlock* SDConfigurableTextBlock;
     class UTGConfigurableTextBlock* SDConfigurableTextBlock_1;
     class UTGConfigurableTextBlock* SDConfigurableTextBlock_2;
@@ -14,9 +18,11 @@ class UWBP_SaveLoadList_C : public UEHSaveLoadListWidget
     class UTGConfigurableTextBlock* Version;
     class UWBP_SaveLoadOption_C* WBP_SaveLoadOption_C;
     class UWBP_SaveLoadOption_C* WBP_SaveLoadOption_C_0;
+    bool IsMultiplayer;
 
     void OnContextChanged();
     void OnScenarioDetailsUpdated(FEHScenarioDetails ScenarioDetails);
+    void Construct();
     void ExecuteUbergraph_WBP_SaveLoadList(int32 EntryPoint);
 };
 

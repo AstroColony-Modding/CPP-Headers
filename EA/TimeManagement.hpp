@@ -3,10 +3,14 @@
 
 #include "TimeManagement_enums.hpp"
 
-class UTimeSynchronizationSource : public UObject
+struct FTimedDataChannelSampleTime
 {
-    bool bUseForSynchronization;
-    int32 FrameOffset;
+};
+
+struct FTimedDataInputEvaluationData
+{
+    float DistanceToNewestSampleSeconds;
+    float DistanceToOldestSampleSeconds;
 
 };
 
@@ -52,15 +56,11 @@ class UTimeManagementBlueprintLibrary : public UBlueprintFunctionLibrary
     FFrameNumber Add_FrameNumberFrameNumber(FFrameNumber A, FFrameNumber B);
 };
 
-struct FTimedDataInputEvaluationData
+class UTimeSynchronizationSource : public UObject
 {
-    float DistanceToNewestSampleSeconds;
-    float DistanceToOldestSampleSeconds;
+    bool bUseForSynchronization;
+    int32 FrameOffset;
 
-};
-
-struct FTimedDataChannelSampleTime
-{
 };
 
 #endif
